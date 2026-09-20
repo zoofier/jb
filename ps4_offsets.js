@@ -1,4 +1,4 @@
-﻿export const REQUIRED_KEYS = [
+export const REQUIRED_KEYS = [
   "fw_status",
   "wk_expm1_builtin",
   "wk_JSFunction_m_function",
