@@ -614,28 +614,20 @@ function onFail(){
   launched=false;
 }
 
-// ── Launch ─────────────────────────────────────────────────────────────────
+// ── Launch — navigate to run.html (static module, whiteshadow-identical) ──
 var launched=false;
 function launchJB(){
   if(launched)return; launched=true;
-  outEl.innerHTML='';
-  jbBtn.classList.add('busy'); jbBtn.disabled=true;
-  setStatus('run',true,'Running exploit — do not navigate away...','run','RUNNING');
-
-  // Only pass log=1 if user enabled Verbose Log — otherwise jb.js
-  // short-circuits finishUI() and body class never changes to done/fail
+  jbBtn.disabled=true;
   var p=[];
-  if(cfg.verbose){ p.push('log=1'); terminal.style.display=''; startTimer(); }
+  if(cfg.verbose) p.push('log=1');
   if(!cfg.jb) p.push('jb=0');
   if(!cfg.patch) p.push('patch=0');
   if(!cfg.payload) p.push('payload=0');
   if(cfg.keepjb) p.push('keepjb=1');
   if(cfg.stop) p.push('stop=beforedouble');
   if(cfg.retry!==8) p.push('retry='+cfg.retry);
-  if(p.length) history.replaceState(null,'',location.pathname+'?'+p.join('&'));
-
-  import("./jb.js")
-    .catch(function(){ document.body.className='fail'; });
+  window.location.href = './run.html' + (p.length ? '?'+p.join('&') : '');
 }
 
 // ── Payload dispatch ───────────────────────────────────────────────────────
