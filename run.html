@@ -19,6 +19,29 @@
         --green: #00FF00;
         --red: #FF3333;
       }
+
+      /* ── RGB Theme Animation ── */
+      @keyframes rgbGlow {
+        0%   { color: #FF6600; text-shadow: 0 0 12px rgba(255, 102, 0, 0.7); }
+        25%  { color: #00D2FF; text-shadow: 0 0 12px rgba(0, 210, 255, 0.7); }
+        50%  { color: #00FF00; text-shadow: 0 0 12px rgba(0, 255, 0, 0.7); }
+        75%  { color: #FF00FF; text-shadow: 0 0 12px rgba(255, 0, 255, 0.7); }
+        100% { color: #FF6600; text-shadow: 0 0 12px rgba(255, 102, 0, 0.7); }
+      }
+
+      .rgb-text {
+        animation: rgbGlow 6s infinite linear;
+      }
+
+      .star {
+        font-size: 10px;
+        vertical-align: middle;
+        display: inline-block;
+        margin: 0 6px;
+        transform: translateY(-2px);
+        animation: rgbGlow 6s infinite linear;
+      }
+
       html, body {
         min-height: 100vh;
         background: var(--bg-dark);
@@ -54,7 +77,6 @@
         font-style: italic;
         font-size: 36px;
         letter-spacing: 2px;
-        color: var(--orange);
       }
       .brand-center {
         font-family: 'Arial Black', Impact, sans-serif;
@@ -62,13 +84,13 @@
         font-style: italic;
         font-size: 42px;
         letter-spacing: 4px;
-        color: #FFFFFF;
-        text-shadow: 0 0 25px var(--cyan-blue), 0 0 40px var(--orange);
       }
       .status-badge {
         font-weight: 800;
         color: var(--orange);
         font-size: 14px;
+        display: flex;
+        align-items: center;
       }
 
       #main-wrap {
@@ -110,12 +132,12 @@
         font-size: 20px;
         font-weight: 900;
         letter-spacing: 1px;
-        color: var(--orange);
         text-transform: uppercase;
         margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
-      body.done #msg { color: var(--green); }
-      body.fail #msg { color: var(--red); }
 
       /* Bottom Green Log Console */
       #log-frame {
@@ -144,14 +166,14 @@
   <body>
     <div id="app-base">
       <div id="top-bar">
-        <div class="brand-left">ZOOF13R</div>
-        <div class="brand-center">RTM TOOL</div>
-        <div class="status-badge" id="status-badge">★ EXPLOIT ENGINE ★</div>
+        <div class="brand-left rgb-text">ZOOF13R</div>
+        <div class="brand-center rgb-text">RTM TOOL</div>
+        <div class="status-badge"><span class="star">★</span> EXPLOIT ENGINE <span class="star">★</span></div>
       </div>
 
       <div id="main-wrap">
         <div id="spin"></div>
-        <div id="msg">★ RUNNING EXPLOIT ENGINE — DO NOT NAVIGATE AWAY ★</div>
+        <div id="msg" class="rgb-text"><span class="star">★</span> RUNNING EXPLOIT ENGINE — DO NOT NAVIGATE AWAY <span class="star">★</span></div>
         <div id="wrap">
           <div id="state"></div>
           <div id="out"></div>
@@ -170,10 +192,10 @@
         var c = document.body.className;
         var ts = new Date().toTimeString().split(' ')[0];
         if (c.indexOf('done') !== -1) {
-          msgEl.textContent = '★ JAILBROKEN — NOW SELECT PAYLOAD ★';
+          msgEl.innerHTML = '<span class="star">★</span> JAILBROKEN — NOW SELECT PAYLOAD <span class="star">★</span>';
           logBox.innerHTML += '\n[' + ts + '] ✓ EXPLOIT & KERNEL PATCH SUCCESSFUL!';
         } else if (c.indexOf('fail') !== -1) {
-          msgEl.textContent = '★ FAILED — COLD REBOOT PS4 AND RETRY ★';
+          msgEl.innerHTML = '<span class="star">★</span> FAILED — COLD REBOOT PS4 AND RETRY <span class="star">★</span>';
           logBox.innerHTML += '\n[' + ts + '] ✗ EXPLOIT FAILED — COLD REBOOT REQUIRED.';
         }
       }).observe(document.body, { attributes: true, attributeFilter: ['class'] });
