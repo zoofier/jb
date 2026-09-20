@@ -23,6 +23,29 @@
   --red: #FF3333;
 }
 
+/* ── RGB Theme Animation ── */
+@keyframes rgbGlow {
+  0%   { color: #FF6600; text-shadow: 0 0 12px rgba(255, 102, 0, 0.7); }
+  25%  { color: #00D2FF; text-shadow: 0 0 12px rgba(0, 210, 255, 0.7); }
+  50%  { color: #00FF00; text-shadow: 0 0 12px rgba(0, 255, 0, 0.7); }
+  75%  { color: #FF00FF; text-shadow: 0 0 12px rgba(255, 0, 255, 0.7); }
+  100% { color: #FF6600; text-shadow: 0 0 12px rgba(255, 102, 0, 0.7); }
+}
+
+.rgb-text {
+  animation: rgbGlow 6s infinite linear;
+}
+
+/* ── 5x Smaller Centered Stars ── */
+.star {
+  font-size: 10px;
+  vertical-align: middle;
+  display: inline-block;
+  margin: 0 6px;
+  transform: translateY(-2px);
+  animation: rgbGlow 6s infinite linear;
+}
+
 html, body {
   min-height: 100vh;
   background-color: var(--bg-dark);
@@ -69,7 +92,7 @@ html, body {
   font-size: 42px;
   letter-spacing: 4px;
   color: #FFFFFF;
-  text-shadow: 0 0 25px var(--cyan-blue), 0 0 40px var(--orange);
+  animation: rgbGlow 6s infinite linear;
 }
 
 .status-badge {
@@ -100,14 +123,16 @@ html, body {
   background-color: transparent;
   color: var(--text-dim);
   text-align: left;
-  padding: 15px 25px;
+  padding: 15px 22px;
   border: none;
   font-weight: 600;
-  font-size: 15px;
+  font-size: 14px;
   border-left: 4px solid transparent;
   cursor: pointer;
   transition: all 0.15s ease;
   width: 100%;
+  display: flex;
+  align-items: center;
 }
 
 .nav-btn:hover {
@@ -132,19 +157,21 @@ html, body {
 .header-title {
   font-size: 22px;
   font-weight: 800;
-  color: var(--orange);
   padding-bottom: 8px;
   border-bottom: 1px solid var(--border-color);
   text-transform: uppercase;
   letter-spacing: 1px;
   margin-bottom: 20px;
+  display: flex;
+  align-items: center;
 }
 
 .orange-subheader {
   font-weight: 900;
-  color: var(--orange);
   font-size: 14px;
   margin-bottom: 8px;
+  display: flex;
+  align-items: center;
 }
 
 /* ── Cards & Panels ── */
@@ -182,6 +209,9 @@ html, body {
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .btn-primary:hover {
   background-color: var(--orange-hover);
@@ -246,6 +276,8 @@ html, body {
   font-weight: 700;
   color: #FFFFFF;
   margin-bottom: 4px;
+  display: flex;
+  align-items: center;
 }
 .p-fw {
   font-size: 12px;
@@ -267,7 +299,7 @@ html, body {
 
   <!-- Top Bar -->
   <div id="top-bar">
-    <div class="brand-left">ZOOF13R</div>
+    <div class="brand-left rgb-text">ZOOF13R</div>
     <div class="brand-center">RTM TOOL</div>
     <div class="status-badge" id="status-badge">DISCONNECTED</div>
   </div>
@@ -277,10 +309,10 @@ html, body {
     <!-- Sidebar Navigation -->
     <div id="sidebar">
       <button class="nav-btn active" onclick="switchTab('conn')">Console Connection</button>
-      <button class="nav-btn" onclick="switchTab('jb')">★ JAILBREAK 13.52 ★</button>
-      <button class="nav-btn" onclick="switchTab('payloads')">★ PRIMARY HOMEBREW ★</button>
-      <button class="nav-btn" onclick="switchTab('guide')">★ BOOT SEQUENCE ★</button>
-      <button class="nav-btn" onclick="switchTab('system')">★ SYSTEM LOGS ★</button>
+      <button class="nav-btn" onclick="switchTab('jb')"><span class="star">★</span> JAILBREAK 13.52 <span class="star">★</span></button>
+      <button class="nav-btn" onclick="switchTab('payloads')"><span class="star">★</span> PRIMARY HOMEBREW <span class="star">★</span></button>
+      <button class="nav-btn" onclick="switchTab('guide')"><span class="star">★</span> BOOT SEQUENCE <span class="star">★</span></button>
+      <button class="nav-btn" onclick="switchTab('system')"><span class="star">★</span> SYSTEM LOGS <span class="star">★</span></button>
     </div>
 
     <!-- Content Area -->
@@ -288,7 +320,7 @@ html, body {
 
       <!-- TAB 1: CONSOLE CONNECTION -->
       <div id="tab-conn">
-        <div class="header-title">★ CONNECTION SETUP ★</div>
+        <div class="header-title rgb-text"><span class="star">★</span> CONNECTION SETUP <span class="star">★</span></div>
         <div class="card-panel">
           <div style="display: grid; grid-template-columns: 160px 1fr; gap: 12px; align-items: center; margin-bottom: 12px;">
             <label>PS4 IP Address:</label>
@@ -303,14 +335,14 @@ html, body {
             <input type="text" class="input-field" value="9090" />
           </div>
 
-          <div class="orange-subheader" style="margin-top: 15px;">★ SELECT GAME ★</div>
+          <div class="orange-subheader rgb-text" style="margin-top: 15px;"><span class="star">★</span> SELECT GAME <span class="star">★</span></div>
           <input type="text" class="input-field" value="Black Ops II" style="margin-bottom: 12px;" />
 
-          <div class="orange-subheader">★ SELECT MODE ★</div>
+          <div class="orange-subheader rgb-text"><span class="star">★</span> SELECT MODE <span class="star">★</span></div>
           <input type="text" class="input-field" value="Multiplayer" style="margin-bottom: 20px;" />
 
           <div style="display: flex; gap: 10px;">
-            <button class="btn-primary" onclick="launchJB()" style="flex: 1;">★ LAUNCH JAILBREAK ★</button>
+            <button class="btn-primary" onclick="launchJB()" style="flex: 1;"><span class="star">★</span> LAUNCH JAILBREAK <span class="star">★</span></button>
             <button class="btn-secondary" onclick="logMsg('Connecting PS4...')">Connect PS4</button>
             <button class="btn-secondary" onclick="logMsg('Attach BO2 initiated...')">Attach BO2</button>
           </div>
@@ -319,33 +351,33 @@ html, body {
 
       <!-- TAB 2: JAILBREAK -->
       <div id="tab-jb" style="display: none;">
-        <div class="header-title">★ WEBKIT EXPLOIT ENGINE ★</div>
+        <div class="header-title rgb-text"><span class="star">★</span> WEBKIT EXPLOIT ENGINE <span class="star">★</span></div>
         <div class="card-panel" style="text-align: center; padding: 40px 20px;">
-          <div class="orange-subheader" style="font-size: 18px; margin-bottom: 10px;">★ PS4 FIRMWARE 13.52 KERNEL ESCAPE ★</div>
+          <div class="orange-subheader rgb-text" style="font-size: 18px; margin-bottom: 10px; justify-content: center;"><span class="star">★</span> PS4 FIRMWARE 13.52 KERNEL ESCAPE <span class="star">★</span></div>
           <p style="color: var(--text-dim); margin-bottom: 25px;">Executes WebKit memory primitive → kernel read/write → 13.52 kpatch chain.</p>
-          <button class="btn-primary" onclick="launchJB()" style="font-size: 18px; padding: 16px 36px;">★ RUN JAILBREAK NOW ★</button>
+          <button class="btn-primary" onclick="launchJB()" style="font-size: 18px; padding: 16px 36px; margin: 0 auto;"><span class="star">★</span> RUN JAILBREAK NOW <span class="star">★</span></button>
         </div>
       </div>
 
       <!-- TAB 3: PAYLOADS -->
       <div id="tab-payloads" style="display: none;">
-        <div class="header-title">★ PRIMARY HOMEBREW ENABLERS ★</div>
+        <div class="header-title rgb-text"><span class="star">★</span> PRIMARY HOMEBREW ENABLERS <span class="star">★</span></div>
         <div class="payload-grid">
 
           <div class="payload-card" onclick="sendPayload('zoof13r_debug.bin', '13.52 DEBUG')">
-            <div class="p-title">★ 13.52 DEBUG [zoof13r custom] ★</div>
+            <div class="p-title rgb-text"><span class="star">★</span> 13.52 DEBUG [zoof13r custom] <span class="star">★</span></div>
             <div class="p-fw">FIRMWARE 13.52 ONLY</div>
             <div class="p-desc">Opens :744 RTM port + 13.52-specific kernel patch chain for zoof13r RTM tool.</div>
           </div>
 
           <div class="payload-card" onclick="sendPayload('ps4debug.bin', 'ps4debug')">
-            <div class="p-title">★ ps4debug ★</div>
+            <div class="p-title rgb-text"><span class="star">★</span> ps4debug <span class="star">★</span></div>
             <div class="p-fw">ALL FIRMWARE</div>
             <div class="p-desc">Standard ps4debug — opens :744 port for RTM tool connection.</div>
           </div>
 
           <div class="payload-card" onclick="sendPayload('goldhen.bin', 'GoldHEN 2.4b18')">
-            <div class="p-title">★ GoldHEN 2.4b18 ★</div>
+            <div class="p-title rgb-text"><span class="star">★</span> GoldHEN 2.4b18 <span class="star">★</span></div>
             <div class="p-fw">FIRMWARE 13.52</div>
             <div class="p-desc">Unsigned .pkg installer, debug settings, plugin loader, keepalive daemon.</div>
           </div>
@@ -355,19 +387,19 @@ html, body {
 
       <!-- TAB 4: BOOT GUIDE -->
       <div id="tab-guide" style="display: none;">
-        <div class="header-title">★ BOOT SEQUENCE GUIDE ★</div>
+        <div class="header-title rgb-text"><span class="star">★</span> BOOT SEQUENCE GUIDE <span class="star">★</span></div>
         <div class="card-panel" style="line-height: 2.2;">
           <div><b style="color: var(--orange)">1.</b> Launch PS4 Browser → Navigate to this host page.</div>
-          <div><b style="color: var(--orange)">2.</b> Click <b>★ LAUNCH JAILBREAK ★</b>.</div>
+          <div><b style="color: var(--orange)">2.</b> Click <b><span class="star">★</span> LAUNCH JAILBREAK <span class="star">★</span></b>.</div>
           <div><b style="color: var(--green)">3.</b> Wait for <b>JAILBROKEN</b> banner confirmation.</div>
-          <div><b style="color: var(--green)">4.</b> Select <b>★ 13.52 DEBUG ★</b> or <b>★ ps4debug ★</b> to open port :744.</div>
+          <div><b style="color: var(--green)">4.</b> Select <b><span class="star">★</span> 13.52 DEBUG <span class="star">★</span></b> or <b><span class="star">★</span> ps4debug <span class="star">★</span></b> to open port :744.</div>
           <div><b style="color: var(--cyan-blue)">5.</b> Open <b>ZOOF13R BO2 RTM TOOL</b> on PC → Connect PS4 IP → Attach BO2!</div>
         </div>
       </div>
 
       <!-- TAB 5: SYSTEM LOGS -->
       <div id="tab-system" style="display: none;">
-        <div class="header-title">★ SYSTEM LOGS ★</div>
+        <div class="header-title rgb-text"><span class="star">★</span> SYSTEM LOGS <span class="star">★</span></div>
         <p style="color: var(--text-dim);">Live exploit and HTTP server telemetry stream.</p>
       </div>
 
