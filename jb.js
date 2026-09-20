@@ -1,7 +1,7 @@
 import { establishPrimitive } from "./core.js?v=10";
-import { installWindowP, pairStatus } from "./mem.js?v=2";
-import { int64 } from "./int64.js?v=2";
-import { offsetsFor } from "./ps4_offsets.js?v=2";
+import { installWindowP, pairStatus } from "./mem.js";
+import { int64 } from "./int64.js";
+import { offsetsFor } from "./ps4_offsets.js";
 
 const outEl = document.getElementById("out");
 const stateEl = document.getElementById("state");
@@ -13,28 +13,7 @@ const STOP_BEFORE_DOUBLE = params.get("stop") === "beforedouble";
 
 // No-op: log sink intentionally disabled. Logs stay on-device (and, when
 // ?log=1 is set, in the on-screen #out div rendered by mark()).
-function post(tag, detail) {
-  try {
-    var body = "tag=" + encodeURIComponent(tag || "") + "&detail=" + encodeURIComponent(detail || "");
-    if (navigator.sendBeacon) {
-      navigator.sendBeacon("/t", body);
-    } else {
-      var xhr = new XMLHttpRequest();
-      xhr.open("POST", "/t", true);
-      xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-      xhr.send(body);
-    }
-  } catch (e) {}
-}
-
-if (typeof window !== "undefined") {
-  window.onerror = function(msg, url, line, col, err) {
-    post("WINDOW-ERROR", String(msg) + " @ " + String(url) + ":" + String(line) + ":" + String(col));
-  };
-  window.onunhandledrejection = function(e) {
-    post("UNHANDLED-REJECTION", String(e.reason));
-  };
-}
+function post(_tag, _detail) {}
 
 const VERBOSE = params.get("verbose") === "1";
 const PROSE = [
@@ -3449,7 +3428,7 @@ let allDone = false,
         (allDone ? "" : "  INCOMPLETE"),
     );
     try {
-      finishUI(payloadRunning || (!DO_PAYLOAD && kpatched));
+      finishUI(payloadRunning);
     } catch (eUI) {}
   }
 })();
