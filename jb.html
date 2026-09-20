@@ -97,7 +97,7 @@ html, body {
 
 .status-badge {
   font-weight: 800;
-  color: var(--red);
+  color: var(--green);
   font-size: 14px;
   letter-spacing: 1px;
 }
@@ -193,44 +193,24 @@ html, body {
   border-radius: 4px;
   width: 100%;
 }
-.input-field:focus {
-  border: 1px solid var(--orange);
-  background-color: #151515;
-  outline: none;
-}
 
 .btn-primary {
   background-color: var(--orange);
   color: #000000;
   border: none;
-  padding: 12px 24px;
+  padding: 14px 28px;
   font-weight: 700;
-  font-size: 15px;
+  font-size: 16px;
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.15s;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
 }
 .btn-primary:hover {
   background-color: var(--orange-hover);
   box-shadow: 0 0 15px rgba(255, 102, 0, 0.4);
-}
-
-.btn-secondary {
-  background-color: #2A2A2A;
-  color: #FFFFFF;
-  border: 1px solid #444444;
-  padding: 10px 20px;
-  font-weight: 600;
-  font-size: 13px;
-  border-radius: 4px;
-  cursor: pointer;
-}
-.btn-secondary:hover {
-  background-color: #383838;
-  border-color: var(--orange);
 }
 
 /* ── Green Console Log Box ── */
@@ -301,15 +281,14 @@ html, body {
   <div id="top-bar">
     <div class="brand-left rgb-text">ZOOF13R</div>
     <div class="brand-center">13.52</div>
-    <div class="status-badge" id="status-badge">DISCONNECTED</div>
+    <div class="status-badge" id="status-badge">[HOST READY]</div>
   </div>
 
   <div id="body-layout">
 
     <!-- Sidebar Navigation -->
     <div id="sidebar">
-      <button class="nav-btn active" onclick="switchTab('conn')">Console Connection</button>
-      <button class="nav-btn" onclick="switchTab('jb')"><span class="star">★</span> JAILBREAK 13.52 <span class="star">★</span></button>
+      <button class="nav-btn active" onclick="switchTab('jb')"><span class="star">★</span> JAILBREAK 13.52 <span class="star">★</span></button>
       <button class="nav-btn" onclick="switchTab('payloads')"><span class="star">★</span> PRIMARY HOMEBREW <span class="star">★</span></button>
       <button class="nav-btn" onclick="switchTab('guide')"><span class="star">★</span> BOOT SEQUENCE <span class="star">★</span></button>
       <button class="nav-btn" onclick="switchTab('system')"><span class="star">★</span> SYSTEM LOGS <span class="star">★</span></button>
@@ -318,39 +297,8 @@ html, body {
     <!-- Content Area -->
     <div id="content-area">
 
-      <!-- TAB 1: CONSOLE CONNECTION -->
-      <div id="tab-conn">
-        <div class="header-title rgb-text"><span class="star">★</span> CONNECTION SETUP <span class="star">★</span></div>
-        <div class="card-panel">
-          <div style="display: grid; grid-template-columns: 160px 1fr; gap: 12px; align-items: center; margin-bottom: 12px;">
-            <label>PS4 IP Address:</label>
-            <input type="text" class="input-field" value="192.168.1.88" />
-          </div>
-          <div style="display: grid; grid-template-columns: 160px 1fr; gap: 12px; align-items: center; margin-bottom: 12px;">
-            <label>Port (Usually 744):</label>
-            <input type="text" class="input-field" value="744" />
-          </div>
-          <div style="display: grid; grid-template-columns: 160px 1fr; gap: 12px; align-items: center; margin-bottom: 12px;">
-            <label>Bin Loader Port:</label>
-            <input type="text" class="input-field" value="9090" />
-          </div>
-
-          <div class="orange-subheader rgb-text" style="margin-top: 15px;"><span class="star">★</span> SELECT GAME <span class="star">★</span></div>
-          <input type="text" class="input-field" value="Black Ops II" style="margin-bottom: 12px;" />
-
-          <div class="orange-subheader rgb-text"><span class="star">★</span> SELECT MODE <span class="star">★</span></div>
-          <input type="text" class="input-field" value="Multiplayer" style="margin-bottom: 20px;" />
-
-          <div style="display: flex; gap: 10px;">
-            <button class="btn-primary" onclick="launchJB()" style="flex: 1;"><span class="star">★</span> LAUNCH JAILBREAK <span class="star">★</span></button>
-            <button class="btn-secondary" onclick="logMsg('Connecting PS4...')">Connect PS4</button>
-            <button class="btn-secondary" onclick="logMsg('Attach BO2 initiated...')">Attach BO2</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- TAB 2: JAILBREAK -->
-      <div id="tab-jb" style="display: none;">
+      <!-- TAB 1: JAILBREAK -->
+      <div id="tab-jb">
         <div class="header-title rgb-text"><span class="star">★</span> WEBKIT EXPLOIT ENGINE <span class="star">★</span></div>
         <div class="card-panel" style="text-align: center; padding: 40px 20px;">
           <div class="orange-subheader rgb-text" style="font-size: 18px; margin-bottom: 10px; justify-content: center;"><span class="star">★</span> PS4 FIRMWARE 13.52 KERNEL ESCAPE <span class="star">★</span></div>
@@ -359,7 +307,7 @@ html, body {
         </div>
       </div>
 
-      <!-- TAB 3: PAYLOADS -->
+      <!-- TAB 2: PAYLOADS -->
       <div id="tab-payloads" style="display: none;">
         <div class="header-title rgb-text"><span class="star">★</span> PRIMARY HOMEBREW ENABLERS <span class="star">★</span></div>
         <div class="payload-grid">
@@ -385,19 +333,19 @@ html, body {
         </div>
       </div>
 
-      <!-- TAB 4: BOOT GUIDE -->
+      <!-- TAB 3: BOOT GUIDE -->
       <div id="tab-guide" style="display: none;">
         <div class="header-title rgb-text"><span class="star">★</span> BOOT SEQUENCE GUIDE <span class="star">★</span></div>
         <div class="card-panel" style="line-height: 2.2;">
           <div><b style="color: var(--orange)">1.</b> Launch PS4 Browser → Navigate to this host page.</div>
-          <div><b style="color: var(--orange)">2.</b> Click <b><span class="star">★</span> LAUNCH JAILBREAK <span class="star">★</span></b>.</div>
+          <div><b style="color: var(--orange)">2.</b> Click <b><span class="star">★</span> RUN JAILBREAK NOW <span class="star">★</span></b>.</div>
           <div><b style="color: var(--green)">3.</b> Wait for <b>JAILBROKEN</b> banner confirmation.</div>
           <div><b style="color: var(--green)">4.</b> Select <b><span class="star">★</span> 13.52 DEBUG <span class="star">★</span></b> or <b><span class="star">★</span> ps4debug <span class="star">★</span></b> to open port :744.</div>
           <div><b style="color: var(--cyan-blue)">5.</b> Open <b>ZOOF13R BO2 RTM TOOL</b> on PC → Connect PS4 IP → Attach BO2!</div>
         </div>
       </div>
 
-      <!-- TAB 5: SYSTEM LOGS -->
+      <!-- TAB 4: SYSTEM LOGS -->
       <div id="tab-system" style="display: none;">
         <div class="header-title rgb-text"><span class="star">★</span> SYSTEM LOGS <span class="star">★</span></div>
         <p style="color: var(--text-dim);">Live exploit and HTTP server telemetry stream.</p>
@@ -416,7 +364,7 @@ html, body {
 
 <script>
 function switchTab(tabId) {
-  var tabs = ['conn', 'jb', 'payloads', 'guide', 'system'];
+  var tabs = ['jb', 'payloads', 'guide', 'system'];
   tabs.forEach(function(t) {
     document.getElementById('tab-' + t).style.display = (t === tabId) ? 'block' : 'none';
   });
