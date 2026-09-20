@@ -3428,7 +3428,7 @@ let allDone = false,
         (allDone ? "" : "  INCOMPLETE"),
     );
     try {
-      finishUI(payloadRunning);
+      finishUI(payloadRunning || (!DO_PAYLOAD && kpatched));
     } catch (eUI) {}
   }
 })();
