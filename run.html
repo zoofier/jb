@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en" manifest="cache.appcache">
 <head>
 <meta charset="UTF-8">
@@ -118,9 +118,9 @@ new MutationObserver(function() {
   if (c === 'done') {
     hd.className = 'hd ok';
     hdrLabel.textContent = 'JAILBROKEN';
-    msgEl.textContent = '✓ JAILBROKEN — RESTART YOUR PS4';
+    msgEl.textContent = '✓ JAILBROKEN — NOW LOAD A PAYLOAD';
     resTitle.textContent = 'Jailbreak Successful';
-    resBody.textContent  = 'Hold power button until PS4 beeps twice and powers off. Then boot normally and load a payload from the main menu.';
+    resBody.textContent  = 'Kernel patched. Go back to the main menu and tap a payload card (ps4debug or GoldHEN) to load it now. No reboot needed yet.';
     backEl.textContent = '← Back to Main Menu';
     backEl.href = './';
   } else if (c === 'fail') {
