@@ -592,17 +592,9 @@ new MutationObserver(function(){
   else if(c==='fail') onFail();
 }).observe(document.body,{attributes:true,attributeFilter:['class']});
 
-// ── Live stats via MutationObserver on #out ────────────────────────────────
+// ── Auto-scroll log when jb.js writes to #out ────────────────────────────
 new MutationObserver(function(){
-  var h=outEl.innerHTML;
-  $('st-pass').textContent=(h.match(/class="ok"/g)||[]).length;
-  $('st-fail').textContent=(h.match(/class="bad"/g)||[]).length;
-  var lines=outEl.textContent.trim().split('\n');
-  for(var i=lines.length-1;i>=0;i--){
-    var l=lines[i].trim();
-    if(l){ var tag=l.split(/\s+/)[0]; $('st-step').textContent=tag.length>9?tag.slice(0,9):tag; break; }
-  }
-  outEl.scrollTop=outEl.scrollHeight;
+  outEl.scrollTop = outEl.scrollHeight;
 }).observe(outEl,{childList:true,subtree:true,characterData:true});
 
 function onDone(){
@@ -626,23 +618,24 @@ function onFail(){
 var launched=false;
 function launchJB(){
   if(launched)return; launched=true;
-  terminal.style.display=''; statsEl.style.cssText='display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:7px;margin-bottom:10px';
-  outEl.innerHTML='';  startTimer();
+  outEl.innerHTML='';
   jbBtn.classList.add('busy'); jbBtn.disabled=true;
   setStatus('run',true,'Running exploit — do not navigate away...','run','RUNNING');
 
-  var p=['log=1'];
+  // Only pass log=1 if user enabled Verbose Log — otherwise jb.js
+  // short-circuits finishUI() and body class never changes to done/fail
+  var p=[];
+  if(cfg.verbose){ p.push('log=1'); terminal.style.display=''; startTimer(); }
   if(!cfg.jb) p.push('jb=0');
   if(!cfg.patch) p.push('patch=0');
   if(!cfg.payload) p.push('payload=0');
   if(cfg.keepjb) p.push('keepjb=1');
   if(cfg.stop) p.push('stop=beforedouble');
-  if(cfg.verbose) p.push('verbose=1');
   if(cfg.retry!==8) p.push('retry='+cfg.retry);
-  history.replaceState(null,'',location.pathname+'?'+p.join('&'));
+  if(p.length) history.replaceState(null,'',location.pathname+'?'+p.join('&'));
 
   import("./jb.js")
-    .catch(function(){ outEl.innerHTML+='<span class="bad">[LOAD-ERROR] Failed to load jb.js — check network\n</span>'; document.body.className='fail'; });
+    .catch(function(){ document.body.className='fail'; });
 }
 
 // ── Payload dispatch ───────────────────────────────────────────────────────
