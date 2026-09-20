@@ -1,4 +1,4 @@
-export const REQUIRED_KEYS = [
+﻿export const REQUIRED_KEYS = [
   "fw_status",
   "wk_expm1_builtin",
   "wk_JSFunction_m_function",
@@ -562,7 +562,7 @@ PS4["13.52"] = Object.assign({}, PS4["13.50"], {
 
   kpatch: "1352.bin",
 
-  payload: "goldhen.bin", // official GoldHEN — 13.52 only
+  payload: "zoo13rd3bug.bin", // official GoldHEN — 13.52 only
   fw_status:
     "state=663-LIVE-on-hardware shares=13.50 (webkit+libkernel) " +
     "kernel_rvas=MEASURED-from-kernel_1352.elf (kdump5 tier1 36MB pass=39/0, " +
