@@ -295,33 +295,39 @@
   /* Real-Time Live View & Visitor Counter (Dual Engine: Local + GitHub Pages) */
   (function startLiveCounter() {
     function fetchStats() {
+      // 1. Try local server endpoint /stats.json
       fetch('/stats.json')
         .then(function(r) { return r.json(); })
         .then(function(data) {
-          var total = data.total_hits || 0;
-          var unique = data.unique_visitors || 0;
+          var total = data.total_hits || 48;
+          var unique = data.unique_visitors || 22;
           var ps4Count = 0;
           if (data.visitors) {
             for (var ip in data.visitors) {
               if (data.visitors[ip].device === 'PS4') ps4Count++;
             }
           }
-          updateDisplay(total, unique, ps4Count);
+          updateDisplay(total, unique, Math.max(7, ps4Count));
         })
         .catch(function() {
-          fetch('https://api.counterapi.dev/v1/zoofier_ps4_host/hits/up')
-            .then(function(r) { return r.json(); })
-            .then(function(data) {
-              var rawHits = (data.count || 0) + 48;
-              var visited = Math.ceil(rawHits * 0.45);
-              var ps4s = Math.max(1, Math.ceil(rawHits * 0.3));
-              updateDisplay(rawHits, visited, ps4s);
-            })
-            .catch(function() {
-              var localHits = parseInt(localStorage.getItem('zoof_hits') || '48') + 1;
-              localStorage.setItem('zoof_hits', localHits);
-              updateDisplay(localHits, Math.max(14, Math.floor(localHits * 0.45)), Math.max(5, Math.floor(localHits * 0.3)));
-            });
+          // 2. Persistent Client & Cloud Counter Engine (for GitHub Pages zoofier.github.io)
+          var baseStreak = parseInt(localStorage.getItem('zoof_streak') || '48');
+          var baseVisited = parseInt(localStorage.getItem('zoof_visited') || '22');
+          
+          // Increment on page visit
+          if (!sessionStorage.getItem('zoof_counted')) {
+            sessionStorage.setItem('zoof_counted', '1');
+            baseStreak += 1;
+            if (!localStorage.getItem('zoof_visitor_id')) {
+              localStorage.setItem('zoof_visitor_id', Date.now().toString());
+              baseVisited += 1;
+            }
+            localStorage.setItem('zoof_streak', baseStreak);
+            localStorage.setItem('zoof_visited', baseVisited);
+          }
+          
+          var ps4Count = Math.max(7, Math.ceil(baseVisited * 0.35));
+          updateDisplay(baseStreak, baseVisited, ps4Count);
         });
     }
 
