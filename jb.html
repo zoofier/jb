@@ -333,19 +333,19 @@ html, body {
         <div class="header-title"><span class="star">★</span> PRIMARY HOMEBREW ENABLERS <span class="star">★</span></div>
         <div class="payload-grid">
 
-          <div class="payload-card" onclick="sendPayload('zoof13r_debug.bin', '13.52 DEBUG')">
-            <div class="p-title"><span class="star">★</span> 13.52 DEBUG [zoof13r custom] <span class="star">★</span></div>
-            <div class="p-fw">FIRMWARE 13.52 ONLY</div>
-            <div class="p-desc">Opens :744 RTM port + 13.52-specific kernel patch chain for zoof13r RTM tool.</div>
+          <div class="payload-card" onclick="launchJB('ps4debug=1')">
+            <div class="p-title"><span class="star">★</span> ps4debug [RTM Port :744] <span class="star">★</span></div>
+            <div class="p-fw">FIRMWARE 13.52</div>
+            <div class="p-desc">Opens :744 port for zoof13r BO2 RTM tool connection.</div>
           </div>
 
-          <div class="payload-card" onclick="sendPayload('ps4debug.bin', 'ps4debug')">
-            <div class="p-title"><span class="star">★</span> ps4debug <span class="star">★</span></div>
+          <div class="payload-card" onclick="launchJB('hen=1')">
+            <div class="p-title"><span class="star">★</span> HEN Payload <span class="star">★</span></div>
             <div class="p-fw">ALL FIRMWARE</div>
-            <div class="p-desc">Standard ps4debug — opens :744 port for RTM tool connection.</div>
+            <div class="p-desc">Standard Homebrew Enabler payload.</div>
           </div>
 
-          <div class="payload-card" onclick="sendPayload('goldhen.bin', 'GoldHEN 2.4b18')">
+          <div class="payload-card" onclick="launchJB()">
             <div class="p-title"><span class="star">★</span> GoldHEN 2.4b18 <span class="star">★</span></div>
             <div class="p-fw">FIRMWARE 13.52</div>
             <div class="p-desc">Unsigned .pkg installer, debug settings, plugin loader, keepalive daemon.</div>
@@ -361,7 +361,7 @@ html, body {
           <div><b class="rgb-text">1.</b> Launch PS4 Browser → Navigate to this host page.</div>
           <div><b class="rgb-text">2.</b> Click <b><span class="star">★</span> RUN JAILBREAK NOW <span class="star">★</span></b>.</div>
           <div><b style="color: var(--green)">3.</b> Wait for <b>JAILBROKEN</b> banner confirmation.</div>
-          <div><b style="color: var(--green)">4.</b> Select <b><span class="star">★</span> 13.52 DEBUG <span class="star">★</span></b> or <b><span class="star">★</span> ps4debug <span class="star">★</span></b> to open port :744.</div>
+          <div><b style="color: var(--green)">4.</b> Select <b><span class="star">★</span> ps4debug <span class="star">★</span></b> or <b><span class="star">★</span> GoldHEN <span class="star">★</span></b>.</div>
           <div><b style="color: var(--cyan-blue)">5.</b> Open <b>ZOOF13R BO2 RTM TOOL</b> on PC → Connect PS4 IP → Attach BO2!</div>
         </div>
       </div>
@@ -374,7 +374,7 @@ html, body {
 
       <!-- Green System Log Box -->
       <div id="log-frame">
-        <div id="log-box">[05:37:15] ZOOF13R'S JAILBREAK TOOL READY => WAITING FOR RAW PS4 CONNECTION DUMP</div>
+        <div id="log-box">[05:37:15] ZOOF13R'S JAILBREAK TOOL READY...</div>
       </div>
 
     </div>
@@ -425,25 +425,10 @@ function switchTab(tabId) {
   });
 }
 
-function launchJB() {
+function launchJB(query) {
   logMsg("Navigating to WebKit Exploit Engine (run.html)...");
-  window.location.href = "./run.html?payload=0&ps4debug=0";
-}
-
-function sendPayload(file, label) {
-  logMsg("Fetching " + label + " payload (" + file + ")...");
-  var xhr = new XMLHttpRequest();
-  xhr.open('GET', './' + file, true);
-  xhr.responseType = 'arraybuffer';
-  xhr.onload = function() {
-    if (xhr.status === 200) {
-      logMsg("✓ " + label + " payload loaded! (" + (xhr.response.byteLength/1024).toFixed(1) + " KB)");
-    } else {
-      logMsg("✗ Failed to load " + label + " (HTTP " + xhr.status + ")");
-    }
-  };
-  xhr.onerror = function() { logMsg("✗ Network error sending " + label); };
-  xhr.send();
+  var target = "./run.html" + (query ? "?" + query : "");
+  window.location.href = target;
 }
 
 function logMsg(msg) {
