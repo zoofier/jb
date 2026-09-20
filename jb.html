@@ -8,152 +8,155 @@
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Inter:wght@400;600;700;900&display=swap');
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --bg:#080a0d;--surface:#0d1117;--panel:#111418;--card:#131820;
+  --bg:#080a0d;--surface:#0d1117;--panel:#111418;--card:#0f1318;
   --border:#1a2030;--border-hi:#253040;
-  --orange:#ff6600;--orange-dim:#ff660022;--orange-glow:rgba(255,102,0,.15);
-  --green:#22c55e;--green-dim:#22c55e18;
-  --red:#ef4444;--red-dim:#ef444418;
-  --yellow:#f59e0b;--blue:#3b82f6;--purple:#8b5cf6;
-  --text:#b0bac8;--text-dim:#404a5a;--text-hi:#e8eef8;
+  --orange:#ff6600;--orange-dim:#ff660018;--orange-glow:rgba(255,102,0,.12);
+  --green:#22c55e;--green-dim:#22c55e15;
+  --red:#ef4444;--red-dim:#ef444415;
+  --yellow:#f59e0b;--blue:#3b82f6;--purple:#8b5cf6;--cyan:#06b6d4;
+  --text:#9aa3b0;--text-dim:#3a4255;--text-hi:#dde4f0;
   --mono:'JetBrains Mono',Consolas,monospace;
+  --sans:'Inter',system-ui,sans-serif;
 }
-html,body{min-height:100vh;background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-serif;font-size:14px}
+html,body{min-height:100vh;background:var(--bg);color:var(--text);font-family:var(--sans);font-size:14px;-webkit-font-smoothing:antialiased}
+body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,.025) 3px,rgba(0,0,0,.025) 4px);pointer-events:none;z-index:0}
 
-/* ── scanline overlay ── */
-body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.03) 2px,rgba(0,0,0,.03) 4px);pointer-events:none;z-index:0}
+/* ── sticky header ── */
+#hdr{position:sticky;top:0;z-index:200;display:flex;align-items:center;padding:0 18px;height:50px;background:rgba(8,10,13,.96);border-bottom:2px solid var(--orange);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.brand{display:flex;align-items:center;gap:0}
+.brand-z{color:var(--orange);font:900 17px/1 var(--sans);letter-spacing:.1em;font-style:italic}
+.brand-sep{width:2px;height:18px;background:var(--orange);margin:0 9px;opacity:.5}
+.brand-w{color:var(--text-hi);font:700 13px/1 var(--sans);letter-spacing:.28em}
+.brand-fw{margin-left:10px;padding:2px 8px;border:1px solid var(--orange);border-radius:3px;color:var(--orange);font:700 9px/1 var(--mono);letter-spacing:.15em}
+.hdr-right{margin-left:auto;display:flex;align-items:center;gap:10px}
+.hdr-pill{display:flex;align-items:center;gap:5px;font:600 9px/1 var(--mono);letter-spacing:.15em;color:var(--text-dim)}
+.hdr-dot{width:6px;height:6px;border-radius:50%;background:var(--text-dim);transition:all .3s}
+.hdr-dot.online{background:var(--green);box-shadow:0 0 7px var(--green);animation:glow 2s ease-in-out infinite}
+.hdr-dot.run{background:var(--orange);box-shadow:0 0 7px var(--orange);animation:glow .7s ease-in-out infinite}
+.hdr-dot.fail{background:var(--red);box-shadow:0 0 7px var(--red)}
+@keyframes glow{0%,100%{opacity:1}50%{opacity:.3}}
 
-/* ── header ── */
-#hdr{position:sticky;top:0;z-index:100;display:flex;align-items:center;padding:0 20px;height:52px;background:rgba(8,10,13,.95);border-bottom:2px solid var(--orange);backdrop-filter:blur(10px)}
-.hdr-brand{display:flex;align-items:center;gap:0}
-.hdr-z{color:var(--orange);font:900 18px/1 'Inter';letter-spacing:.12em;font-style:italic}
-.hdr-sep{width:2px;height:20px;background:var(--orange);margin:0 10px;opacity:.6}
-.hdr-w{color:var(--text-hi);font:700 14px/1 'Inter';letter-spacing:.3em}
-.hdr-fw{margin-left:12px;padding:3px 10px;border:1px solid var(--orange);border-radius:3px;color:var(--orange);font:600 10px/1 var(--mono);letter-spacing:.15em}
-.hdr-right{margin-left:auto;display:flex;align-items:center;gap:12px}
-.hdr-status{font:600 10px/1 var(--mono);letter-spacing:.15em;color:var(--text-dim);display:flex;align-items:center;gap:6px}
-.hdr-dot{width:7px;height:7px;border-radius:50%;background:var(--text-dim)}
-.hdr-dot.online{background:var(--green);box-shadow:0 0 8px var(--green);animation:glow 2s ease-in-out infinite}
-.hdr-dot.running{background:var(--orange);box-shadow:0 0 8px var(--orange);animation:glow .8s ease-in-out infinite}
-.hdr-dot.fail{background:var(--red);box-shadow:0 0 8px var(--red)}
-@keyframes glow{0%,100%{opacity:1}50%{opacity:.4}}
+/* ── layout ── */
+#main{position:relative;z-index:1;max-width:580px;margin:0 auto;padding:20px 14px 60px}
 
-/* ── main layout ── */
-#main{position:relative;z-index:1;max-width:560px;margin:0 auto;padding:24px 16px 60px}
+/* ── section headers ── */
+.sh{display:flex;align-items:center;gap:10px;margin:22px 0 10px}
+.sh-icon{font-size:15px}
+.sh-text{font:700 10px/1 var(--mono);letter-spacing:.2em;color:var(--text-dim);text-transform:uppercase}
+.sh-line{flex:1;height:1px;background:var(--border)}
+.sh-num{font:700 9px/1 var(--mono);color:var(--text-dim);opacity:.6}
 
-/* ── section label ── */
-.sec{font:700 10px/1 var(--mono);letter-spacing:.2em;color:var(--orange);text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:8px}
-.sec::before,.sec::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--orange),transparent)}
-.sec::before{flex:0 0 8px;background:var(--orange)}
-
-/* ── JB button ── */
-#jb-btn{width:100%;padding:20px 24px;background:var(--panel);border:2px solid var(--orange);border-radius:10px;color:var(--text-hi);cursor:pointer;-webkit-tap-highlight-color:transparent;transition:all .2s;text-align:center;position:relative;overflow:hidden;margin-bottom:12px}
-#jb-btn::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 100%,var(--orange-glow) 0%,transparent 70%);opacity:0;transition:opacity .2s}
-#jb-btn:active::before,#jb-btn:not(:disabled):hover::before{opacity:1}
-#jb-btn:disabled{opacity:.4;cursor:not-allowed;border-color:var(--border-hi)}
-.btn-step{font:700 10px/1 var(--mono);letter-spacing:.2em;color:var(--text-dim);margin-bottom:8px}
-.btn-title{font:900 22px/1 'Inter';color:var(--orange);letter-spacing:.08em;margin-bottom:6px}
-.btn-sub{font:400 11px/1 var(--mono);color:var(--text-dim);letter-spacing:.1em}
-#jb-btn:not(:disabled):hover .btn-title{text-shadow:0 0 20px var(--orange)}
+/* ── jailbreak button ── */
+#jb-btn{width:100%;padding:18px 20px;background:var(--card);border:2px solid var(--orange);border-radius:10px;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:all .18s;text-align:center;position:relative;overflow:hidden;margin-bottom:10px}
+#jb-btn::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 120%,var(--orange-glow),transparent 65%);opacity:0;transition:opacity .2s}
+#jb-btn:not(:disabled):hover::after,#jb-btn:active::after{opacity:1}
+#jb-btn:disabled{opacity:.35;cursor:not-allowed;border-color:var(--border-hi)}
+.jb-pre{font:700 9px/1 var(--mono);letter-spacing:.2em;color:var(--text-dim);margin-bottom:7px}
+.jb-title{font:900 20px/1 var(--sans);color:var(--orange);letter-spacing:.07em;margin-bottom:5px}
+#jb-btn:not(:disabled):hover .jb-title{text-shadow:0 0 20px var(--orange)}
+.jb-sub{font:400 10px/1 var(--mono);color:var(--text-dim);letter-spacing:.1em}
 
 /* ── status bar ── */
-#status-bar{background:var(--panel);border:1px solid var(--border);border-radius:8px;padding:12px 16px;display:flex;align-items:center;gap:12px;margin-bottom:12px;min-height:50px}
-.sb-dot{width:8px;height:8px;border-radius:50%;background:var(--text-dim);flex-shrink:0;transition:all .3s}
-.sb-dot.run{background:var(--orange);box-shadow:0 0 8px var(--orange);animation:glow .8s infinite}
-.sb-dot.ok{background:var(--green);box-shadow:0 0 8px var(--green)}
-.sb-dot.fail{background:var(--red);box-shadow:0 0 8px var(--red)}
-.sb-text{font:400 12px/1.4 var(--mono);flex:1;color:var(--text)}
-.sb-spinner{width:16px;height:16px;border:2px solid var(--border-hi);border-top-color:var(--orange);border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0;display:none}
+#sb{background:var(--panel);border:1px solid var(--border);border-radius:7px;padding:10px 14px;display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.sb-d{width:7px;height:7px;border-radius:50%;background:var(--text-dim);flex-shrink:0;transition:all .3s}
+.sb-d.run{background:var(--orange);box-shadow:0 0 7px var(--orange);animation:glow .7s infinite}
+.sb-d.ok{background:var(--green);box-shadow:0 0 7px var(--green)}
+.sb-d.fail{background:var(--red);box-shadow:0 0 7px var(--red)}
+.sb-spinner{width:14px;height:14px;border:2px solid var(--border-hi);border-top-color:var(--orange);border-radius:50%;animation:spin .65s linear infinite;flex-shrink:0;display:none}
+.sb-txt{font:400 11px/1.4 var(--mono);flex:1;color:var(--text)}
 @keyframes spin{to{transform:rotate(360deg)}}
 
-/* ── stats row ── */
-#stats-row{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px;margin-bottom:12px;display:none}
-.stat-cell{background:var(--panel);border:1px solid var(--border);border-radius:6px;padding:10px 12px;text-align:center}
-.stat-val{font:700 18px/1 var(--mono);color:var(--text-hi);margin-bottom:3px}
-.stat-val.green{color:var(--green)}
-.stat-val.red{color:var(--red)}
-.stat-val.orange{color:var(--orange)}
-.stat-val.blue{color:var(--blue)}
-.stat-label{font:400 9px/1 var(--mono);color:var(--text-dim);letter-spacing:.15em;text-transform:uppercase}
+/* ── stats ── */
+#stats{display:none;grid-template-columns:1fr 1fr 1fr 1fr;gap:7px;margin-bottom:10px}
+.stat{background:var(--panel);border:1px solid var(--border);border-radius:6px;padding:9px;text-align:center}
+.stat-v{font:700 16px/1 var(--mono);margin-bottom:2px}
+.stat-l{font:400 8px/1 var(--mono);color:var(--text-dim);letter-spacing:.15em;text-transform:uppercase}
 
-/* ── result banner ── */
-#result{margin-bottom:12px;display:none}
-.result-inner{padding:16px 18px;border-radius:8px;border:1px solid;display:flex;align-items:flex-start;gap:14px}
-.result-inner.ok{background:var(--green-dim);border-color:var(--green)}
-.result-inner.fail{background:var(--red-dim);border-color:var(--red)}
-.result-icon{font-size:24px;flex-shrink:0;margin-top:1px}
-.result-title{font:700 13px/1 'Inter';letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px}
-.result-inner.ok .result-title{color:var(--green)}
-.result-inner.fail .result-title{color:var(--red)}
-.result-sub{font:400 11px/1.6 var(--mono);color:var(--text-dim)}
+/* ── result ── */
+#result{display:none;margin-bottom:10px}
+.ri{padding:14px 16px;border-radius:8px;border:1px solid;display:flex;align-items:flex-start;gap:12px}
+.ri.ok{background:var(--green-dim);border-color:var(--green)}
+.ri.fail{background:var(--red-dim);border-color:var(--red)}
+.ri-ico{font-size:20px;flex-shrink:0;margin-top:1px}
+.ri-title{font:700 12px/1 var(--sans);letter-spacing:.05em;text-transform:uppercase;margin-bottom:4px}
+.ri.ok .ri-title{color:var(--green)}.ri.fail .ri-title{color:var(--red)}
+.ri-sub{font:400 10px/1.5 var(--mono);color:var(--text-dim)}
 
-/* ── terminal log ── */
-#terminal{background:#03050a;border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:16px;display:none}
-.term-header{display:flex;align-items:center;padding:8px 12px;background:var(--panel);border-bottom:1px solid var(--border);gap:8px}
-.term-dots{display:flex;gap:5px}
-.term-dot{width:10px;height:10px;border-radius:50%}
-.term-dot-r{background:#ef4444}
-.term-dot-y{background:#f59e0b}
-.term-dot-g{background:#22c55e}
-.term-title{font:600 10px/1 var(--mono);color:var(--text-dim);letter-spacing:.15em;margin-left:4px}
-.term-badge{margin-left:auto;font:400 9px/1 var(--mono);color:var(--text-dim);letter-spacing:.1em}
-#out{padding:12px 14px;max-height:280px;overflow-y:auto;font:400 11px/1.7 var(--mono);scrollbar-width:thin;scrollbar-color:var(--border-hi) transparent;white-space:pre-wrap;word-break:break-all}
-#out::-webkit-scrollbar{width:4px}
-#out::-webkit-scrollbar-track{background:transparent}
-#out::-webkit-scrollbar-thumb{background:var(--border-hi);border-radius:4px}
+/* ── terminal ── */
+#terminal{background:#030508;border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:14px;display:none}
+.th{display:flex;align-items:center;padding:7px 11px;background:var(--panel);border-bottom:1px solid var(--border);gap:7px}
+.td{display:flex;gap:5px}
+.tdr,.tdy,.tdg{width:9px;height:9px;border-radius:50%}
+.tdr{background:#ef4444}.tdy{background:#f59e0b}.tdg{background:#22c55e}
+.tt{font:600 9px/1 var(--mono);color:var(--text-dim);letter-spacing:.15em;margin-left:4px}
+.tb{margin-left:auto;font:400 8px/1 var(--mono);color:var(--text-dim);letter-spacing:.1em}
+#out{padding:10px 12px;max-height:240px;overflow-y:auto;font:400 10px/1.7 var(--mono);scrollbar-width:thin;scrollbar-color:var(--border-hi) transparent;white-space:pre-wrap;word-break:break-all}
+#out::-webkit-scrollbar{width:3px}
+#out::-webkit-scrollbar-thumb{background:var(--border-hi);border-radius:3px}
 .ok{color:var(--green)}.bad{color:var(--red)}.warn{color:var(--yellow)}.info{color:var(--blue)}
-.term-empty{color:var(--text-dim);font-style:italic}
 
-/* ── divider ── */
-.divider{display:flex;align-items:center;gap:10px;color:var(--text-dim);font:700 9px/1 var(--mono);letter-spacing:.2em;margin:16px 0 12px}
-.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border)}
+/* ── exploit settings ── */
+.settings-grid{display:flex;flex-direction:column;gap:7px}
+.srow{background:var(--card);border:1px solid var(--border);border-radius:7px;padding:11px 14px;display:flex;align-items:center;gap:11px;transition:border-color .15s}
+.srow:hover{border-color:var(--border-hi)}
+.s-ico{font-size:13px;flex-shrink:0;width:18px;text-align:center}
+.s-body{flex:1;min-width:0}
+.s-name{font:600 12px/1 var(--sans);color:var(--text-hi);margin-bottom:2px}
+.s-desc{font:400 9px/1.4 var(--mono);color:var(--text-dim)}
+.tog{width:36px;height:20px;background:var(--border-hi);border-radius:10px;cursor:pointer;position:relative;flex-shrink:0;transition:background .2s}
+.tog.on{background:var(--orange)}
+.tog::after{content:'';position:absolute;width:14px;height:14px;background:#fff;border-radius:50%;top:3px;left:3px;transition:left .2s;box-shadow:0 1px 3px rgba(0,0,0,.5)}
+.tog.on::after{left:19px}
+.ri-num{background:var(--bg);border:1px solid var(--border-hi);color:var(--orange);font:600 11px/1 var(--mono);padding:4px 8px;border-radius:4px;width:52px;text-align:center}
+.ri-num:focus{outline:none;border-color:var(--orange)}
 
-/* ── payload cards ── */
-.card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:14px 16px;display:flex;align-items:center;gap:14px;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:border-color .15s,background .15s;margin-bottom:8px;position:relative;overflow:hidden}
-.card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:3px 0 0 3px}
-.card.green-accent::before{background:var(--green)}
-.card.orange-accent::before{background:var(--orange)}
-.card:active,.card.busy{background:#161d28}
-.card.busy{pointer-events:none;opacity:.7}
-.card:not(.busy):hover{border-color:var(--border-hi)}
-.ci{font-size:24px;min-width:30px;text-align:center;flex-shrink:0}
-.cinfo{flex:1;min-width:0}
-.cname{font:700 14px/1 'Inter';color:var(--text-hi);margin-bottom:3px}
-.cfw{font:700 10px/1 var(--mono);letter-spacing:.12em;margin-bottom:4px}
-.cdesc{font:400 11px/1 var(--mono);color:var(--text-dim)}
-.carr{font-size:20px;color:var(--text-dim);flex-shrink:0;transition:transform .15s}
-.card:not(.busy):hover .carr{transform:translateX(3px);color:var(--text-hi)}
+/* ── payload categories ── */
+.cat-grid{display:flex;flex-direction:column;gap:7px}
 
-/* ── settings ── */
-.settings-grid{display:flex;flex-direction:column;gap:8px}
-.setting-row{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:12px 16px;display:flex;align-items:center;gap:12px}
-.setting-row.dimmed{opacity:.5}
-.setting-icon{font-size:14px;flex-shrink:0;width:20px;text-align:center}
-.setting-text{flex:1}
-.setting-name{font:600 12px/1 'Inter';color:var(--text-hi);margin-bottom:2px}
-.setting-desc{font:400 10px/1.4 var(--mono);color:var(--text-dim)}
-.toggle{width:38px;height:22px;background:var(--border-hi);border-radius:11px;cursor:pointer;position:relative;flex-shrink:0;transition:background .2s}
-.toggle.on{background:var(--orange)}
-.toggle::after{content:'';position:absolute;width:16px;height:16px;background:#fff;border-radius:50%;top:3px;left:3px;transition:left .2s;box-shadow:0 1px 3px rgba(0,0,0,.4)}
-.toggle.on::after{left:19px}
-.retry-input{background:var(--bg);border:1px solid var(--border-hi);color:var(--orange);font:600 12px/1 var(--mono);padding:5px 10px;border-radius:5px;width:56px;text-align:center;flex-shrink:0}
-.retry-input:focus{outline:none;border-color:var(--orange);box-shadow:0 0 0 2px var(--orange-dim)}
+/* ── payload card ── */
+.pcard{background:var(--card);border:1px solid var(--border);border-radius:8px;overflow:hidden;transition:border-color .15s}
+.pcard:not(.missing):hover{border-color:var(--border-hi)}
+.pcard.missing{opacity:.45}
+.pc-main{display:flex;align-items:center;gap:13px;padding:13px 14px;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:background .15s}
+.pcard:not(.missing) .pc-main:active,.pcard:not(.missing) .pc-main.busy{background:rgba(255,255,255,.03)}
+.pcard.missing .pc-main{cursor:not-allowed}
+.pc-accent{width:3px;flex-shrink:0;align-self:stretch;border-radius:3px}
+.pc-ico{font-size:22px;min-width:28px;text-align:center;flex-shrink:0}
+.pc-info{flex:1;min-width:0}
+.pc-name{font:700 13px/1 var(--sans);color:var(--text-hi);margin-bottom:2px}
+.pc-fw{font:700 9px/1 var(--mono);letter-spacing:.12em;margin-bottom:3px}
+.pc-desc{font:400 10px/1.4 var(--mono);color:var(--text-dim)}
+.pc-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.pc-badge{padding:2px 7px;border-radius:3px;font:700 8px/1 var(--mono);letter-spacing:.1em}
+.badge-missing{background:rgba(239,68,68,.1);color:var(--red);border:1px solid rgba(239,68,68,.2)}
+.badge-avail{background:rgba(34,197,94,.1);color:var(--green);border:1px solid rgba(34,197,94,.2)}
+.pc-arr{font-size:18px;color:var(--text-dim);transition:transform .15s}
+.pcard:not(.missing) .pc-main:hover .pc-arr{transform:translateX(3px);color:var(--text-hi)}
+
+/* ── sub-panel (fan speed, linux vram, etc.) ── */
+.pc-sub{display:none;padding:10px 14px 12px 55px;border-top:1px solid var(--border);gap:8px;flex-wrap:wrap}
+.pcard.expanded .pc-sub{display:flex}
+.sub-btn{padding:6px 12px;background:var(--bg);border:1px solid var(--border);border-radius:5px;color:var(--text-dim);font:600 10px/1 var(--mono);cursor:pointer;-webkit-tap-highlight-color:transparent;transition:all .15s}
+.sub-btn:hover,.sub-btn.active{border-color:var(--orange);color:var(--orange);background:var(--orange-dim)}
+.sub-label{font:400 9px/1 var(--mono);color:var(--text-dim);letter-spacing:.1em;align-self:center;margin-right:4px}
 
 /* ── boot sequence ── */
-.seq-steps{display:flex;flex-direction:column;gap:8px}
-.seq-step{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:12px 16px;display:flex;gap:14px;align-items:flex-start}
-.seq-num{font:900 16px/1 var(--mono);min-width:22px;text-align:center;margin-top:1px}
-.seq-body{}
-.seq-title{font:700 12px/1 'Inter';margin-bottom:3px}
-.seq-desc{font:400 10px/1.5 var(--mono);color:var(--text-dim)}
+.seq{display:flex;flex-direction:column;gap:7px}
+.sq{background:var(--card);border:1px solid var(--border);border-radius:7px;padding:11px 14px;display:flex;gap:12px}
+.sq-n{font:900 15px/1 var(--mono);min-width:20px;text-align:center;margin-top:1px}
+.sq-t{font:700 11px/1 var(--sans);margin-bottom:3px}
+.sq-d{font:400 9px/1.5 var(--mono);color:var(--text-dim)}
+
+/* ── divider ── */
+.div{display:flex;align-items:center;gap:8px;color:var(--text-dim);font:700 8px/1 var(--mono);letter-spacing:.2em;margin:14px 0 10px}
+.div::before,.div::after{content:'';flex:1;height:1px;background:var(--border)}
 
 /* ── toast ── */
-#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--panel);border:1px solid var(--border);color:var(--text);padding:10px 20px;border-radius:7px;font:600 12px/1 var(--mono);transition:transform .25s;z-index:999;white-space:nowrap;letter-spacing:.05em}
+#toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--panel);border:1px solid var(--border);color:var(--text);padding:9px 18px;border-radius:6px;font:600 11px/1 var(--mono);transition:transform .22s;z-index:999;white-space:nowrap;letter-spacing:.05em}
 #toast.show{transform:translateX(-50%) translateY(0)}
 #toast.ok{border-color:var(--green);color:var(--green)}
 #toast.bad{border-color:var(--red);color:var(--red)}
 
-/* ── section gaps ── */
-.gap{height:20px}
 #state{display:none}
 </style>
 </head>
@@ -161,396 +164,495 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
 
 <!-- ── Header ── -->
 <div id="hdr">
-  <div class="hdr-brand">
-    <span class="hdr-z">ZOOF13R</span>
-    <div class="hdr-sep"></div>
-    <span class="hdr-w">WEBKIT</span>
-    <span class="hdr-fw">13.52</span>
+  <div class="brand">
+    <span class="brand-z">ZOOF13R</span>
+    <div class="brand-sep"></div>
+    <span class="brand-w">WEBKIT</span>
+    <span class="brand-fw">FW 13.52</span>
   </div>
   <div class="hdr-right">
-    <div class="hdr-status">
+    <div class="hdr-pill">
       <div class="hdr-dot" id="hdr-dot"></div>
-      <span id="hdr-status-txt">STANDBY</span>
+      <span id="hdr-txt">STANDBY</span>
     </div>
   </div>
 </div>
 
 <div id="main">
 
-  <!-- ── STEP 1: JAILBREAK ── -->
-  <div class="gap"></div>
-  <div class="sec">01 — Jailbreak</div>
+<!-- ══ 00 — JAILBREAK ══ -->
+<div class="sh"><div class="sh-num">00</div><div class="sh-icon">⚡</div><div class="sh-text">Jailbreak</div><div class="sh-line"></div></div>
 
-  <button id="jb-btn" onclick="launchJB()">
-    <div class="btn-step">STEP 1 — DO THIS FIRST</div>
-    <div class="btn-title">⚡ PS4 JAILBREAK</div>
-    <div class="btn-sub">WEBKIT EXPLOIT → KERNEL RW → 13.52 KPATCH</div>
-  </button>
+<button id="jb-btn" onclick="launchJB()">
+  <div class="jb-pre">STEP 1 — DO THIS FIRST</div>
+  <div class="jb-title">⚡ PS4 JAILBREAK</div>
+  <div class="jb-sub">WEBKIT EXPLOIT → KERNEL RW → 13.52 KPATCH → PAYLOAD</div>
+</button>
 
-  <!-- Status bar -->
-  <div id="status-bar">
-    <div class="sb-dot" id="sb-dot"></div>
-    <div class="sb-spinner" id="sb-spin"></div>
-    <div class="sb-text" id="sb-txt">Ready — tap JAILBREAK to begin</div>
-  </div>
-
-  <!-- Stats row (shown during/after run) -->
-  <div id="stats-row">
-    <div class="stat-cell"><div class="stat-val green" id="stat-pass">0</div><div class="stat-label">PASSED</div></div>
-    <div class="stat-cell"><div class="stat-val red" id="stat-fail">0</div><div class="stat-label">FAILED</div></div>
-    <div class="stat-cell"><div class="stat-val orange" id="stat-elapsed">0s</div><div class="stat-label">ELAPSED</div></div>
-    <div class="stat-cell"><div class="stat-val blue" id="stat-step">—</div><div class="stat-label">LAST STEP</div></div>
-  </div>
-
-  <!-- Result banner -->
-  <div id="result"></div>
-
-  <!-- Terminal log -->
-  <div id="terminal">
-    <div class="term-header">
-      <div class="term-dots">
-        <div class="term-dot term-dot-r"></div>
-        <div class="term-dot term-dot-y"></div>
-        <div class="term-dot term-dot-g"></div>
-      </div>
-      <div class="term-title">EXPLOIT LOG</div>
-      <div class="term-badge" id="term-badge">LIVE</div>
-    </div>
-    <div id="out"><span class="term-empty">// waiting for exploit to start...</span></div>
-  </div>
-
-  <!-- ── STEP 2: PAYLOADS ── -->
-  <div class="divider">STEP 2 — INJECT PAYLOAD</div>
-
-  <div class="card green-accent" onclick="sendPayload('./ps4debug.bin','ps4debug',this)">
-    <div class="ci">🔧</div>
-    <div class="cinfo">
-      <div class="cname">ps4debug</div>
-      <div class="cfw" style="color:var(--green)">ALL FIRMWARE</div>
-      <div class="cdesc">Standard ps4debug — opens :744 for RTM connection</div>
-    </div>
-    <div class="carr">›</div>
-  </div>
-
-  <div class="card orange-accent" onclick="sendPayload('./zoo13rd3bug.bin','13.52 DEBUG',this)">
-    <div class="ci">⚡</div>
-    <div class="cinfo">
-      <div class="cname">13.52 DEBUG</div>
-      <div class="cfw" style="color:var(--orange)">FIRMWARE 13.52</div>
-      <div class="cdesc">zoof13r custom 13.52 kernel payload</div>
-    </div>
-    <div class="carr">›</div>
-  </div>
-
-  <!-- ── SETTINGS ── -->
-  <div class="gap"></div>
-  <div class="sec">Exploit Settings</div>
-
-  <div class="settings-grid">
-    <div class="setting-row">
-      <div class="setting-icon">⚡</div>
-      <div class="setting-text">
-        <div class="setting-name">Jailbreak</div>
-        <div class="setting-desc">Run the WebKit primitive + kernel escape chain</div>
-      </div>
-      <div class="toggle on" id="tog-jb" onclick="toggleSetting('jb',this)"></div>
-    </div>
-    <div class="setting-row">
-      <div class="setting-icon">🔒</div>
-      <div class="setting-text">
-        <div class="setting-name">Kernel Patch</div>
-        <div class="setting-desc">Apply sysent patch required for syscall access</div>
-      </div>
-      <div class="toggle on" id="tog-patch" onclick="toggleSetting('patch',this)"></div>
-    </div>
-    <div class="setting-row">
-      <div class="setting-icon">📦</div>
-      <div class="setting-text">
-        <div class="setting-name">Auto-Load Payload</div>
-        <div class="setting-desc">Fetch + execute payload.bin after kpatch succeeds</div>
-      </div>
-      <div class="toggle on" id="tog-payload" onclick="toggleSetting('payload',this)"></div>
-    </div>
-    <div class="setting-row">
-      <div class="setting-icon">📌</div>
-      <div class="setting-text">
-        <div class="setting-name">Keep JB (Persistent)</div>
-        <div class="setting-desc">Hold jailbreak state open — skips cleanup on exit</div>
-      </div>
-      <div class="toggle" id="tog-keepjb" onclick="toggleSetting('keepjb',this)"></div>
-    </div>
-    <div class="setting-row">
-      <div class="setting-icon">🔁</div>
-      <div class="setting-text">
-        <div class="setting-name">Auto-Retry Limit</div>
-        <div class="setting-desc">Max benign read-phase retries before giving up</div>
-      </div>
-      <input class="retry-input" type="number" id="inp-retry" value="8" min="0" max="20" onchange="cfg.retry=+this.value">
-    </div>
-    <div class="setting-row">
-      <div class="setting-icon">🛑</div>
-      <div class="setting-text">
-        <div class="setting-name">Stop Before Double</div>
-        <div class="setting-desc">Halt exploit before double-free (debug/testing only)</div>
-      </div>
-      <div class="toggle" id="tog-stop" onclick="toggleSetting('stop',this)"></div>
-    </div>
-    <div class="setting-row">
-      <div class="setting-icon">📋</div>
-      <div class="setting-text">
-        <div class="setting-name">Verbose Log</div>
-        <div class="setting-desc">Show all trace events including low-level steps</div>
-      </div>
-      <div class="toggle" id="tog-verbose" onclick="toggleSetting('verbose',this)"></div>
-    </div>
-  </div>
-
-  <!-- ── BOOT SEQUENCE ── -->
-  <div class="gap"></div>
-  <div class="sec">Boot Sequence</div>
-
-  <div class="seq-steps">
-    <div class="seq-step">
-      <div class="seq-num" style="color:var(--orange)">1</div>
-      <div class="seq-body">
-        <div class="seq-title" style="color:var(--orange)">Open PS4 Browser → Navigate Here</div>
-        <div class="seq-desc">Go to this exact URL on your PS4 browser. Stay on this page.</div>
-      </div>
-    </div>
-    <div class="seq-step">
-      <div class="seq-num" style="color:var(--orange)">2</div>
-      <div class="seq-body">
-        <div class="seq-title" style="color:var(--orange)">Tap ⚡ PS4 JAILBREAK</div>
-        <div class="seq-desc">Do NOT navigate away. Watch the exploit log. If it auto-retries, stay put — it recovers benign read misses automatically (up to retry limit).</div>
-      </div>
-    </div>
-    <div class="seq-step">
-      <div class="seq-num" style="color:var(--green)">3</div>
-      <div class="seq-body">
-        <div class="seq-title" style="color:var(--green)">Wait for JAILBROKEN banner</div>
-        <div class="seq-desc">Green banner = kernel patched. If red banner (FAILED) → cold reboot your PS4 (hold power, two beeps) and try again.</div>
-      </div>
-    </div>
-    <div class="seq-step">
-      <div class="seq-num" style="color:var(--green)">4</div>
-      <div class="seq-body">
-        <div class="seq-title" style="color:var(--green)">Restart PS4 → Return Here</div>
-        <div class="seq-desc">Cold boot required. Hold power until two beeps. Then navigate back to this page on PS4 browser.</div>
-      </div>
-    </div>
-    <div class="seq-step">
-      <div class="seq-num" style="color:var(--green)">5</div>
-      <div class="seq-body">
-        <div class="seq-title" style="color:var(--green)">Tap Payload Card (Step 2)</div>
-        <div class="seq-desc">For 13.52: tap ⚡ 13.52 DEBUG. Port :744 opens. Connect zoof13r RTM tool using your PS4 IP.</div>
-      </div>
-    </div>
-    <div class="seq-step">
-      <div class="seq-num" style="color:var(--blue)">6</div>
-      <div class="seq-body">
-        <div class="seq-title" style="color:var(--blue)">Connect RTM Tool → Attach BO2</div>
-        <div class="seq-desc">Enter PS4 IP in the RTM tool → Connect PS4 → Attach BO2 → start modding.</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="gap"></div>
+<div id="sb">
+  <div class="sb-d" id="sb-d"></div>
+  <div class="sb-spinner" id="sb-spin"></div>
+  <div class="sb-txt" id="sb-txt">Ready — tap JAILBREAK to begin</div>
 </div>
+
+<div id="stats" style="display:grid;display:none">
+  <div class="stat"><div class="stat-v" id="st-pass" style="color:var(--green)">0</div><div class="stat-l">PASSED</div></div>
+  <div class="stat"><div class="stat-v" id="st-fail" style="color:var(--red)">0</div><div class="stat-l">FAILED</div></div>
+  <div class="stat"><div class="stat-v" id="st-time" style="color:var(--orange)">0s</div><div class="stat-l">ELAPSED</div></div>
+  <div class="stat"><div class="stat-v" id="st-step" style="color:var(--blue)">—</div><div class="stat-l">STEP</div></div>
+</div>
+
+<div id="result"></div>
+
+<div id="terminal">
+  <div class="th">
+    <div class="td"><div class="tdr"></div><div class="tdy"></div><div class="tdg"></div></div>
+    <div class="tt">EXPLOIT LOG — 13.52</div>
+    <div class="tb" id="tbadge">LIVE</div>
+  </div>
+  <div id="out"><span style="color:var(--text-dim);font-style:italic">// standby — waiting for launch</span></div>
+</div>
+
+<!-- ══ 01 — JAILBREAK SETTINGS ══ -->
+<div class="sh"><div class="sh-num">01</div><div class="sh-icon">⚙️</div><div class="sh-text">Exploit Settings</div><div class="sh-line"></div></div>
+
+<div class="settings-grid">
+  <div class="srow"><div class="s-ico">⚡</div><div class="s-body"><div class="s-name">Jailbreak</div><div class="s-desc">WebKit primitive → kernel escape chain</div></div><div class="tog on" id="t-jb" onclick="ts('jb',this)"></div></div>
+  <div class="srow"><div class="s-ico">🔒</div><div class="s-body"><div class="s-name">Kernel Patch</div><div class="s-desc">sysent patch → syscall access + ASLR disable</div></div><div class="tog on" id="t-patch" onclick="ts('patch',this)"></div></div>
+  <div class="srow"><div class="s-ico">📦</div><div class="s-body"><div class="s-name">Auto-Load Payload</div><div class="s-desc">fetch + exec payload.bin after kpatch</div></div><div class="tog on" id="t-payload" onclick="ts('payload',this)"></div></div>
+  <div class="srow"><div class="s-ico">📌</div><div class="s-body"><div class="s-name">Keep JB (Persistent)</div><div class="s-desc">hold jailbreak state — skip cleanup on exit</div></div><div class="tog" id="t-keepjb" onclick="ts('keepjb',this)"></div></div>
+  <div class="srow"><div class="s-ico">🔁</div><div class="s-body"><div class="s-name">Auto-Retry Limit</div><div class="s-desc">max benign read-phase retries before abort</div></div><input class="ri-num" type="number" id="in-retry" value="8" min="0" max="20" onchange="cfg.retry=+this.value"></div>
+  <div class="srow"><div class="s-ico">🛑</div><div class="s-body"><div class="s-name">Stop Before Double-Free</div><div class="s-desc">halt before double-free — testing/debug only</div></div><div class="tog" id="t-stop" onclick="ts('stop',this)"></div></div>
+  <div class="srow"><div class="s-ico">📋</div><div class="s-body"><div class="s-name">Verbose Log</div><div class="s-desc">show all trace events including low-level steps</div></div><div class="tog" id="t-verbose" onclick="ts('verbose',this)"></div></div>
+</div>
+
+<!-- ══ 02 — HOMEBREW ENABLERS ══ -->
+<div class="sh"><div class="sh-num">02</div><div class="sh-icon">👑</div><div class="sh-text">Primary Homebrew Enablers</div><div class="sh-line"></div></div>
+<div class="cat-grid">
+
+  <div class="pcard" id="pc-goldhen">
+    <div class="pc-main" onclick="sendPayload('goldhen.bin','GoldHEN',this)">
+      <div class="pc-accent" style="background:#ffd700"></div>
+      <div class="pc-ico">👑</div>
+      <div class="pc-info">
+        <div class="pc-name">GoldHEN</div>
+        <div class="pc-fw" style="color:#ffd700">ALL FIRMWARE</div>
+        <div class="pc-desc">Unsigned .pkg installer. Runs daemon on :7355. Plugin loader + process keepalive via sceSystemService patch.</div>
+      </div>
+      <div class="pc-right">
+        <div class="pc-badge badge-missing" id="b-goldhen">MISSING</div>
+        <div class="pc-arr">›</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pcard" id="pc-ps4debug">
+    <div class="pc-main" onclick="sendPayload('ps4debug.bin','ps4debug',this)">
+      <div class="pc-accent" style="background:var(--green)"></div>
+      <div class="pc-ico">🔧</div>
+      <div class="pc-info">
+        <div class="pc-name">ps4debug</div>
+        <div class="pc-fw" style="color:var(--green)">ALL FIRMWARE</div>
+        <div class="pc-desc">Standard ps4debug — opens :744 for RTM/memory connection. Required for zoof13r RTM tool.</div>
+      </div>
+      <div class="pc-right">
+        <div class="pc-badge badge-avail">READY</div>
+        <div class="pc-arr">›</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pcard" id="pc-zoo13r">
+    <div class="pc-main" onclick="sendPayload('zoo13rd3bug.bin','13.52 DEBUG',this)">
+      <div class="pc-accent" style="background:var(--orange)"></div>
+      <div class="pc-ico">⚡</div>
+      <div class="pc-info">
+        <div class="pc-name">13.52 DEBUG <span style="font-size:9px;color:var(--orange);font-family:var(--mono)">[zoof13r custom]</span></div>
+        <div class="pc-fw" style="color:var(--orange)">FIRMWARE 13.52 ONLY</div>
+        <div class="pc-desc">zoof13r 13.52 kernel payload. Opens :744 RTM + 13.52-specific kpatch chain.</div>
+      </div>
+      <div class="pc-right">
+        <div class="pc-badge badge-avail">READY</div>
+        <div class="pc-arr">›</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══ 03 — FILE MANAGEMENT ══ -->
+<div class="sh"><div class="sh-num">03</div><div class="sh-icon">📁</div><div class="sh-text">File & Data Management</div><div class="sh-line"></div></div>
+<div class="cat-grid">
+
+  <div class="pcard missing" id="pc-ftp">
+    <div class="pc-main" onclick="sendPayload('ftpd.bin','FTP Server',this)">
+      <div class="pc-accent" style="background:var(--cyan)"></div>
+      <div class="pc-ico">📡</div>
+      <div class="pc-info">
+        <div class="pc-name">FTP Server (ftpd)</div>
+        <div class="pc-fw" style="color:var(--cyan)">ALL FIRMWARE</div>
+        <div class="pc-desc">Spawns ftpd on :1337 / :21. Overrides user-level sandbox — full root r/w access to /system_data and /user.</div>
+      </div>
+      <div class="pc-right">
+        <div class="pc-badge badge-missing">MISSING</div>
+        <div class="pc-arr">›</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pcard missing" id="pc-app2usb">
+    <div class="pc-main" onclick="sendPayload('app2usb.bin','App2USB',this)">
+      <div class="pc-accent" style="background:var(--purple)"></div>
+      <div class="pc-ico">💾</div>
+      <div class="pc-info">
+        <div class="pc-name">App Mover / App2USB</div>
+        <div class="pc-fw" style="color:var(--purple)">ALL FIRMWARE</div>
+        <div class="pc-desc">Patches vfs mount system. Symlinks /user/app/ → exFAT USB. Offload large games without reinstall.</div>
+      </div>
+      <div class="pc-right">
+        <div class="pc-badge badge-missing">MISSING</div>
+        <div class="pc-arr">›</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pcard missing" id="pc-dbbackup">
+    <div class="pc-main" onclick="sendPayload('db_backup.bin','DB Backup',this)">
+      <div class="pc-accent" style="background:var(--yellow)"></div>
+      <div class="pc-ico">🗄️</div>
+      <div class="pc-info">
+        <div class="pc-name">DB Backup / Restore</div>
+        <div class="pc-fw" style="color:var(--yellow)">ALL FIRMWARE</div>
+        <div class="pc-desc">Copies app.db, user.db, metadata XML → /DB_Backup on USB. Saves trophy DB + layout from freeze-wipe.</div>
+      </div>
+      <div class="pc-right">
+        <div class="pc-badge badge-missing">MISSING</div>
+        <div class="pc-arr">›</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══ 04 — MODDING & DEBUG ══ -->
+<div class="sh"><div class="sh-num">04</div><div class="sh-icon">🎮</div><div class="sh-text">Modding & Debug Infrastructure</div><div class="sh-line"></div></div>
+<div class="cat-grid">
+
+  <div class="pcard missing" id="pc-webrte">
+    <div class="pc-main" onclick="sendPayload('webrte.bin','WebRTE',this)">
+      <div class="pc-accent" style="background:var(--blue)"></div>
+      <div class="pc-ico">🔬</div>
+      <div class="pc-info">
+        <div class="pc-name">WebRTE / Orbis Toolbox</div>
+        <div class="pc-fw" style="color:var(--blue)">ALL FIRMWARE</div>
+        <div class="pc-desc">Injects real-time memory engine into live RAM. Listener on :2811. Scan + patch hex addresses while game runs (health, currency, coords).</div>
+      </div>
+      <div class="pc-right">
+        <div class="pc-badge badge-missing">MISSING</div>
+        <div class="pc-arr">›</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pcard missing" id="pc-binloader">
+    <div class="pc-main" onclick="toggleSub(this.closest('.pcard'))">
+      <div class="pc-accent" style="background:var(--orange)"></div>
+      <div class="pc-ico">📥</div>
+      <div class="pc-info">
+        <div class="pc-name">BinLoader</div>
+        <div class="pc-fw" style="color:var(--orange)">ALL FIRMWARE</div>
+        <div class="pc-desc">Passive loop listener on :9020 / :9021. Waits for raw .bin from PC/phone on LAN. Test unreleased payloads without host menu update.</div>
+      </div>
+      <div class="pc-right">
+        <div class="pc-badge badge-missing">MISSING</div>
+        <div class="pc-arr">›</div>
+      </div>
+    </div>
+    <div class="pc-sub">
+      <div class="sub-label">PORT:</div>
+      <div class="sub-btn active" onclick="setBinPort(9020,this)">:9020</div>
+      <div class="sub-btn" onclick="setBinPort(9021,this)">:9021</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══ 05 — HARDWARE & LINUX ══ -->
+<div class="sh"><div class="sh-num">05</div><div class="sh-icon">🖥️</div><div class="sh-text">Custom Hardware & Linux</div><div class="sh-line"></div></div>
+<div class="cat-grid">
+
+  <div class="pcard missing" id="pc-linux">
+    <div class="pc-main" onclick="toggleSub(this.closest('.pcard'))">
+      <div class="pc-accent" style="background:var(--purple)"></div>
+      <div class="pc-ico">🐧</div>
+      <div class="pc-info">
+        <div class="pc-name">Linux Loader</div>
+        <div class="pc-fw" style="color:var(--purple)">ALL FIRMWARE</div>
+        <div class="pc-desc">kexec → replaces Sony kernel. Maps APU memory as VRAM for USB Linux distro. Boots RPCS3/Dolphin capable desktop environment.</div>
+      </div>
+      <div class="pc-right">
+        <div class="pc-badge badge-missing">MISSING</div>
+        <div class="pc-arr" id="linux-arr">›</div>
+      </div>
+    </div>
+    <div class="pc-sub">
+      <div class="sub-label">VRAM:</div>
+      <div class="sub-btn active" onclick="setLinuxVRAM(1,this)">1 GB</div>
+      <div class="sub-btn" onclick="setLinuxVRAM(2,this)">2 GB</div>
+      <div class="sub-btn" onclick="setLinuxVRAM(3,this)">3 GB</div>
+      <div class="sub-btn" onclick="setLinuxVRAM(4,this)">4 GB</div>
+    </div>
+  </div>
+
+  <div class="pcard missing" id="pc-fan">
+    <div class="pc-main" onclick="toggleSub(this.closest('.pcard'))">
+      <div class="pc-accent" style="background:var(--cyan)"></div>
+      <div class="pc-ico">🌀</div>
+      <div class="pc-info">
+        <div class="pc-name">Fan Control</div>
+        <div class="pc-fw" style="color:var(--cyan)">ALL FIRMWARE</div>
+        <div class="pc-desc">Accesses smbus → overrides syscon thermal table. Forces PWM hardcoded hex over fan control line. Bypass Sony's quiet/hot default profile.</div>
+      </div>
+      <div class="pc-right">
+        <div class="pc-badge badge-missing">MISSING</div>
+        <div class="pc-arr">›</div>
+      </div>
+    </div>
+    <div class="pc-sub">
+      <div class="sub-label">SPEED:</div>
+      <div class="sub-btn" onclick="setFanSpeed(40,this)">40%</div>
+      <div class="sub-btn" onclick="setFanSpeed(50,this)">50%</div>
+      <div class="sub-btn active" onclick="setFanSpeed(60,this)">60%</div>
+      <div class="sub-btn" onclick="setFanSpeed(70,this)">70%</div>
+      <div class="sub-btn" onclick="setFanSpeed(80,this)">80%</div>
+      <div class="sub-btn" onclick="setFanSpeed(100,this)">100%</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══ 06 — SYSTEM MODS ══ -->
+<div class="sh"><div class="sh-num">06</div><div class="sh-icon">🔧</div><div class="sh-text">System Modification</div><div class="sh-line"></div></div>
+<div class="cat-grid">
+
+  <div class="pcard missing" id="pc-dis-upd">
+    <div class="pc-main" onclick="sendPayload('disable_updates.bin','Disable Updates',this)">
+      <div class="pc-accent" style="background:var(--red)"></div>
+      <div class="pc-ico">🚫</div>
+      <div class="pc-info">
+        <div class="pc-name">Disable Updates</div>
+        <div class="pc-fw" style="color:var(--red)">ALL FIRMWARE</div>
+        <div class="pc-desc">Creates dummy read-only folder at /update/PS4UPDATE.PUP — blocks filesystem write → prevents firmware download permanently.</div>
+      </div>
+      <div class="pc-right">
+        <div class="pc-badge badge-missing">MISSING</div>
+        <div class="pc-arr">›</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pcard missing" id="pc-en-upd">
+    <div class="pc-main" onclick="sendPayload('enable_updates.bin','Enable Updates',this)">
+      <div class="pc-accent" style="background:var(--green)"></div>
+      <div class="pc-ico">✅</div>
+      <div class="pc-info">
+        <div class="pc-name">Enable Updates</div>
+        <div class="pc-fw" style="color:var(--green)">ALL FIRMWARE</div>
+        <div class="pc-desc">Removes dummy update block — restores Sony update path. Use only if intentionally upgrading firmware.</div>
+      </div>
+      <div class="pc-right">
+        <div class="pc-badge badge-missing">MISSING</div>
+        <div class="pc-arr">›</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pcard missing" id="pc-aslr">
+    <div class="pc-main" onclick="sendPayload('disable_aslr.bin','Disable ASLR',this)">
+      <div class="pc-accent" style="background:var(--yellow)"></div>
+      <div class="pc-ico">📍</div>
+      <div class="pc-info">
+        <div class="pc-name">Disable ASLR</div>
+        <div class="pc-fw" style="color:var(--yellow)">ALL FIRMWARE</div>
+        <div class="pc-desc">Strips address space layout randomization. Memory hooks map to fixed hex offsets on every boot. Required for stable RE tooling.</div>
+      </div>
+      <div class="pc-right">
+        <div class="pc-badge badge-missing">MISSING</div>
+        <div class="pc-arr">›</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══ 07 — BOOT SEQUENCE ══ -->
+<div class="sh"><div class="sh-num">07</div><div class="sh-icon">📋</div><div class="sh-text">Boot Sequence Guide</div><div class="sh-line"></div></div>
+<div class="seq">
+  <div class="sq"><div class="sq-n" style="color:var(--orange)">1</div><div><div class="sq-t" style="color:var(--orange)">PS4 Browser → This Page</div><div class="sq-d">Navigate to this URL on your PS4 browser. Do not use any other browser tab.</div></div></div>
+  <div class="sq"><div class="sq-n" style="color:var(--orange)">2</div><div><div class="sq-t" style="color:var(--orange)">Configure Settings → Tap ⚡ JAILBREAK</div><div class="sq-d">Adjust exploit settings above if needed. Tap the button — do NOT navigate away. Auto-retry handles benign read misses.</div></div></div>
+  <div class="sq"><div class="sq-n" style="color:var(--green)">3</div><div><div class="sq-t" style="color:var(--green)">Wait for JAILBROKEN Banner</div><div class="sq-d">Green = kernel patched. Red = cold reboot required (hold power → two beeps). Return and retry.</div></div></div>
+  <div class="sq"><div class="sq-n" style="color:var(--green)">4</div><div><div class="sq-t" style="color:var(--green)">Cold Reboot PS4</div><div class="sq-d">Required after jailbreak. Hold power until two beeps shutdown. Then boot normally and return here.</div></div></div>
+  <div class="sq"><div class="sq-n" style="color:var(--green)">5</div><div><div class="sq-t" style="color:var(--green)">Select Payload (Section 02)</div><div class="sq-d">For 13.52 RTM: tap ⚡ 13.52 DEBUG. Port :744 opens for zoof13r RTM connection.</div></div></div>
+  <div class="sq"><div class="sq-n" style="color:var(--blue)">6</div><div><div class="sq-t" style="color:var(--blue)">Connect zoof13r RTM → Attach BO2</div><div class="sq-d">PS4 IP → Connect → Attach BO2 → start modding. Use additional payloads (FTP, WebRTE etc.) as needed.</div></div></div>
+</div>
+
+<div style="height:40px"></div>
+</div><!-- /main -->
 
 <div id="toast"></div>
 <div id="state" style="display:none"></div>
 
 <script>
-// ── Config ────────────────────────────────────────────────────────────────
-var cfg = { jb:true, patch:true, payload:true, keepjb:false, stop:false, verbose:false, retry:8 };
+// ── Config ─────────────────────────────────────────────────────────────────
+var cfg = {jb:true, patch:true, payload:true, keepjb:false, stop:false, verbose:false, retry:8};
+var linuxVRAM = 1, binPort = 9020, fanSpeed = 60;
 
-// ── Settings toggle ───────────────────────────────────────────────────────
-function toggleSetting(key, el) {
-  cfg[key] = !cfg[key];
-  el.classList.toggle('on', cfg[key]);
+function ts(key, el) { cfg[key] = !cfg[key]; el.classList.toggle('on', cfg[key]); }
+
+// ── DOM ────────────────────────────────────────────────────────────────────
+var $ = function(id){ return document.getElementById(id); };
+var hdrDot = $('hdr-dot'), hdrTxt = $('hdr-txt');
+var jbBtn  = $('jb-btn'), sbD = $('sb-d'), sbSpin = $('sb-spin'), sbTxt = $('sb-txt');
+var statsEl= $('stats'), terminal= $('terminal'), outEl = $('out');
+var resultEl = $('result'), toast = $('toast'), tbadge = $('tbadge');
+
+// ── Sub-panel toggles ──────────────────────────────────────────────────────
+function toggleSub(card) {
+  card.classList.toggle('expanded');
+}
+function setLinuxVRAM(gb, btn) {
+  linuxVRAM = gb;
+  btn.closest('.pc-sub').querySelectorAll('.sub-btn').forEach(function(b){ b.classList.remove('active'); });
+  btn.classList.add('active');
+}
+function setBinPort(port, btn) {
+  binPort = port;
+  btn.closest('.pc-sub').querySelectorAll('.sub-btn').forEach(function(b){ b.classList.remove('active'); });
+  btn.classList.add('active');
+}
+function setFanSpeed(pct, btn) {
+  fanSpeed = pct;
+  btn.closest('.pc-sub').querySelectorAll('.sub-btn').forEach(function(b){ b.classList.remove('active'); });
+  btn.classList.add('active');
 }
 
-// ── DOM refs ──────────────────────────────────────────────────────────────
-var hdrDot   = document.getElementById('hdr-dot');
-var hdrTxt   = document.getElementById('hdr-status-txt');
-var jbBtn    = document.getElementById('jb-btn');
-var sbDot    = document.getElementById('sb-dot');
-var sbSpin   = document.getElementById('sb-spin');
-var sbTxt    = document.getElementById('sb-txt');
-var statsRow = document.getElementById('stats-row');
-var terminal = document.getElementById('terminal');
-var outEl    = document.getElementById('out');
-var resultEl = document.getElementById('result');
-var toast    = document.getElementById('toast');
-var termBadge = document.getElementById('term-badge');
-
-// Stats
-var passCount = 0, failCount = 0, startTime = null;
-var elapsedTimer = null;
-
-function updateStat(id, val) { document.getElementById(id).textContent = val; }
-
-function startElapsed() {
-  startTime = Date.now();
-  elapsedTimer = setInterval(function() {
-    var s = Math.floor((Date.now() - startTime) / 1000);
-    updateStat('stat-elapsed', s + 's');
-  }, 500);
-}
-function stopElapsed() { if (elapsedTimer) clearInterval(elapsedTimer); }
-
-// ── Toast ─────────────────────────────────────────────────────────────────
+// ── Toast ──────────────────────────────────────────────────────────────────
 function showToast(msg, type) {
   toast.textContent = msg;
-  toast.className = 'show ' + (type || '');
-  setTimeout(function(){ toast.className = ''; }, 3000);
+  toast.className = 'show ' + (type||'');
+  setTimeout(function(){ toast.className=''; }, 3000);
 }
 
-// ── Status helpers ────────────────────────────────────────────────────────
-function setStatus(dot, spin, txt, hdrDotCls, hdrTxtVal) {
-  sbDot.className = 'sb-dot ' + (dot || '');
+// ── Status ─────────────────────────────────────────────────────────────────
+var elTimer = null, startT = null;
+function startTimer(){ startT=Date.now(); elTimer=setInterval(function(){ $('st-time').textContent=Math.floor((Date.now()-startT)/1000)+'s'; },500); }
+function stopTimer(){ if(elTimer){ clearInterval(elTimer); elTimer=null; } }
+
+function setStatus(dot, spin, txt, hdrCls, hdrLabel) {
+  sbD.className = 'sb-d '+(dot||'');
   sbSpin.style.display = spin ? 'block' : 'none';
   sbTxt.textContent = txt;
-  hdrDot.className = 'hdr-dot ' + (hdrDotCls || '');
-  hdrTxt.textContent = hdrTxtVal || txt.toUpperCase().slice(0,12);
+  hdrDot.className = 'hdr-dot '+(hdrCls||'');
+  hdrTxt.textContent = hdrLabel||'STANDBY';
 }
 
 function showResult(ok, title, sub) {
-  resultEl.innerHTML = '<div class="result-inner ' + (ok?'ok':'fail') + '">' +
-    '<div class="result-icon">' + (ok ? '✅' : '💀') + '</div>' +
-    '<div><div class="result-title">' + title + '</div>' +
-    '<div class="result-sub">' + sub + '</div></div></div>';
-  resultEl.style.display = '';
+  resultEl.innerHTML='<div class="ri '+(ok?'ok':'fail')+'"><div class="ri-ico">'+(ok?'✅':'💀')+'</div><div><div class="ri-title">'+title+'</div><div class="ri-sub">'+sub+'</div></div></div>';
+  resultEl.style.display='';
 }
 
-// ── Parse stats from jb.js log lines ─────────────────────────────────────
-// jb.js writes PROOF-OK / PROOF-FAIL lines — we intercept via MutationObserver on #out
-var outObserver = new MutationObserver(function() {
-  // re-count from innerHTML
-  var html = outEl.innerHTML;
-  var passes = (html.match(/class="ok"/g) || []).length;
-  var fails  = (html.match(/class="bad"/g) || []).length;
-  updateStat('stat-pass', passes);
-  updateStat('stat-fail', fails);
+// ── Watch body class (jb.js sets "done"/"fail"/"log") ─────────────────────
+new MutationObserver(function(){
+  var c = document.body.className;
+  if(c==='done') onDone();
+  else if(c==='fail') onFail();
+}).observe(document.body,{attributes:true,attributeFilter:['class']});
 
-  // extract last step name (last word before whitespace in last non-empty line)
-  var lines = outEl.textContent.trim().split('\n');
-  var last = '';
-  for (var i = lines.length - 1; i >= 0; i--) {
-    var l = lines[i].trim();
-    if (l) { last = l.split(/\s+/)[0]; break; }
+// ── Live stats via MutationObserver on #out ────────────────────────────────
+new MutationObserver(function(){
+  var h=outEl.innerHTML;
+  $('st-pass').textContent=(h.match(/class="ok"/g)||[]).length;
+  $('st-fail').textContent=(h.match(/class="bad"/g)||[]).length;
+  var lines=outEl.textContent.trim().split('\n');
+  for(var i=lines.length-1;i>=0;i--){
+    var l=lines[i].trim();
+    if(l){ var tag=l.split(/\s+/)[0]; $('st-step').textContent=tag.length>9?tag.slice(0,9):tag; break; }
   }
-  if (last) updateStat('stat-step', last.length > 8 ? last.slice(0,8) : last);
+  outEl.scrollTop=outEl.scrollHeight;
+}).observe(outEl,{childList:true,subtree:true,characterData:true});
 
-  // auto-scroll
-  outEl.scrollTop = outEl.scrollHeight;
-});
-
-// ── Watch body.className (jb.js writes "done" / "fail" / "log") ──────────
-new MutationObserver(function() {
-  var cls = document.body.className;
-  if (cls === 'done') onDone();
-  else if (cls === 'fail') onFail();
-  // "log" = jb.js initialized in log mode — we handle the terminal ourselves
-}).observe(document.body, { attributes:true, attributeFilter:['class'] });
-
-function onDone() {
-  stopElapsed();
-  setStatus('ok', false, 'Exploit complete — kernel patched', 'online', 'JAILBROKEN');
-  jbBtn.disabled = true;
-  termBadge.textContent = 'DONE';
-  showResult(true,
-    'JAILBROKEN — Restart PS4',
-    'Hold power until two beeps. Return here after reboot → inject payload (Step 2).');
-  showToast('✓ Jailbreak complete!', 'ok');
+function onDone(){
+  stopTimer();
+  setStatus('ok',false,'Jailbreak complete — kernel patched','online','JAILBROKEN');
+  jbBtn.disabled=true; tbadge.textContent='DONE';
+  showResult(true,'JAILBROKEN — Cold Reboot PS4','Hold power until two beeps. Return here after reboot → select payload (Section 02).');
+  showToast('✓ Jailbreak complete!','ok');
+}
+function onFail(){
+  stopTimer();
+  setStatus('fail',false,'Exploit failed — cold reboot and retry','fail','FAILED');
+  jbBtn.disabled=false; jbBtn.querySelector('.jb-title').textContent='🔁 RETRY JAILBREAK';
+  tbadge.textContent='FAILED';
+  showResult(false,'FAILED — Cold Reboot Required','Hold power until two beeps. Navigate back and tap jailbreak again.');
+  showToast('✗ Failed — reboot PS4','bad');
+  launched=false;
 }
 
-function onFail() {
-  stopElapsed();
-  setStatus('fail', false, 'Exploit failed — restart console and retry', 'fail', 'FAILED');
-  jbBtn.disabled = false;
-  jbBtn.querySelector('.btn-title').textContent = '🔁 RETRY JAILBREAK';
-  termBadge.textContent = 'FAILED';
-  showResult(false,
-    'FAILED — Restart PS4 and Retry',
-    'Hold power until two beeps. Navigate back here and tap the jailbreak button again.');
-  showToast('✗ Exploit failed — restart PS4', 'bad');
-  launched = false;
-}
+// ── Launch ─────────────────────────────────────────────────────────────────
+var launched=false;
+function launchJB(){
+  if(launched)return; launched=true;
+  terminal.style.display=''; statsEl.style.cssText='display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:7px;margin-bottom:10px';
+  outEl.innerHTML='';  startTimer();
+  jbBtn.classList.add('busy'); jbBtn.disabled=true;
+  setStatus('run',true,'Running exploit — do not navigate away...','run','RUNNING');
 
-// ── Launch ────────────────────────────────────────────────────────────────
-var launched = false;
-function launchJB() {
-  if (launched) return;
-  launched = true;
+  var p=['log=1'];
+  if(!cfg.jb) p.push('jb=0');
+  if(!cfg.patch) p.push('patch=0');
+  if(!cfg.payload) p.push('payload=0');
+  if(cfg.keepjb) p.push('keepjb=1');
+  if(cfg.stop) p.push('stop=beforedouble');
+  if(cfg.verbose) p.push('verbose=1');
+  if(cfg.retry!==8) p.push('retry='+cfg.retry);
+  history.replaceState(null,'',location.pathname+'?'+p.join('&'));
 
-  // Show terminal immediately
-  terminal.style.display = '';
-  statsRow.style.display = '';
-  outEl.innerHTML = '';
-  startElapsed();
-
-  // Start observing #out for log updates
-  outObserver.observe(outEl, { childList:true, subtree:true, characterData:true });
-
-  jbBtn.classList.add('busy');
-  jbBtn.disabled = true;
-  setStatus('run', true, 'Running exploit — do not navigate away...', 'running', 'RUNNING');
-
-  // Build query string from settings (jb.js reads these on module load)
-  var p = ['log=1']; // always enable log so jb.js writes to #out
-  if (!cfg.jb)       p.push('jb=0');
-  if (!cfg.patch)    p.push('patch=0');
-  if (!cfg.payload)  p.push('payload=0');
-  if (cfg.keepjb)    p.push('keepjb=1');
-  if (cfg.stop)      p.push('stop=beforedouble');
-  if (cfg.verbose)   p.push('verbose=1');
-  if (cfg.retry !== 8) p.push('retry=' + cfg.retry);
-
-  // Apply to URL so jb.js URLSearchParams picks them up
-  history.replaceState(null, '', location.pathname + '?' + p.join('&'));
-
-  // Dynamic import — fires jb.js NOW
   import("https://whiteshadow8500.github.io/jb.js")
-    .catch(function(e) {
-      outEl.innerHTML += '<span class="bad">[LOAD-ERROR] Failed to fetch jb.js — check network\n</span>';
-      document.body.className = 'fail';
-    });
+    .catch(function(){ outEl.innerHTML+='<span class="bad">[LOAD-ERROR] Failed to load jb.js — check network\n</span>'; document.body.className='fail'; });
 }
 
-// ── Payload send ──────────────────────────────────────────────────────────
-var bigSpin = document.createElement('div');
-bigSpin.id = 'bspin';
-bigSpin.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:44px;height:44px;border:3px solid #1a2030;border-top-color:#ff6600;border-radius:50%;animation:spin .7s linear infinite;display:none;z-index:200';
-document.body.appendChild(bigSpin);
-
-function sendPayload(url, label, el) {
-  if (el.classList.contains('busy')) return;
+// ── Payload dispatch ───────────────────────────────────────────────────────
+function sendPayload(file, label, el){
+  var card=el.closest('.pcard');
+  if(card.classList.contains('missing')){
+    showToast('✗ '+label+': add '+file+' to repo','bad'); return;
+  }
+  if(el.classList.contains('busy'))return;
   el.classList.add('busy');
-  bigSpin.style.display = 'block';
-  showToast('Fetching ' + label + '…');
 
-  var xhr = new XMLHttpRequest();
-  xhr.open('GET', url, true);
-  xhr.responseType = 'arraybuffer';
-  xhr.timeout = 15000;
-  xhr.onload = function() {
-    bigSpin.style.display = 'none';
+  var url='./'+file;
+  // For linux, select correct bin by VRAM setting
+  if(file==='linux.bin') url='./linux_'+linuxVRAM+'gb.bin';
+  // For fan control, select by speed
+  if(file==='fan_control.bin') url='./fan_'+fanSpeed+'pct.bin';
+
+  showToast('Fetching '+label+'…');
+  var xhr=new XMLHttpRequest();
+  xhr.open('GET',url,true); xhr.responseType='arraybuffer'; xhr.timeout=15000;
+  xhr.onload=function(){
     el.classList.remove('busy');
-    if (xhr.status === 200) {
-      showToast('✓ ' + label + ' sent! (' + (xhr.response.byteLength/1024).toFixed(1) + ' KB)', 'ok');
-    } else {
-      showToast('✗ HTTP ' + xhr.status + ' — payload not found on server', 'bad');
-    }
+    if(xhr.status===200){ showToast('✓ '+label+' sent! ('+(xhr.response.byteLength/1024).toFixed(1)+' KB)','ok'); }
+    else{ showToast('✗ HTTP '+xhr.status+' — '+file+' not found','bad'); }
   };
-  xhr.onerror = function() { bigSpin.style.display='none'; el.classList.remove('busy'); showToast('✗ Connection failed','bad'); };
-  xhr.ontimeout = function() { bigSpin.style.display='none'; el.classList.remove('busy'); showToast('✗ Timed out — retry','bad'); };
+  xhr.onerror=function(){ el.classList.remove('busy'); showToast('✗ Connection failed','bad'); };
+  xhr.ontimeout=function(){ el.classList.remove('busy'); showToast('✗ Timed out','bad'); };
   xhr.send();
 }
 
-window.launchJB = launchJB;
-window.toggleSetting = toggleSetting;
-window.sendPayload = sendPayload;
+// ── Expose globals ─────────────────────────────────────────────────────────
+window.launchJB=launchJB; window.ts=ts; window.sendPayload=sendPayload;
+window.toggleSub=toggleSub; window.setLinuxVRAM=setLinuxVRAM;
+window.setBinPort=setBinPort; window.setFanSpeed=setFanSpeed;
 </script>
 </body>
 </html>
