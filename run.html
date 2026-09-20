@@ -3,212 +3,184 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ZOOF13R // EXPLOIT ENGINE</title>
+    <title>ZOOF13R // BO2 RTM TOOL & HOST</title>
     <style>
-      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=JetBrains+Mono:wght@400;600;700&display=swap");
-      * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-      }
+      @import url("https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600;700;900&family=Consolas:wght@400;700&display=swap");
+      * { box-sizing: border-box; margin: 0; padding: 0; }
       :root {
-        --bg: #080a0d;
-        --panel: #0d1117;
-        --border: #1a2030;
-        --orange: #ff6600;
-        --orange-glow: rgba(255, 102, 0, 0.15);
-        --green: #22c55e;
-        --red: #ef4444;
-        --text: #9aa3b0;
-        --text-dim: #4a5468;
-        --text-hi: #dde4f0;
-        --mono: "JetBrains Mono", Consolas, monospace;
-        --sans: "Inter", system-ui, sans-serif;
+        --bg-dark: #121212;
+        --bg-base: #1A1A1A;
+        --card-bg: #1F1F1F;
+        --border-color: #333333;
+        --orange: #FF6600;
+        --cyan-blue: #00D2FF;
+        --text-main: #E0E0E0;
+        --text-dim: #A0A0A0;
+        --green: #00FF00;
+        --red: #FF3333;
       }
       html, body {
         min-height: 100vh;
-        background: var(--bg);
-        color: var(--text);
-        font-family: var(--sans);
+        background: var(--bg-dark);
+        color: var(--text-main);
+        font-family: 'Segoe UI', Arial, sans-serif;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: space-between;
-        padding: 0;
       }
-      /* Header */
-      #hdr {
+      #app-base {
         width: 100%;
-        height: 54px;
-        background: rgba(8, 10, 13, 0.96);
-        border-bottom: 2px solid var(--orange);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 0 20px;
-        box-shadow: 0 0 20px var(--orange-glow);
-      }
-      .brand-box {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        font-weight: 900;
-        font-size: 16px;
-        letter-spacing: 0.12em;
-        color: var(--text-hi);
-      }
-      .brand-z {
-        color: var(--orange);
-        font-style: italic;
-      }
-      .brand-badge {
-        font-family: var(--mono);
-        font-size: 9px;
-        font-weight: 700;
-        padding: 2px 7px;
+        min-height: 100vh;
         border: 1px solid var(--orange);
-        border-radius: 3px;
+        background-color: var(--bg-base);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+      /* Top Bar */
+      #top-bar {
+        background-color: #111111;
+        border-bottom: 2px solid var(--orange);
+        height: 85px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 25px;
+      }
+      .brand-left {
+        font-family: 'Arial Black', Impact, sans-serif;
+        font-weight: 900;
+        font-style: italic;
+        font-size: 36px;
+        letter-spacing: 2px;
         color: var(--orange);
-        letter-spacing: 0.1em;
-        margin-left: 6px;
+      }
+      .brand-center {
+        font-family: 'Arial Black', Impact, sans-serif;
+        font-weight: 900;
+        font-style: italic;
+        font-size: 42px;
+        letter-spacing: 4px;
+        color: #FFFFFF;
+        text-shadow: 0 0 25px var(--cyan-blue), 0 0 40px var(--orange);
+      }
+      .status-badge {
+        font-weight: 800;
+        color: var(--orange);
+        font-size: 14px;
       }
 
-      /* Main Wrap */
-      #wrap-main {
+      #main-wrap {
         flex: 1;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        padding: 30px 20px;
-        width: 100%;
-        max-width: 600px;
+        padding: 40px 20px;
         text-align: center;
       }
 
       /* Spinner */
       #spin {
-        width: 54px;
-        height: 54px;
-        border: 4px solid var(--border);
+        width: 60px;
+        height: 60px;
+        border: 4px solid var(--border-color);
         border-top-color: var(--orange);
         border-radius: 50%;
         animation: spin 0.75s linear infinite;
-        margin-bottom: 24px;
-        box-shadow: 0 0 15px var(--orange-glow);
+        margin-bottom: 25px;
+        box-shadow: 0 0 20px rgba(255, 102, 0, 0.3);
       }
       body.done #spin {
         border-color: var(--green);
         border-top-color: var(--green);
         animation: none;
-        box-shadow: 0 0 20px rgba(34, 197, 94, 0.3);
+        box-shadow: 0 0 25px rgba(0, 255, 0, 0.4);
       }
       body.fail #spin {
         border-color: var(--red);
         border-top-color: var(--red);
         animation: none;
-        box-shadow: 0 0 20px rgba(239, 68, 68, 0.3);
+        box-shadow: 0 0 25px rgba(255, 51, 51, 0.4);
       }
-      @keyframes spin {
-        to { transform: rotate(360deg); }
-      }
+      @keyframes spin { to { transform: rotate(360deg); } }
 
-      /* Message */
       #msg {
-        font-size: 18px;
+        font-size: 20px;
         font-weight: 900;
-        letter-spacing: 0.08em;
+        letter-spacing: 1px;
         color: var(--orange);
         text-transform: uppercase;
         margin-bottom: 20px;
-        font-family: var(--sans);
       }
       body.done #msg { color: var(--green); }
       body.fail #msg { color: var(--red); }
 
-      /* Log Container */
-      #wrap {
+      /* Bottom Green Log Console */
+      #log-frame {
         width: 100%;
-        background: var(--panel);
-        border: 1px solid var(--border);
-        border-radius: 10px;
-        padding: 14px;
-        text-align: left;
-        display: none; /* Only shown if log mode enabled */
+        padding: 15px 25px 25px 25px;
       }
-      body.log #wrap { display: block; }
-      #state {
-        font-family: var(--mono);
-        font-size: 11px;
-        font-weight: 700;
-        color: var(--orange);
-        margin-bottom: 8px;
-        text-transform: uppercase;
-      }
-      #out {
-        font-family: var(--mono);
-        font-size: 10px;
-        line-height: 1.6;
-        max-height: 250px;
+      #log-box {
+        background-color: #0A0A0A;
+        color: var(--green);
+        font-family: Consolas, 'Courier New', monospace;
+        font-size: 13px;
+        border: 1px solid var(--border-color);
+        border-radius: 4px;
+        padding: 12px;
+        height: 100px;
         overflow-y: auto;
         white-space: pre-wrap;
         word-break: break-all;
-        color: var(--text);
+        text-align: left;
       }
 
-      /* Footer */
-      #foot {
-        width: 100%;
-        padding: 16px;
-        border-top: 1px solid var(--border);
-        font-family: var(--mono);
-        font-size: 10px;
-        color: var(--text-dim);
-        text-align: center;
-        letter-spacing: 0.1em;
-      }
-      #foot b { color: var(--orange); }
+      #wrap { display: none; }
+      body.log #wrap { display: block; }
     </style>
   </head>
   <body>
-    <div id="hdr">
-      <div class="brand-box">
-        <span>⚡</span>
-        <span class="brand-z">ZOOF13R</span>
-        <span>WEBKIT</span>
-        <span class="brand-badge">FW 13.52</span>
+    <div id="app-base">
+      <div id="top-bar">
+        <div class="brand-left">ZOOF13R</div>
+        <div class="brand-center">RTM TOOL</div>
+        <div class="status-badge" id="status-badge">★ EXPLOIT ENGINE ★</div>
       </div>
-    </div>
 
-    <div id="wrap-main">
-      <div id="spin"></div>
-      <div id="msg">RUNNING EXPLOIT — DO NOT NAVIGATE AWAY</div>
-      <div id="wrap">
-        <div id="state"></div>
-        <div id="out"></div>
+      <div id="main-wrap">
+        <div id="spin"></div>
+        <div id="msg">★ RUNNING EXPLOIT ENGINE — DO NOT NAVIGATE AWAY ★</div>
+        <div id="wrap">
+          <div id="state"></div>
+          <div id="out"></div>
+        </div>
+      </div>
+
+      <div id="log-frame">
+        <div id="log-box">[EXPLOIT ENGINE] EXECUTING WEBKIT PRIMITIVE AND KERNEL PATCH CHAIN...</div>
       </div>
     </div>
 
     <script>
-      // Sync UI status message with body class state
       var msgEl = document.getElementById('msg');
+      var logBox = document.getElementById('log-box');
       new MutationObserver(function() {
         var c = document.body.className;
+        var ts = new Date().toTimeString().split(' ')[0];
         if (c.indexOf('done') !== -1) {
-          msgEl.textContent = '✓ JAILBROKEN — NOW LOAD A PAYLOAD';
+          msgEl.textContent = '★ JAILBROKEN — NOW SELECT PAYLOAD ★';
+          logBox.innerHTML += '\n[' + ts + '] ✓ EXPLOIT & KERNEL PATCH SUCCESSFUL!';
         } else if (c.indexOf('fail') !== -1) {
-          msgEl.textContent = '✗ FAILED — COLD REBOOT AND RETRY';
+          msgEl.textContent = '★ FAILED — COLD REBOOT PS4 AND RETRY ★';
+          logBox.innerHTML += '\n[' + ts + '] ✗ EXPLOIT FAILED — COLD REBOOT REQUIRED.';
         }
       }).observe(document.body, { attributes: true, attributeFilter: ['class'] });
     </script>
 
-    <!-- Static ES module import for jb.js execution -->
     <script type="module">
       import "./jb.js?v=11";
     </script>
-
-    <div id="foot">
-      ZOOF13R PS4 13.52 HOST &middot; <b>OFFICIAL RELEASE</b>
-    </div>
   </body>
 </html>
