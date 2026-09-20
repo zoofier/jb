@@ -312,23 +312,25 @@
           fetch('https://api.counterapi.dev/v1/zoofier_ps4_host/hits/up')
             .then(function(r) { return r.json(); })
             .then(function(data) {
-              var hits = data.count || 1;
-              updateDisplay(hits, Math.ceil(hits * 0.4), Math.ceil(hits * 0.25));
+              var rawHits = (data.count || 0) + 48;
+              var visited = Math.ceil(rawHits * 0.45);
+              var ps4s = Math.max(1, Math.ceil(rawHits * 0.3));
+              updateDisplay(rawHits, visited, ps4s);
             })
             .catch(function() {
-              var localHits = parseInt(localStorage.getItem('zoof_hits') || '1') + 1;
+              var localHits = parseInt(localStorage.getItem('zoof_hits') || '48') + 1;
               localStorage.setItem('zoof_hits', localHits);
-              updateDisplay(localHits, Math.max(1, Math.floor(localHits * 0.5)), Math.max(1, Math.floor(localHits * 0.3)));
+              updateDisplay(localHits, Math.max(14, Math.floor(localHits * 0.45)), Math.max(5, Math.floor(localHits * 0.3)));
             });
         });
     }
 
     function updateDisplay(total, unique, ps4Count) {
-      var vEl = document.getElementById('tr-views');
-      var uEl = document.getElementById('tr-visitors');
+      var sEl = document.getElementById('tr-streak');
+      var vEl = document.getElementById('tr-visited');
       var pEl = document.getElementById('tr-ps4');
-      if (vEl) vEl.textContent = 'VIEWS: ' + total;
-      if (uEl) uEl.textContent = 'VISITORS: ' + unique;
+      if (sEl) sEl.textContent = 'STREAK: ' + total;
+      if (vEl) vEl.textContent = 'VISITED: ' + unique;
       if (pEl) pEl.textContent = 'PS4: ' + ps4Count;
     }
 
