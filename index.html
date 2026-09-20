@@ -58,73 +58,6 @@
       transition: opacity 0.05s ease-out;
     }
 
-    /* Top Left Header Theme Switcher Widget */
-    #theme-selector-container {
-      position: fixed;
-      top: 18px;
-      left: 20px;
-      z-index: 99999;
-      font-family: Consolas, monospace;
-      user-select: none;
-    }
-
-    .theme-btn {
-      background: #0e0e17;
-      border: 2px solid var(--theme-accent, #00d4ff);
-      box-shadow: 0 0 15px rgba(0, 212, 255, 0.4);
-      color: #ffffff;
-      padding: 8px 16px;
-      border-radius: 25px;
-      font-size: 13px;
-      font-weight: 800;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      transition: all 0.3s ease;
-    }
-
-    .theme-btn:hover {
-      transform: scale(1.05);
-      box-shadow: 0 0 25px rgba(0, 212, 255, 0.8);
-    }
-
-    .theme-menu {
-      position: absolute;
-      top: 42px;
-      left: 0;
-      background: #0e0e17;
-      border: 2px solid var(--theme-accent, #00d4ff);
-      box-shadow: 0 0 25px rgba(0, 0, 0, 0.8);
-      border-radius: 14px;
-      padding: 8px;
-      display: none;
-      flex-direction: column;
-      gap: 6px;
-      min-width: 220px;
-    }
-
-    .theme-option {
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid transparent;
-      color: #ffffff;
-      padding: 10px 14px;
-      border-radius: 8px;
-      font-size: 12px;
-      font-weight: 800;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      transition: all 0.2s ease;
-    }
-
-    .theme-option:hover {
-      background: rgba(0, 212, 255, 0.15);
-      border-color: var(--theme-accent, #00d4ff);
-      color: var(--theme-accent, #00d4ff);
-    }
-
     /* Top Right Floating Visitor Counter Widget */
     #top-right-counter {
       position: fixed;
@@ -341,28 +274,6 @@
   <!-- Canvas FX Backdrop Engine -->
   <canvas id="fx-canvas"></canvas>
   <div id="lightning-flash"></div>
-
-  <!-- Top Left Theme Switcher Button & Dropdown -->
-  <div id="theme-selector-container">
-    <button class="theme-btn" onclick="toggleThemeMenu()">
-      <span class="emoji">🎨</span> <span>THEMES</span>
-      <span style="font-size: 10px;">▼</span>
-    </button>
-    <div id="theme-menu" class="theme-menu">
-      <div class="theme-option" onclick="setTheme('rgb')">
-        <span class="emoji">🌌</span> <span>Cyber RGB Starfield</span>
-      </div>
-      <div class="theme-option" onclick="setTheme('lightning')">
-        <span class="emoji">⚡</span> <span>Lightning Storm Rain</span>
-      </div>
-      <div class="theme-option" onclick="setTheme('acid')">
-        <span class="emoji">☣️</span> <span>Acid Rain Matrix</span>
-      </div>
-      <div class="theme-option" onclick="setTheme('gold')">
-        <span class="emoji">👑</span> <span>GoldHEN Obsidian</span>
-      </div>
-    </div>
-  </div>
 
   <!-- Top Right Floating Visitor Counter Widget -->
   <div id="top-right-counter">

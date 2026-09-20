@@ -490,27 +490,7 @@ html, body {
 
 </div>
 
-<!-- Top Left Floating Theme Selector Widget -->
-<div id="theme-selector-container" style="position: fixed; top: 18px; left: 20px; z-index: 99999; font-family: Consolas, monospace; user-select: none;">
-  <button class="theme-btn" onclick="toggleThemeMenu()" style="background: #0e0e17; border: 2px solid var(--rgb-color, #00d4ff); box-shadow: 0 0 15px var(--rgb-shadow, rgba(0,212,255,0.4)); color: #ffffff; padding: 8px 16px; border-radius: 25px; font-size: 13px; font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: all 0.3s ease;">
-    <span class="emoji">🎨</span> <span>THEMES</span>
-    <span style="font-size: 10px;">▼</span>
-  </button>
-  <div id="theme-menu" class="theme-menu" style="position: absolute; top: 42px; left: 0; background: #0e0e17; border: 2px solid var(--rgb-color, #00d4ff); box-shadow: 0 0 25px rgba(0, 0, 0, 0.8); border-radius: 14px; padding: 8px; display: none; flex-direction: column; gap: 6px; min-width: 220px;">
-    <div class="theme-option" onclick="setTheme('rgb')" style="background: rgba(255,255,255,0.03); padding: 10px 14px; border-radius: 8px; font-size: 12px; font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 10px; color: #fff;">
-      <span class="emoji">🌌</span> <span>Cyber RGB Starfield</span>
-    </div>
-    <div class="theme-option" onclick="setTheme('lightning')" style="background: rgba(255,255,255,0.03); padding: 10px 14px; border-radius: 8px; font-size: 12px; font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 10px; color: #fff;">
-      <span class="emoji">⚡</span> <span>Lightning Storm Rain</span>
-    </div>
-    <div class="theme-option" onclick="setTheme('acid')" style="background: rgba(255,255,255,0.03); padding: 10px 14px; border-radius: 8px; font-size: 12px; font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 10px; color: #fff;">
-      <span class="emoji">☣️</span> <span>Acid Rain Matrix</span>
-    </div>
-    <div class="theme-option" onclick="setTheme('gold')" style="background: rgba(255,255,255,0.03); padding: 10px 14px; border-radius: 8px; font-size: 12px; font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 10px; color: #fff;">
-      <span class="emoji">👑</span> <span>GoldHEN Obsidian</span>
-    </div>
-  </div>
-</div>
+<!-- Top Right Floating Live Visitor & View Counter Widget -->
 
 <script>
 var currentTheme = localStorage.getItem('zoof_active_theme') || 'lightning';
@@ -957,9 +937,22 @@ var rebootCountdownSec = 10;
 
 window.onZoofComplete = function(status) {
   if (status && status.success) {
-    document.getElementById('status-badge').textContent = '[COMPLETED - REBOOT READY]';
-    logMsg("★ VERIFIED SUCCESS: Payload deployed. Initializing reboot countdown modal...");
-    
+    document.getElementById('status-badge').textContent = '[COMPLETED - GOLDHEN / PAYLOAD ACTIVE]';
+    logMsg("★ VERIFIED SUCCESS: Payload deployed. Preparing automatic browser auto-close sequence...");
+
+    // Hide exploit loading overlay if visible
+    var loadingOverlay = document.getElementById('exploit-loading-overlay');
+    if (loadingOverlay) loadingOverlay.style.display = 'none';
+
+    // Auto close browser after GoldHEN injection
+    setTimeout(function() {
+      logMsg("⚡ AUTO-CLOSING PS4 WEBKIT BROWSER...");
+      try { window.close(); } catch(e) {}
+      try { history.back(); } catch(e) {}
+      try { location.href = "about:blank"; } catch(e) {}
+    }, 1500);
+
+    // Show reboot modal option
     var modal = document.getElementById('reboot-modal');
     if (modal) modal.style.display = 'flex';
     
@@ -981,11 +974,18 @@ window.onZoofComplete = function(status) {
 
 function triggerManualReboot() {
   if (rebootTimer) clearInterval(rebootTimer);
-  logMsg("★ REBOOT INITIATED: Executing kernel reboot syscall...");
+  logMsg("★ REBOOT INITIATED: Executing sys_reboot syscall 37...");
   if (typeof window.__zoof_reboot === "function") {
     var ok = window.__zoof_reboot();
     if (!ok) {
       logMsg("✖ REBOOT FAILED: Kernel interface rejected call.");
+    }
+  } else if (typeof sc === "function") {
+    try {
+      sc(37, 0);
+      logMsg("★ REBOOT SYSCALL SENT.");
+    } catch(e) {
+      logMsg("✖ REBOOT FAILED: " + e.message);
     }
   } else {
     logMsg("✖ REBOOT UNAVAILABLE: Kernel reboot interface not armed.");
