@@ -74,12 +74,16 @@ html, body {
   background-color: #111111;
   border-bottom: 2px solid var(--rgb-color) !important;
   height: 85px;
+  min-height: 85px;
+  max-height: 85px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 25px;
   position: relative;
   z-index: 10;
+  flex-shrink: 0;
+  user-select: none;
 }
 
 .brand-left {
@@ -90,6 +94,7 @@ html, body {
   letter-spacing: 2px;
   color: var(--rgb-color) !important;
   text-shadow: 0 0 15px var(--rgb-shadow) !important;
+  white-space: nowrap;
 }
 
 .brand-center {
@@ -100,6 +105,7 @@ html, body {
   letter-spacing: 4px;
   color: var(--rgb-color) !important;
   text-shadow: 0 0 20px var(--rgb-shadow) !important;
+  white-space: nowrap;
 }
 
 .status-badge {
@@ -108,12 +114,14 @@ html, body {
   letter-spacing: 1px;
   color: var(--rgb-color) !important;
   text-shadow: 0 0 10px var(--rgb-shadow) !important;
+  white-space: nowrap;
 }
 
 /* ── Main Layout ── */
 #body-layout {
   display: flex;
   flex: 1;
+  overflow: hidden;
 }
 
 /* ── Sidebar ── */
@@ -125,6 +133,7 @@ html, body {
   flex-direction: column;
   padding-top: 15px;
   flex-shrink: 0;
+  user-select: none;
 }
 
 .nav-btn {
@@ -137,10 +146,11 @@ html, body {
   font-size: 14px;
   border-left: 4px solid transparent;
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: background-color 0.15s ease, color 0.15s ease;
   width: 100%;
   display: flex;
   align-items: center;
+  outline: none;
 }
 
 .nav-btn:hover {
@@ -302,7 +312,7 @@ html, body {
   <div id="top-bar">
     <div class="brand-left"><span class="star">★</span> ZOOF13R'S <span class="star">★</span></div>
     <div class="brand-center"><span class="star">★</span> WEBKIT <span class="star">★</span></div>
-    <div class="status-badge" id="status-badge">[HOST READY]</div>
+    <div class="status-badge" id="status-badge">[HOST READY] &bull; <span id="visitor-badge" style="color: var(--green);">👥 VISITORS: --</span></div>
   </div>
 
   <div id="body-layout">
@@ -377,14 +387,96 @@ html, body {
         <div id="log-box">[05:37:15] ZOOF13R'S JAILBREAK TOOL READY...</div>
       </div>
 
+      <!-- Automated Reboot Modal & Status Overlay -->
+      <div id="reboot-modal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.85); z-index:9999; align-items:center; justify-content:center; backdrop-filter:blur(5px);">
+        <div class="card-panel rgb-border" style="width: 460px; text-align: center; padding: 30px; background:#151515;">
+          <div class="orange-subheader" style="justify-content: center; font-size: 18px; margin-bottom: 12px;">
+            <span class="star">★</span> OPERATION COMPLETED SUCCESSFULLY <span class="star">★</span>
+          </div>
+          <p style="color: var(--text-main); font-size: 14px; margin-bottom: 20px;">
+            Console payload deployment verified. Automatic reboot sequence initiated to clear memory state.
+          </p>
+          <div id="reboot-timer-display" class="rgb-text" style="font-size: 48px; font-weight: 900; margin-bottom: 20px; font-family: Consolas, monospace;">
+            10
+          </div>
+          <div style="display: flex; gap: 15px; justify-content: center;">
+            <button class="btn-primary" onclick="triggerManualReboot()" style="flex: 1; padding: 12px; font-size: 14px;">⚡ REBOOT NOW</button>
+            <button class="btn-primary" onclick="cancelAutoReboot()" style="flex: 1; padding: 12px; font-size: 14px; background:#444 !important; color:#fff !important; box-shadow:none !important;">✖ CANCEL</button>
+          </div>
+        </div>
+      </div>
+
     </div>
 
   </div>
 
 </div>
 
+<!-- Top Right Floating Live Visitor & View Counter Widget -->
+<div id="top-right-counter" style="position: fixed; top: 18px; right: 20px; z-index: 99999; background: #0A0A0A; border: 2px solid var(--rgb-color); box-shadow: 0 0 20px var(--rgb-shadow); border-radius: 25px; padding: 8px 18px; display: flex; align-items: center; gap: 12px; font-family: Consolas, monospace; font-size: 13px; font-weight: 800; user-select: none;">
+  <span style="color: #FFEA00; display: inline-flex; align-items: center; gap: 5px;">
+    🔥 <span id="tr-views">VIEWS: ...</span>
+  </span>
+  <span style="color: #444;">|</span>
+  <span style="color: #00FF66; display: inline-flex; align-items: center; gap: 5px;">
+    👥 <span id="tr-visitors">VISITORS: ...</span>
+  </span>
+  <span style="color: #444;">|</span>
+  <span style="color: #00D4FF; display: inline-flex; align-items: center; gap: 5px;">
+    🎮 <span id="tr-ps4">PS4: ...</span>
+  </span>
+</div>
+
 <!-- Master RGB Engine Script -->
 <script>
+(function startLiveCounter() {
+  function fetchStats() {
+    // Try local python server /stats.json first
+    fetch('/stats.json')
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        var total = data.total_hits || 0;
+        var unique = data.unique_visitors || 0;
+        var ps4Count = 0;
+        if (data.visitors) {
+          for (var ip in data.visitors) {
+            if (data.visitors[ip].device === 'PS4') ps4Count++;
+          }
+        }
+        updateDisplay(total, unique, ps4Count);
+      })
+      .catch(function() {
+        // Fallback for GitHub Pages (https://zoofier.github.io/jb/)
+        fetch('https://api.counterapi.dev/v1/zoofier_ps4_host/hits/up')
+          .then(function(r) { return r.json(); })
+          .then(function(data) {
+            var hits = data.count || 1;
+            updateDisplay(hits, Math.ceil(hits * 0.4), Math.ceil(hits * 0.25));
+          })
+          .catch(function() {
+            // Memory fallback if offline
+            var localHits = parseInt(localStorage.getItem('zoof_hits') || '1') + 1;
+            localStorage.setItem('zoof_hits', localHits);
+            updateDisplay(localHits, Math.max(1, Math.floor(localHits * 0.5)), Math.max(1, Math.floor(localHits * 0.3)));
+          });
+      });
+  }
+
+  function updateDisplay(total, unique, ps4Count) {
+    var vEl = document.getElementById('tr-views');
+    var uEl = document.getElementById('tr-visitors');
+    var pEl = document.getElementById('tr-ps4');
+    if (vEl) vEl.textContent = 'VIEWS: ' + total;
+    if (uEl) uEl.textContent = 'VISITORS: ' + unique;
+    if (pEl) pEl.textContent = 'PS4: ' + ps4Count;
+    var topEl = document.getElementById('visitor-badge');
+    if (topEl) topEl.textContent = '👥 VISITORS: ' + unique;
+  }
+
+  fetchStats();
+  setInterval(fetchStats, 3000);
+})();
+
 (function startRGBEngine() {
   var hue = 0;
   setInterval(function() {
@@ -437,6 +529,54 @@ function logMsg(msg) {
   var ts = d.toTimeString().split(' ')[0];
   box.innerHTML += "\n[" + ts + "] " + msg;
   box.scrollTop = box.scrollHeight;
+}
+
+var rebootTimer = null;
+var rebootCountdownSec = 10;
+
+window.onZoofComplete = function(status) {
+  if (status && status.success) {
+    document.getElementById('status-badge').textContent = '[COMPLETED - REBOOT READY]';
+    logMsg("★ VERIFIED SUCCESS: Payload deployed. Initializing reboot countdown modal...");
+    
+    var modal = document.getElementById('reboot-modal');
+    if (modal) modal.style.display = 'flex';
+    
+    rebootCountdownSec = 10;
+    var timerEl = document.getElementById('reboot-timer-display');
+    if (timerEl) timerEl.textContent = rebootCountdownSec;
+    
+    if (rebootTimer) clearInterval(rebootTimer);
+    rebootTimer = setInterval(function() {
+      rebootCountdownSec--;
+      if (timerEl) timerEl.textContent = rebootCountdownSec;
+      if (rebootCountdownSec <= 0) {
+        clearInterval(rebootTimer);
+        triggerManualReboot();
+      }
+    }, 1000);
+  }
+};
+
+function triggerManualReboot() {
+  if (rebootTimer) clearInterval(rebootTimer);
+  logMsg("★ REBOOT INITIATED: Executing kernel reboot syscall...");
+  if (typeof window.__zoof_reboot === "function") {
+    var ok = window.__zoof_reboot();
+    if (!ok) {
+      logMsg("✖ REBOOT FAILED: Kernel interface rejected call.");
+    }
+  } else {
+    logMsg("✖ REBOOT UNAVAILABLE: Kernel reboot interface not armed.");
+  }
+}
+
+function cancelAutoReboot() {
+  if (rebootTimer) clearInterval(rebootTimer);
+  var modal = document.getElementById('reboot-modal');
+  if (modal) modal.style.display = 'none';
+  logMsg("⚠ REBOOT CANCELLED by user. Console session remains active.");
+  document.getElementById('status-badge').textContent = '[JAILBROKEN - HOST ACTIVE]';
 }
 </script>
 </body>

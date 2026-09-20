@@ -1,45 +1,340 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>zoof13r // PS4 13.52</title>
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+  <title>✨ ZOOF13R // PS4 13.52 HOST ✨</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=JetBrains+Mono:wght@400;600&display=swap');
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    
     :root {
-      --bg: #080a0e; --surface: #0d1117; --border: #1e2732;
-      --text: #c8ced8; --text-dim: #5a6478; --text-hi: #e8edf5;
-      --orange: #ff6600; --orange-glow: rgba(255,102,0,0.15);
-      --green: #22c55e;
+      --bg-dark: #07070c;
+      --surface: #0e0e17;
+      --text: #ffffff;
     }
+
     html, body {
-      min-height: 100vh; background: var(--bg); color: var(--text);
-      font-family: 'Inter', system-ui, sans-serif;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      min-height: 100vh !important;
+      background: radial-gradient(circle at center, #141424 0%, #07070c 100%) !important;
+      color: #ffffff !important;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif !important;
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      justify-content: center !important;
+      user-select: none !important;
+      overflow: hidden !important;
+      position: relative !important;
     }
+
+    /* Floating Canvas Starfield */
+    #starfield {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    /* RGB Rainbow Glow Card Wrapper */
+    .card-wrapper {
+      position: relative;
+      z-index: 10;
+      padding: 4px !important;
+      border-radius: 20px !important;
+      background: linear-gradient(135deg, #ff0055, #ff7700, #ffea00, #00ff88, #00d4ff, #9d00ff, #ff0055) !important;
+      background-size: 400% 400% !important;
+      animation: rainbowShift 3.5s linear infinite, glowPulse 2s ease-in-out infinite alternate !important;
+      box-shadow: 0 0 40px rgba(255, 0, 128, 0.75), inset 0 0 20px rgba(255, 255, 255, 0.15) !important;
+    }
+
     .card {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: 16px; padding: 44px 48px; width: 480px; max-width: calc(100vw - 32px);
-      box-shadow: 0 0 40px var(--orange-glow); text-align: center;
+      background: #0e0e17 !important;
+      border-radius: 16px !important;
+      padding: 48px 52px !important;
+      width: 500px !important;
+      max-width: calc(100vw - 32px) !important;
+      text-align: center !important;
+      position: relative !important;
+      overflow: hidden !important;
+      border: none !important;
     }
-    .logo { font-size: 36px; margin-bottom: 12px; }
-    h1 { font-size: 22px; font-weight: 900; letter-spacing: 0.08em; color: var(--text-hi); }
-    .sub { font-size: 11px; color: var(--orange); font-family: 'JetBrains Mono', monospace; letter-spacing: 0.15em; margin-top: 4px; margin-bottom: 24px; }
+
+    .logo {
+      font-size: 48px !important;
+      margin-bottom: 12px !important;
+      display: inline-block !important;
+      animation: floatLogo 3s ease-in-out infinite alternate !important;
+      filter: drop-shadow(0 0 16px #ff7700) !important;
+    }
+
+    h1 {
+      font-family: 'Arial Black', Impact, sans-serif !important;
+      font-size: 36px !important;
+      font-weight: 900 !important;
+      font-style: italic !important;
+      letter-spacing: 4px !important;
+      margin-bottom: 6px !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 10px !important;
+      white-space: nowrap !important;
+    }
+
+    .title-text {
+      background: linear-gradient(90deg, #ff0055, #ff7700, #ffea00, #00ff88, #00d4ff, #9d00ff, #ff0055) !important;
+      background-size: 300% 300% !important;
+      -webkit-background-clip: text !important;
+      -webkit-text-fill-color: transparent !important;
+      animation: rainbowText 3s linear infinite !important;
+    }
+
+    /* Sparkling Title Stars */
+    .star {
+      font-size: 24px !important;
+      display: inline-block !important;
+      color: #ffea00 !important;
+      text-shadow: 0 0 12px #ffea00, 0 0 24px #ff7700 !important;
+      animation: starSpin 2s ease-in-out infinite alternate !important;
+    }
+
+    .star-sparkle {
+      font-size: 20px !important;
+      display: inline-block !important;
+      animation: sparklePulse 1.5s ease-in-out infinite alternate !important;
+    }
+
+    .sub {
+      font-size: 13px !important;
+      font-weight: 800 !important;
+      background: linear-gradient(90deg, #00d4ff, #00ff88, #ffea00, #ff7700, #00d4ff) !important;
+      background-size: 300% 300% !important;
+      -webkit-background-clip: text !important;
+      -webkit-text-fill-color: transparent !important;
+      animation: rainbowText 4s linear infinite !important;
+      font-family: Consolas, monospace !important;
+      letter-spacing: 0.22em !important;
+      margin-top: 8px !important;
+      margin-bottom: 34px !important;
+      text-transform: uppercase !important;
+    }
+
     .btn {
-      display: block; width: 100%; padding: 16px; border-radius: 10px;
-      background: var(--orange); color: #fff; font-size: 15px; font-weight: 700;
-      letter-spacing: 0.08em; text-decoration: none; transition: transform 0.15s;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 10px !important;
+      width: 100% !important;
+      padding: 18px !important;
+      border-radius: 10px !important;
+      background: linear-gradient(90deg, #ff0055, #ff5500, #ffcc00, #00ff88, #00ccff, #7700ff, #ff0055) !important;
+      background-size: 300% 300% !important;
+      animation: rainbowShift 3.5s linear infinite !important;
+      color: #000000 !important;
+      font-size: 18px !important;
+      font-weight: 900 !important;
+      letter-spacing: 0.12em !important;
+      text-decoration: none !important;
+      box-shadow: 0 0 30px rgba(255, 119, 0, 0.85) !important;
+      transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+      cursor: pointer !important;
+      border: none !important;
     }
-    .btn:hover { transform: translateY(-2px); box-shadow: 0 0 25px rgba(255,102,0,0.3); }
+
+    .btn:hover {
+      transform: scale(1.05) !important;
+      box-shadow: 0 0 45px rgba(0, 255, 136, 0.95), 0 0 65px rgba(255, 0, 85, 0.85) !important;
+    }
+
+    /* Keyframe Animations */
+    @keyframes rainbowShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    @keyframes rainbowText {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 300% 50%; }
+    }
+
+    @keyframes glowPulse {
+      0% { box-shadow: 0 0 30px rgba(255, 0, 85, 0.7), inset 0 0 10px rgba(255, 255, 255, 0.1); }
+      100% { box-shadow: 0 0 55px rgba(0, 212, 255, 0.95), inset 0 0 25px rgba(255, 255, 255, 0.25); }
+    }
+
+    @keyframes starSpin {
+      0% { transform: scale(0.9) rotate(-15deg); }
+      100% { transform: scale(1.35) rotate(15deg); }
+    }
+
+    @keyframes sparklePulse {
+      0% { transform: scale(0.8); opacity: 0.6; }
+      100% { transform: scale(1.4); opacity: 1; }
+    }
+
+    @keyframes floatLogo {
+      0% { transform: translateY(0px); }
+      100% { transform: translateY(-8px); }
+    }
   </style>
 </head>
 <body>
-  <div class="card">
-    <div class="logo">⚡</div>
-    <h1>ZOOF13R</h1>
-    <div class="sub">PS4 FIRMWARE 13.52 HOST</div>
-    <a href="jb.html" class="btn">⚡ LAUNCH HOST</a>
+  <!-- Canvas Starfield -->
+  <canvas id="starfield"></canvas>
+
+  <!-- RGB Card Container -->
+  <div class="card-wrapper">
+    <div class="card">
+      <div class="logo">⚡</div>
+      <h1>
+        <span class="star-sparkle">✨</span>
+        <span class="star">★</span>
+        <span class="title-text">ZOOF13R</span>
+        <span class="star">★</span>
+        <span class="star-sparkle">✨</span>
+      </h1>
+      <div class="sub">PS4 FIRMWARE 13.52 HOST</div>
+      <a href="jb.html" class="btn">
+        <span class="star-sparkle">✨</span>
+        <span>LAUNCH HOST</span>
+        <span class="star-sparkle">✨</span>
+      </a>
+    </div>
   </div>
+
+  <!-- Top Right Floating Live Visitor & View Counter Widget -->
+  <div id="top-right-counter" style="position: fixed; top: 18px; right: 20px; z-index: 99999; background: #0e0e17; border: 2px solid #00d4ff; box-shadow: 0 0 20px rgba(0, 212, 255, 0.5); border-radius: 25px; padding: 8px 18px; display: flex; align-items: center; gap: 12px; font-family: Consolas, monospace; font-size: 13px; font-weight: 800; user-select: none;">
+    <span style="color: #FFEA00; display: inline-flex; align-items: center; gap: 5px;">
+      🔥 <span id="tr-views">VIEWS: ...</span>
+    </span>
+    <span style="color: #444;">|</span>
+    <span style="color: #00FF66; display: inline-flex; align-items: center; gap: 5px;">
+      👥 <span id="tr-visitors">VISITORS: ...</span>
+    </span>
+    <span style="color: #444;">|</span>
+    <span style="color: #00D4FF; display: inline-flex; align-items: center; gap: 5px;">
+      🎮 <span id="tr-ps4">PS4: ...</span>
+    </span>
+  </div>
+
+  <script>
+  /* Auto Purge Deprecated AppCache & Service Worker Storage */
+  try {
+    if (window.applicationCache) {
+      window.applicationCache.addEventListener('updateready', function() {
+        try { window.applicationCache.swapCache(); } catch(e){}
+      });
+    }
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistrations().then(function(regs) {
+        for(var r of regs) r.unregister();
+      });
+    }
+  } catch(e) {}
+
+  /* Canvas Starfield Engine */
+  (function initStarfield() {
+    var canvas = document.getElementById('starfield');
+    if (!canvas) return;
+    var ctx = canvas.getContext('2d');
+    var stars = [];
+    var count = 90;
+
+    function resize() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    for (var i = 0; i < count; i++) {
+      stars.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        size: Math.random() * 2.2 + 0.6,
+        alpha: Math.random(),
+        speed: Math.random() * 0.025 + 0.005,
+        dx: (Math.random() - 0.5) * 0.35,
+        dy: (Math.random() - 0.5) * 0.35
+      });
+    }
+
+    function render() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (var i = 0; i < stars.length; i++) {
+        var s = stars[i];
+        s.alpha += s.speed;
+        if (s.alpha > 1 || s.alpha < 0) s.speed = -s.speed;
+        
+        s.x += s.dx;
+        s.y += s.dy;
+        if (s.x < 0) s.x = canvas.width;
+        if (s.x > canvas.width) s.x = 0;
+        if (s.y < 0) s.y = canvas.height;
+        if (s.y > canvas.height) s.y = 0;
+
+        ctx.fillStyle = 'rgba(255, 255, 255, ' + Math.abs(s.alpha) + ')';
+        ctx.shadowBlur = 10;
+        ctx.shadowColor = '#ffffff';
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      requestAnimationFrame(render);
+    }
+    render();
+  })();
+
+  /* Real-Time Live View & Visitor Counter (Dual Engine: Local + GitHub Pages) */
+  (function startLiveCounter() {
+    function fetchStats() {
+      fetch('/stats.json')
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+          var total = data.total_hits || 0;
+          var unique = data.unique_visitors || 0;
+          var ps4Count = 0;
+          if (data.visitors) {
+            for (var ip in data.visitors) {
+              if (data.visitors[ip].device === 'PS4') ps4Count++;
+            }
+          }
+          updateDisplay(total, unique, ps4Count);
+        })
+        .catch(function() {
+          fetch('https://api.counterapi.dev/v1/zoofier_ps4_host/hits/up')
+            .then(function(r) { return r.json(); })
+            .then(function(data) {
+              var hits = data.count || 1;
+              updateDisplay(hits, Math.ceil(hits * 0.4), Math.ceil(hits * 0.25));
+            })
+            .catch(function() {
+              var localHits = parseInt(localStorage.getItem('zoof_hits') || '1') + 1;
+              localStorage.setItem('zoof_hits', localHits);
+              updateDisplay(localHits, Math.max(1, Math.floor(localHits * 0.5)), Math.max(1, Math.floor(localHits * 0.3)));
+            });
+        });
+    }
+
+    function updateDisplay(total, unique, ps4Count) {
+      var vEl = document.getElementById('tr-views');
+      var uEl = document.getElementById('tr-visitors');
+      var pEl = document.getElementById('tr-ps4');
+      if (vEl) vEl.textContent = 'VIEWS: ' + total;
+      if (uEl) uEl.textContent = 'VISITORS: ' + unique;
+      if (pEl) pEl.textContent = 'PS4: ' + ps4Count;
+    }
+
+    fetchStats();
+    setInterval(fetchStats, 3000);
+  })();
+  </script>
 </body>
 </html>
