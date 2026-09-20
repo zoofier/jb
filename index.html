@@ -14,6 +14,7 @@
       --bg-dark: #07070c;
       --surface: #0e0e17;
       --text: #ffffff;
+      --theme-accent: #00d4ff;
     }
 
     html, body {
@@ -32,10 +33,11 @@
       user-select: none !important;
       overflow: hidden !important;
       position: relative !important;
+      transition: background 0.5s ease !important;
     }
 
-    /* Floating Canvas Starfield Backdrop */
-    #starfield {
+    /* Fixed Full-Screen Canvas Engine */
+    #fx-canvas {
       position: fixed !important;
       top: 0 !important;
       left: 0 !important;
@@ -45,7 +47,106 @@
       pointer-events: none !important;
     }
 
-    /* RGB Rainbow Glow Card Wrapper */
+    /* Lightning Flash Effect Backdrop Overlay */
+    #lightning-flash {
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      background: rgba(255, 255, 255, 0.85);
+      z-index: 2;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.05s ease-out;
+    }
+
+    /* Top Left Header Theme Switcher Widget */
+    #theme-selector-container {
+      position: fixed;
+      top: 18px;
+      left: 20px;
+      z-index: 99999;
+      font-family: Consolas, monospace;
+      user-select: none;
+    }
+
+    .theme-btn {
+      background: #0e0e17;
+      border: 2px solid var(--theme-accent, #00d4ff);
+      box-shadow: 0 0 15px rgba(0, 212, 255, 0.4);
+      color: #ffffff;
+      padding: 8px 16px;
+      border-radius: 25px;
+      font-size: 13px;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.3s ease;
+    }
+
+    .theme-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 25px rgba(0, 212, 255, 0.8);
+    }
+
+    .theme-menu {
+      position: absolute;
+      top: 42px;
+      left: 0;
+      background: #0e0e17;
+      border: 2px solid var(--theme-accent, #00d4ff);
+      box-shadow: 0 0 25px rgba(0, 0, 0, 0.8);
+      border-radius: 14px;
+      padding: 8px;
+      display: none;
+      flex-direction: column;
+      gap: 6px;
+      min-width: 220px;
+    }
+
+    .theme-option {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid transparent;
+      color: #ffffff;
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: all 0.2s ease;
+    }
+
+    .theme-option:hover {
+      background: rgba(0, 212, 255, 0.15);
+      border-color: var(--theme-accent, #00d4ff);
+      color: var(--theme-accent, #00d4ff);
+    }
+
+    /* Top Right Floating Visitor Counter Widget */
+    #top-right-counter {
+      position: fixed;
+      top: 18px;
+      right: 20px;
+      z-index: 99999;
+      background: #0e0e17;
+      border: 2px solid var(--theme-accent, #00d4ff);
+      box-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+      border-radius: 25px;
+      padding: 8px 18px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: Consolas, monospace;
+      font-size: 13px;
+      font-weight: 800;
+      user-select: none;
+      transition: all 0.3s ease;
+    }
+
+    /* RGB Rainbow Glow Card Wrapper (Default Theme) */
     .card-wrapper {
       position: relative;
       z-index: 10;
@@ -55,6 +156,38 @@
       background-size: 400% 400% !important;
       animation: rainbowShift 3.5s linear infinite, glowPulse 2s ease-in-out infinite alternate !important;
       box-shadow: 0 0 40px rgba(255, 0, 128, 0.75), inset 0 0 20px rgba(255, 255, 255, 0.15) !important;
+      transition: all 0.5s ease !important;
+    }
+
+    /* Theme Variations for Card Wrapper */
+    body.theme-lightning-mode {
+      background: radial-gradient(circle at center, #1b0a2a 0%, #06020a 100%) !important;
+    }
+    body.theme-lightning-mode .card-wrapper {
+      background: linear-gradient(135deg, #00f0ff, #a855f7, #3b82f6, #00f0ff) !important;
+      background-size: 300% 300% !important;
+      animation: rainbowShift 2.5s linear infinite, lightningGlow 1.5s ease-in-out infinite alternate !important;
+      box-shadow: 0 0 50px rgba(0, 240, 255, 0.85) !important;
+    }
+
+    body.theme-acid-mode {
+      background: radial-gradient(circle at center, #05200f 0%, #020b05 100%) !important;
+    }
+    body.theme-acid-mode .card-wrapper {
+      background: linear-gradient(135deg, #00ff66, #10b981, #adff2f, #00ff66) !important;
+      background-size: 300% 300% !important;
+      animation: rainbowShift 3s linear infinite, acidGlow 2s ease-in-out infinite alternate !important;
+      box-shadow: 0 0 45px rgba(0, 255, 102, 0.85) !important;
+    }
+
+    body.theme-gold-mode {
+      background: radial-gradient(circle at center, #241a05 0%, #0c0802 100%) !important;
+    }
+    body.theme-gold-mode .card-wrapper {
+      background: linear-gradient(135deg, #ffea00, #ff7700, #ffaa00, #ffea00) !important;
+      background-size: 300% 300% !important;
+      animation: rainbowShift 3s linear infinite, goldGlow 2s ease-in-out infinite alternate !important;
+      box-shadow: 0 0 45px rgba(255, 234, 0, 0.85) !important;
     }
 
     .card {
@@ -99,7 +232,6 @@
       animation: rainbowText 3s linear infinite !important;
     }
 
-    /* Sparkling Title Stars */
     .star {
       font-size: 24px !important;
       display: inline-block !important;
@@ -162,27 +294,34 @@
       50% { background-position: 100% 50%; }
       100% { background-position: 0% 50%; }
     }
-
     @keyframes rainbowText {
       0% { background-position: 0% 50%; }
       100% { background-position: 300% 50%; }
     }
-
     @keyframes glowPulse {
-      0% { box-shadow: 0 0 30px rgba(255, 0, 85, 0.7), inset 0 0 10px rgba(255, 255, 255, 0.1); }
-      100% { box-shadow: 0 0 55px rgba(0, 212, 255, 0.95), inset 0 0 25px rgba(255, 255, 255, 0.25); }
+      0% { box-shadow: 0 0 30px rgba(255, 0, 85, 0.7); }
+      100% { box-shadow: 0 0 55px rgba(0, 212, 255, 0.95); }
     }
-
+    @keyframes lightningGlow {
+      0% { box-shadow: 0 0 30px rgba(0, 240, 255, 0.6); }
+      100% { box-shadow: 0 0 60px rgba(168, 85, 247, 0.95); }
+    }
+    @keyframes acidGlow {
+      0% { box-shadow: 0 0 30px rgba(0, 255, 102, 0.6); }
+      100% { box-shadow: 0 0 60px rgba(173, 255, 47, 0.95); }
+    }
+    @keyframes goldGlow {
+      0% { box-shadow: 0 0 30px rgba(255, 234, 0, 0.6); }
+      100% { box-shadow: 0 0 60px rgba(255, 119, 0, 0.95); }
+    }
     @keyframes starSpin {
       0% { transform: scale(0.9) rotate(-15deg); }
       100% { transform: scale(1.35) rotate(15deg); }
     }
-
     @keyframes sparklePulse {
       0% { transform: scale(0.8); opacity: 0.6; }
       100% { transform: scale(1.4); opacity: 1; }
     }
-
     @keyframes floatLogo {
       0% { transform: translateY(0px); }
       100% { transform: translateY(-8px); }
@@ -190,10 +329,48 @@
   </style>
 </head>
 <body>
-  <!-- Canvas Starfield -->
-  <canvas id="starfield"></canvas>
+  <!-- Canvas FX Backdrop Engine -->
+  <canvas id="fx-canvas"></canvas>
+  <div id="lightning-flash"></div>
 
-  <!-- RGB Card Container -->
+  <!-- Top Left Theme Switcher Button & Dropdown -->
+  <div id="theme-selector-container">
+    <button class="theme-btn" onclick="toggleThemeMenu()">
+      <span>🎨 THEMES</span>
+      <span style="font-size: 10px;">▼</span>
+    </button>
+    <div id="theme-menu" class="theme-menu">
+      <div class="theme-option" onclick="setTheme('rgb')">
+        <span>🌌</span> <span>Cyber RGB Starfield</span>
+      </div>
+      <div class="theme-option" onclick="setTheme('lightning')">
+        <span>⚡</span> <span>Lightning Storm Rain</span>
+      </div>
+      <div class="theme-option" onclick="setTheme('acid')">
+        <span>☣️</span> <span>Acid Rain Matrix</span>
+      </div>
+      <div class="theme-option" onclick="setTheme('gold')">
+        <span>👑</span> <span>GoldHEN Obsidian</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Top Right Floating Visitor Counter Widget -->
+  <div id="top-right-counter">
+    <span style="color: #FFEA00; display: inline-flex; align-items: center; gap: 5px;">
+      🔥 <span id="tr-streak">STREAK: ...</span>
+    </span>
+    <span style="color: #444;">|</span>
+    <span style="color: #00FF66; display: inline-flex; align-items: center; gap: 5px;">
+      👥 <span id="tr-visited">VISITED: ...</span>
+    </span>
+    <span style="color: #444;">|</span>
+    <span style="color: #00D4FF; display: inline-flex; align-items: center; gap: 5px;">
+      🎮 <span id="tr-ps4">PS4: ...</span>
+    </span>
+  </div>
+
+  <!-- RGB Main Card Container -->
   <div class="card-wrapper">
     <div class="card">
       <div class="logo">⚡</div>
@@ -213,52 +390,76 @@
     </div>
   </div>
 
-  <!-- Top Right Floating Live Visitor & View Counter Widget -->
-  <div id="top-right-counter" style="position: fixed; top: 18px; right: 20px; z-index: 99999; background: #0e0e17; border: 2px solid #00d4ff; box-shadow: 0 0 20px rgba(0, 212, 255, 0.5); border-radius: 25px; padding: 8px 18px; display: flex; align-items: center; gap: 12px; font-family: Consolas, monospace; font-size: 13px; font-weight: 800; user-select: none;">
-    <span style="color: #FFEA00; display: inline-flex; align-items: center; gap: 5px;">
-      🔥 <span id="tr-views">VIEWS: ...</span>
-    </span>
-    <span style="color: #444;">|</span>
-    <span style="color: #00FF66; display: inline-flex; align-items: center; gap: 5px;">
-      👥 <span id="tr-visitors">VISITORS: ...</span>
-    </span>
-    <span style="color: #444;">|</span>
-    <span style="color: #00D4FF; display: inline-flex; align-items: center; gap: 5px;">
-      🎮 <span id="tr-ps4">PS4: ...</span>
-    </span>
-  </div>
-
   <script>
-  /* Auto Purge Deprecated AppCache & Service Worker Storage */
-  try {
-    if (window.applicationCache) {
-      window.applicationCache.addEventListener('updateready', function() {
-        try { window.applicationCache.swapCache(); } catch(e){}
-      });
-    }
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.getRegistrations().then(function(regs) {
-        for(var r of regs) r.unregister();
-      });
-    }
-  } catch(e) {}
+  /* ----------------------------------------------------
+     Master Multi-Theme Engine & Canvas Renderers
+  ---------------------------------------------------- */
+  var currentTheme = localStorage.getItem('zoof_active_theme') || 'lightning';
+  var animFrameId = null;
 
-  /* Canvas Starfield Engine */
-  (function initStarfield() {
-    var canvas = document.getElementById('starfield');
+  function toggleThemeMenu() {
+    var menu = document.getElementById('theme-menu');
+    menu.style.display = (menu.style.display === 'flex') ? 'none' : 'flex';
+  }
+
+  document.addEventListener('click', function(e) {
+    var container = document.getElementById('theme-selector-container');
+    if (container && !container.contains(e.target)) {
+      document.getElementById('theme-menu').style.display = 'none';
+    }
+  });
+
+  function setTheme(themeName) {
+    currentTheme = themeName;
+    localStorage.setItem('zoof_active_theme', themeName);
+    document.getElementById('theme-menu').style.display = 'none';
+
+    document.body.className = '';
+    if (themeName === 'lightning') document.body.classList.add('theme-lightning-mode');
+    if (themeName === 'acid') document.body.classList.add('theme-acid-mode');
+    if (themeName === 'gold') document.body.classList.add('theme-gold-mode');
+
+    // Update accent color variable
+    var accentMap = {
+      rgb: '#00d4ff',
+      lightning: '#00f0ff',
+      acid: '#00ff66',
+      gold: '#ffea00'
+    };
+    document.documentElement.style.setProperty('--theme-accent', accentMap[themeName] || '#00d4ff');
+
+    startCanvasEngine(themeName);
+  }
+
+  function startCanvasEngine(themeName) {
+    if (animFrameId) cancelAnimationFrame(animFrameId);
+    var canvas = document.getElementById('fx-canvas');
     if (!canvas) return;
     var ctx = canvas.getContext('2d');
-    var stars = [];
-    var count = 90;
 
     function resize() {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
     }
+    window.removeEventListener('resize', resize);
     window.addEventListener('resize', resize);
     resize();
 
-    for (var i = 0; i < count; i++) {
+    if (themeName === 'lightning') {
+      runLightningRainEngine(canvas, ctx);
+    } else if (themeName === 'acid') {
+      runAcidRainEngine(canvas, ctx);
+    } else if (themeName === 'gold') {
+      runGoldEmbersEngine(canvas, ctx);
+    } else {
+      runStarfieldEngine(canvas, ctx);
+    }
+  }
+
+  /* 1. Starfield Engine */
+  function runStarfieldEngine(canvas, ctx) {
+    var stars = [];
+    for (var i = 0; i < 90; i++) {
       stars.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
@@ -276,49 +477,175 @@
         var s = stars[i];
         s.alpha += s.speed;
         if (s.alpha > 1 || s.alpha < 0) s.speed = -s.speed;
-        
-        s.x += s.dx;
-        s.y += s.dy;
+        s.x += s.dx; s.y += s.dy;
         if (s.x < 0) s.x = canvas.width;
         if (s.x > canvas.width) s.x = 0;
         if (s.y < 0) s.y = canvas.height;
         if (s.y > canvas.height) s.y = 0;
 
         ctx.fillStyle = 'rgba(255, 255, 255, ' + Math.abs(s.alpha) + ')';
-        ctx.shadowBlur = 10;
-        ctx.shadowColor = '#ffffff';
-        ctx.beginPath();
-        ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
-        ctx.fill();
+        ctx.shadowBlur = 8; ctx.shadowColor = '#ffffff';
+        ctx.beginPath(); ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2); ctx.fill();
       }
-      requestAnimationFrame(render);
+      animFrameId = requestAnimationFrame(render);
     }
     render();
-  })();
+  }
 
-  /* Real-Time Live View & Visitor Counter (Dual Engine: Local + GitHub Pages) */
+  /* 2. Lightning Storm Rain Engine (Electric Plasma Rain & Lightning Strikes) */
+  function runLightningRainEngine(canvas, ctx) {
+    var drops = [];
+    var dropCount = 120;
+    var flashEl = document.getElementById('lightning-flash');
+
+    for (var i = 0; i < dropCount; i++) {
+      drops.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        len: Math.random() * 25 + 10,
+        speed: Math.random() * 14 + 10,
+        color: Math.random() > 0.4 ? 'rgba(0, 240, 255, ' : 'rgba(168, 85, 247, '
+      });
+    }
+
+    function triggerLightningStrike() {
+      if (!flashEl) return;
+      flashEl.style.opacity = '0.9';
+      setTimeout(function() { flashEl.style.opacity = '0'; }, 60);
+      setTimeout(function() { flashEl.style.opacity = '0.6'; }, 120);
+      setTimeout(function() { flashEl.style.opacity = '0'; }, 200);
+
+      // Draw explicit bolt strike across backdrop
+      ctx.strokeStyle = '#ffffff';
+      ctx.lineWidth = 3;
+      ctx.shadowBlur = 20;
+      ctx.shadowColor = '#00f0ff';
+      ctx.beginPath();
+      var sx = Math.random() * canvas.width;
+      var sy = 0;
+      ctx.moveTo(sx, sy);
+      for (var b = 0; b < 6; b++) {
+        sx += (Math.random() - 0.5) * 80;
+        sy += canvas.height / 6;
+        ctx.lineTo(sx, sy);
+      }
+      ctx.stroke();
+    }
+
+    // Trigger strike periodically
+    var strikeInterval = setInterval(function() {
+      if (currentTheme === 'lightning' && Math.random() > 0.4) {
+        triggerLightningStrike();
+      }
+    }, 2800);
+
+    function render() {
+      ctx.fillStyle = 'rgba(7, 7, 12, 0.25)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      for (var i = 0; i < drops.length; i++) {
+        var d = drops[i];
+        d.y += d.speed;
+        if (d.y > canvas.height) {
+          d.y = -d.len;
+          d.x = Math.random() * canvas.width;
+        }
+
+        ctx.strokeStyle = d.color + (Math.random() * 0.5 + 0.5) + ')';
+        ctx.lineWidth = 1.8;
+        ctx.shadowBlur = 10;
+        ctx.shadowColor = '#00f0ff';
+        ctx.beginPath();
+        ctx.moveTo(d.x, d.y);
+        ctx.lineTo(d.x - 2, d.y + d.len);
+        ctx.stroke();
+      }
+      animFrameId = requestAnimationFrame(render);
+    }
+    render();
+  }
+
+  /* 3. Acid Rain Matrix Engine */
+  function runAcidRainEngine(canvas, ctx) {
+    var chars = '0123456789ABCDEF⚡★';
+    var fontSize = 14;
+    var columns = Math.floor(canvas.width / fontSize);
+    var rainDrops = [];
+    for (var x = 0; x < columns; x++) rainDrops[x] = 1;
+
+    function render() {
+      ctx.fillStyle = 'rgba(2, 11, 5, 0.15)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = '#00ff66';
+      ctx.font = fontSize + 'px monospace';
+      ctx.shadowBlur = 8;
+      ctx.shadowColor = '#00ff66';
+
+      for (var i = 0; i < rainDrops.length; i++) {
+        var text = chars.charAt(Math.floor(Math.random() * chars.length));
+        ctx.fillText(text, i * fontSize, rainDrops[i] * fontSize);
+        if (rainDrops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+          rainDrops[i] = 0;
+        }
+        rainDrops[i]++;
+      }
+      animFrameId = requestAnimationFrame(render);
+    }
+    render();
+  }
+
+  /* 4. GoldHEN Embers Engine */
+  function runGoldEmbersEngine(canvas, ctx) {
+    var embers = [];
+    for (var i = 0; i < 70; i++) {
+      embers.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        size: Math.random() * 3 + 1,
+        speedY: -(Math.random() * 1.5 + 0.5),
+        speedX: (Math.random() - 0.5) * 0.8,
+        alpha: Math.random()
+      });
+    }
+
+    function render() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (var i = 0; i < embers.length; i++) {
+        var e = embers[i];
+        e.y += e.speedY; e.x += e.speedX;
+        if (e.y < 0) { e.y = canvas.height; e.x = Math.random() * canvas.width; }
+
+        ctx.fillStyle = 'rgba(255, 234, 0, ' + e.alpha + ')';
+        ctx.shadowBlur = 12; ctx.shadowColor = '#ff7700';
+        ctx.beginPath(); ctx.arc(e.x, e.y, e.size, 0, Math.PI * 2); ctx.fill();
+      }
+      animFrameId = requestAnimationFrame(render);
+    }
+    render();
+  }
+
+  // Initialize selected theme on boot
+  setTheme(currentTheme);
+
+  /* Real-Time Live View & Visitor Counter */
   (function startLiveCounter() {
     function fetchStats() {
-      // 1. Try local server endpoint /stats.json
       fetch('/stats.json')
         .then(function(r) { return r.json(); })
         .then(function(data) {
-          var total = data.total_hits || 48;
-          var unique = data.unique_visitors || 22;
+          var total = data.total_hits || 49;
+          var unique = data.unique_visitors || 23;
           var ps4Count = 0;
           if (data.visitors) {
             for (var ip in data.visitors) {
               if (data.visitors[ip].device === 'PS4') ps4Count++;
             }
           }
-          updateDisplay(total, unique, Math.max(7, ps4Count));
+          updateDisplay(total, unique, Math.max(8, ps4Count));
         })
         .catch(function() {
-          // 2. Persistent Client & Cloud Counter Engine (for GitHub Pages zoofier.github.io)
-          var baseStreak = parseInt(localStorage.getItem('zoof_streak') || '48');
-          var baseVisited = parseInt(localStorage.getItem('zoof_visited') || '22');
-          
-          // Increment on page visit
+          var baseStreak = parseInt(localStorage.getItem('zoof_streak') || '49');
+          var baseVisited = parseInt(localStorage.getItem('zoof_visited') || '23');
           if (!sessionStorage.getItem('zoof_counted')) {
             sessionStorage.setItem('zoof_counted', '1');
             baseStreak += 1;
@@ -329,8 +656,7 @@
             localStorage.setItem('zoof_streak', baseStreak);
             localStorage.setItem('zoof_visited', baseVisited);
           }
-          
-          var ps4Count = Math.max(7, Math.ceil(baseVisited * 0.35));
+          var ps4Count = Math.max(8, Math.ceil(baseVisited * 0.35));
           updateDisplay(baseStreak, baseVisited, ps4Count);
         });
     }

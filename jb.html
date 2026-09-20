@@ -406,11 +406,91 @@ html, body {
         </div>
       </div>
 
+      <!-- Live Multi-Stage Exploit Progress & Loading System Overlay -->
+      <div id="exploit-loading-overlay" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(7,7,12,0.94); z-index:999999; backdrop-filter:blur(8px); align-items:center; justify-content:center; flex-direction:column; padding:20px; user-select:none;">
+        <div class="card-panel rgb-border" style="width:580px; max-width:calc(100vw - 32px); padding:36px; background:#0e0e17; text-align:center; border-radius:16px; box-shadow: 0 0 50px var(--rgb-shadow);">
+          
+          <div id="loading-stage-badge" style="display:inline-block; padding:4px 14px; border-radius:20px; background:rgba(255,102,0,0.15); border:1px solid var(--rgb-color); color:var(--rgb-color); font-family:Consolas, monospace; font-size:12px; font-weight:800; margin-bottom:12px; letter-spacing:1px;">
+            [STAGE 1/6] INITIALIZING EXPLOIT CHAIN
+          </div>
+          
+          <div id="loading-title" style="font-family:'Arial Black', Impact, sans-serif; font-size:24px; font-weight:900; font-style:italic; color:#fff; margin-bottom:6px; letter-spacing:1px;">
+            EXECUTING WEBKIT PRIMITIVE...
+          </div>
+          
+          <div id="loading-subtext" style="color:#aaa; font-size:13px; font-family:Consolas, monospace; margin-bottom:24px;">
+            Preparing memory layout & spray buffers
+          </div>
+          
+          <div style="width:100%; height:20px; background:#1A1A1A; border:1px solid #333; border-radius:10px; overflow:hidden; position:relative; margin-bottom:12px; padding:2px;">
+            <div id="loading-progress-bar" style="width:5%; height:100%; border-radius:8px; background:linear-gradient(90deg, #ff0055, #ff7700, #ffea00, #00ff88, #00d4ff); background-size:300% 300%; animation:rainbowShift 3s linear infinite; transition:width 0.25s ease-out; box-shadow:0 0 15px var(--rgb-color);"></div>
+          </div>
+          
+          <div style="display:flex; justify-content:space-between; font-family:Consolas, monospace; font-size:13px; font-weight:700; color:#fff; margin-bottom:20px;">
+            <span id="loading-pct-text" style="color:var(--rgb-color);">05%</span>
+            <span id="loading-timer-text" style="color:#888;">ELAPSED: 00.0s</span>
+          </div>
+          
+          <div id="loading-detail-box" style="background:#050508; border:1px solid #222; border-radius:8px; padding:10px 14px; font-family:Consolas, monospace; font-size:11px; color:var(--green); text-align:left; height:48px; overflow:hidden; white-space:nowrap; text-overflow:ellipsis;">
+            &gt; Initializing WebKit exploit pipeline...
+          </div>
+          
+          <div id="loading-error-actions" style="display:none; margin-top:20px; gap:12px; justify-content:center;">
+            <button class="btn-primary" onclick="retryJailbreakNow()" style="flex:1; padding:12px; font-size:14px;">⚡ RETRY JAILBREAK</button>
+            <button class="btn-primary" onclick="triggerManualReboot()" style="flex:1; padding:12px; font-size:14px; background:#ff0055 !important; color:#fff !important; box-shadow:none !important;">🔄 COLD REBOOT PS4</button>
+          </div>
+
+        </div>
+      </div>
+
     </div>
 
   </div>
 
 </div>
+
+<!-- Top Left Floating Theme Selector Widget -->
+<div id="theme-selector-container" style="position: fixed; top: 18px; left: 20px; z-index: 99999; font-family: Consolas, monospace; user-select: none;">
+  <button class="theme-btn" onclick="toggleThemeMenu()" style="background: #0e0e17; border: 2px solid var(--rgb-color, #00d4ff); box-shadow: 0 0 15px var(--rgb-shadow, rgba(0,212,255,0.4)); color: #ffffff; padding: 8px 16px; border-radius: 25px; font-size: 13px; font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: all 0.3s ease;">
+    <span>🎨 THEMES</span>
+    <span style="font-size: 10px;">▼</span>
+  </button>
+  <div id="theme-menu" class="theme-menu" style="position: absolute; top: 42px; left: 0; background: #0e0e17; border: 2px solid var(--rgb-color, #00d4ff); box-shadow: 0 0 25px rgba(0, 0, 0, 0.8); border-radius: 14px; padding: 8px; display: none; flex-direction: column; gap: 6px; min-width: 220px;">
+    <div class="theme-option" onclick="setTheme('rgb')" style="background: rgba(255,255,255,0.03); padding: 10px 14px; border-radius: 8px; font-size: 12px; font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 10px; color: #fff;">
+      <span>🌌</span> <span>Cyber RGB Starfield</span>
+    </div>
+    <div class="theme-option" onclick="setTheme('lightning')" style="background: rgba(255,255,255,0.03); padding: 10px 14px; border-radius: 8px; font-size: 12px; font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 10px; color: #fff;">
+      <span>⚡</span> <span>Lightning Storm Rain</span>
+    </div>
+    <div class="theme-option" onclick="setTheme('acid')" style="background: rgba(255,255,255,0.03); padding: 10px 14px; border-radius: 8px; font-size: 12px; font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 10px; color: #fff;">
+      <span>☣️</span> <span>Acid Rain Matrix</span>
+    </div>
+    <div class="theme-option" onclick="setTheme('gold')" style="background: rgba(255,255,255,0.03); padding: 10px 14px; border-radius: 8px; font-size: 12px; font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 10px; color: #fff;">
+      <span>👑</span> <span>GoldHEN Obsidian</span>
+    </div>
+  </div>
+</div>
+
+<script>
+function toggleThemeMenu() {
+  var menu = document.getElementById('theme-menu');
+  if (menu) menu.style.display = (menu.style.display === 'flex') ? 'none' : 'flex';
+}
+document.addEventListener('click', function(e) {
+  var container = document.getElementById('theme-selector-container');
+  if (container && !container.contains(e.target)) {
+    var menu = document.getElementById('theme-menu');
+    if (menu) menu.style.display = 'none';
+  }
+});
+function setTheme(themeName) {
+  localStorage.setItem('zoof_active_theme', themeName);
+  var menu = document.getElementById('theme-menu');
+  if (menu) menu.style.display = 'none';
+  if (window.opener && window.opener.setTheme) window.opener.setTheme(themeName);
+  location.reload();
+}
+</script>
 
 <!-- Top Right Floating Live Visitor & View Counter Widget -->
 <div id="top-right-counter" style="position: fixed; top: 18px; right: 20px; z-index: 99999; background: #0A0A0A; border: 2px solid var(--rgb-color); box-shadow: 0 0 20px var(--rgb-shadow); border-radius: 25px; padding: 8px 18px; display: flex; align-items: center; gap: 12px; font-family: Consolas, monospace; font-size: 13px; font-weight: 800; user-select: none;">
@@ -522,11 +602,92 @@ function switchTab(tabId) {
   });
 }
 
+var timerInterval = null;
+var startTime = 0;
+
 function launchJB(query) {
-  logMsg("Navigating to WebKit Exploit Engine (run.html)...");
+  logMsg("Initiating WebKit Exploit Engine...");
+  
+  var overlay = document.getElementById('exploit-loading-overlay');
+  if (overlay) overlay.style.display = 'flex';
+  
+  var errActions = document.getElementById('loading-error-actions');
+  if (errActions) errActions.style.display = 'none';
+
+  startTime = Date.now();
+  if (timerInterval) clearInterval(timerInterval);
+  timerInterval = setInterval(function() {
+    var elapsedSec = ((Date.now() - startTime) / 1000).toFixed(1);
+    var timerEl = document.getElementById('loading-timer-text');
+    if (timerEl) timerEl.textContent = "ELAPSED: " + (elapsedSec < 10 ? "0" + elapsedSec : elapsedSec) + "s";
+  }, 100);
+
+  reportExploitProgress(1, "INITIALIZING EXPLOIT CHAIN", 10, "Allocating WebKit spray buffers...");
+
   var target = "./run.html" + (query ? "?" + query : "");
-  window.location.href = target;
+  setTimeout(function() {
+    window.location.href = target;
+  }, 350);
 }
+
+function reportExploitProgress(stage, name, pct, detail) {
+  var overlay = document.getElementById('exploit-loading-overlay');
+  if (overlay && overlay.style.display !== 'flex') overlay.style.display = 'flex';
+
+  var stageEl = document.getElementById('loading-stage-badge');
+  var titleEl = document.getElementById('loading-title');
+  var barEl = document.getElementById('loading-progress-bar');
+  var pctEl = document.getElementById('loading-pct-text');
+  var detailEl = document.getElementById('loading-detail-box');
+
+  if (stageEl) stageEl.textContent = "[STAGE " + stage + "/6] " + name;
+  if (titleEl) titleEl.textContent = name;
+  if (barEl) barEl.style.width = Math.min(100, Math.max(5, pct)) + "%";
+  if (pctEl) pctEl.textContent = (pct < 10 ? "0" + pct : pct) + "%";
+  if (detailEl && detail) detailEl.textContent = "> " + detail;
+  logMsg("[" + stage + "/6] " + name + ": " + (detail || "OK"));
+}
+
+window.reportExploitProgress = reportExploitProgress;
+
+function retryJailbreakNow() {
+  if (timerInterval) clearInterval(timerInterval);
+  var overlay = document.getElementById('exploit-loading-overlay');
+  if (overlay) overlay.style.display = 'none';
+  launchJB();
+}
+
+function showExploitError(errMsg) {
+  if (timerInterval) clearInterval(timerInterval);
+  var stageEl = document.getElementById('loading-stage-badge');
+  var titleEl = document.getElementById('loading-title');
+  var subEl = document.getElementById('loading-subtext');
+  var barEl = document.getElementById('loading-progress-bar');
+  var detailEl = document.getElementById('loading-detail-box');
+  var errActions = document.getElementById('loading-error-actions');
+
+  if (stageEl) {
+    stageEl.textContent = "✖ EXPLOIT FAILED";
+    stageEl.style.borderColor = "#ff0055";
+    stageEl.style.color = "#ff0055";
+    stageEl.style.background = "rgba(255,0,85,0.15)";
+  }
+  if (titleEl) {
+    titleEl.textContent = "FAILED — COLD REBOOT PS4 AND RETRY";
+    titleEl.style.color = "#ff0055";
+  }
+  if (subEl) subEl.textContent = "Memory allocation or kernel primitive check failed";
+  if (barEl) {
+    barEl.style.width = "100%";
+    barEl.style.background = "#ff0055";
+    barEl.style.boxShadow = "0 0 20px #ff0055";
+  }
+  if (detailEl) detailEl.textContent = "ERR: " + (errMsg || "Kernel panic / reclaim miss detected. Reboot required.");
+  if (errActions) errActions.style.display = 'flex';
+  logMsg("✖ EXPLOIT ERROR: " + errMsg);
+}
+
+window.showExploitError = showExploitError;
 
 function logMsg(msg) {
   var box = document.getElementById('log-box');
