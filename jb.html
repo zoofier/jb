@@ -302,9 +302,50 @@ html, body {
   line-height: 1.4;
 }
 
+/* Fixed Full-Screen Canvas Engine */
+#fx-canvas {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  z-index: 0 !important;
+  pointer-events: none !important;
+}
+
+/* Lightning Flash Backdrop Overlay */
+#lightning-flash {
+  position: fixed;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  background: rgba(255, 255, 255, 0.85);
+  z-index: 1;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.05s ease-out;
+}
+
+#app-base {
+  position: relative !important;
+  z-index: 10 !important;
+}
+
+/* Emoji Styling Fix */
+.emoji {
+  display: inline-block !important;
+  font-family: 'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', 'Segoe UI Symbol', sans-serif !important;
+  vertical-align: middle !important;
+  -webkit-text-fill-color: initial !important;
+  background: none !important;
+  font-style: normal !important;
+}
+
 </style>
 </head>
 <body>
+
+<!-- Canvas FX Backdrop Engine -->
+<canvas id="fx-canvas"></canvas>
+<div id="lightning-flash"></div>
 
 <div id="app-base">
 
@@ -312,7 +353,7 @@ html, body {
   <div id="top-bar">
     <div class="brand-left"><span class="star">★</span> ZOOF13R'S <span class="star">★</span></div>
     <div class="brand-center"><span class="star">★</span> WEBKIT <span class="star">★</span></div>
-    <div class="status-badge" id="status-badge">[HOST READY] &bull; <span id="visitor-badge" style="color: var(--green);">👥 VISITORS: --</span></div>
+    <div class="status-badge" id="status-badge">[HOST READY] &bull; <span id="visitor-badge" style="color: var(--green);"><span class="emoji">👥</span> VISITORS: --</span></div>
   </div>
 
   <div id="body-layout">
@@ -400,7 +441,7 @@ html, body {
             10
           </div>
           <div style="display: flex; gap: 15px; justify-content: center;">
-            <button class="btn-primary" onclick="triggerManualReboot()" style="flex: 1; padding: 12px; font-size: 14px;">⚡ REBOOT NOW</button>
+            <button class="btn-primary" onclick="triggerManualReboot()" style="flex: 1; padding: 12px; font-size: 14px;"><span class="emoji">⚡</span> REBOOT NOW</button>
             <button class="btn-primary" onclick="cancelAutoReboot()" style="flex: 1; padding: 12px; font-size: 14px; background:#444 !important; color:#fff !important; box-shadow:none !important;">✖ CANCEL</button>
           </div>
         </div>
@@ -436,8 +477,8 @@ html, body {
           </div>
           
           <div id="loading-error-actions" style="display:none; margin-top:20px; gap:12px; justify-content:center;">
-            <button class="btn-primary" onclick="retryJailbreakNow()" style="flex:1; padding:12px; font-size:14px;">⚡ RETRY JAILBREAK</button>
-            <button class="btn-primary" onclick="triggerManualReboot()" style="flex:1; padding:12px; font-size:14px; background:#ff0055 !important; color:#fff !important; box-shadow:none !important;">🔄 COLD REBOOT PS4</button>
+            <button class="btn-primary" onclick="retryJailbreakNow()" style="flex:1; padding:12px; font-size:14px;"><span class="emoji">⚡</span> RETRY JAILBREAK</button>
+            <button class="btn-primary" onclick="triggerManualReboot()" style="flex:1; padding:12px; font-size:14px; background:#ff0055 !important; color:#fff !important; box-shadow:none !important;"><span class="emoji">🔄</span> COLD REBOOT PS4</button>
           </div>
 
         </div>
@@ -452,30 +493,34 @@ html, body {
 <!-- Top Left Floating Theme Selector Widget -->
 <div id="theme-selector-container" style="position: fixed; top: 18px; left: 20px; z-index: 99999; font-family: Consolas, monospace; user-select: none;">
   <button class="theme-btn" onclick="toggleThemeMenu()" style="background: #0e0e17; border: 2px solid var(--rgb-color, #00d4ff); box-shadow: 0 0 15px var(--rgb-shadow, rgba(0,212,255,0.4)); color: #ffffff; padding: 8px 16px; border-radius: 25px; font-size: 13px; font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: all 0.3s ease;">
-    <span>🎨 THEMES</span>
+    <span class="emoji">🎨</span> <span>THEMES</span>
     <span style="font-size: 10px;">▼</span>
   </button>
   <div id="theme-menu" class="theme-menu" style="position: absolute; top: 42px; left: 0; background: #0e0e17; border: 2px solid var(--rgb-color, #00d4ff); box-shadow: 0 0 25px rgba(0, 0, 0, 0.8); border-radius: 14px; padding: 8px; display: none; flex-direction: column; gap: 6px; min-width: 220px;">
     <div class="theme-option" onclick="setTheme('rgb')" style="background: rgba(255,255,255,0.03); padding: 10px 14px; border-radius: 8px; font-size: 12px; font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 10px; color: #fff;">
-      <span>🌌</span> <span>Cyber RGB Starfield</span>
+      <span class="emoji">🌌</span> <span>Cyber RGB Starfield</span>
     </div>
     <div class="theme-option" onclick="setTheme('lightning')" style="background: rgba(255,255,255,0.03); padding: 10px 14px; border-radius: 8px; font-size: 12px; font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 10px; color: #fff;">
-      <span>⚡</span> <span>Lightning Storm Rain</span>
+      <span class="emoji">⚡</span> <span>Lightning Storm Rain</span>
     </div>
     <div class="theme-option" onclick="setTheme('acid')" style="background: rgba(255,255,255,0.03); padding: 10px 14px; border-radius: 8px; font-size: 12px; font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 10px; color: #fff;">
-      <span>☣️</span> <span>Acid Rain Matrix</span>
+      <span class="emoji">☣️</span> <span>Acid Rain Matrix</span>
     </div>
     <div class="theme-option" onclick="setTheme('gold')" style="background: rgba(255,255,255,0.03); padding: 10px 14px; border-radius: 8px; font-size: 12px; font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 10px; color: #fff;">
-      <span>👑</span> <span>GoldHEN Obsidian</span>
+      <span class="emoji">👑</span> <span>GoldHEN Obsidian</span>
     </div>
   </div>
 </div>
 
 <script>
+var currentTheme = localStorage.getItem('zoof_active_theme') || 'lightning';
+var animFrameId = null;
+
 function toggleThemeMenu() {
   var menu = document.getElementById('theme-menu');
   if (menu) menu.style.display = (menu.style.display === 'flex') ? 'none' : 'flex';
 }
+
 document.addEventListener('click', function(e) {
   var container = document.getElementById('theme-selector-container');
   if (container && !container.contains(e.target)) {
@@ -483,13 +528,223 @@ document.addEventListener('click', function(e) {
     if (menu) menu.style.display = 'none';
   }
 });
-function setTheme(themeName) {
-  localStorage.setItem('zoof_active_theme', themeName);
+
+function setTheme(themeName, saveToStorage) {
+  if (saveToStorage !== false) {
+    localStorage.setItem('zoof_active_theme', themeName);
+  }
+  currentTheme = themeName;
   var menu = document.getElementById('theme-menu');
   if (menu) menu.style.display = 'none';
-  if (window.opener && window.opener.setTheme) window.opener.setTheme(themeName);
-  location.reload();
+
+  document.body.className = '';
+  if (themeName === 'lightning') document.body.classList.add('theme-lightning-mode');
+  if (themeName === 'acid') document.body.classList.add('theme-acid-mode');
+  if (themeName === 'gold') document.body.classList.add('theme-gold-mode');
+
+  var accentMap = {
+    rgb: '#00d4ff',
+    lightning: '#00f0ff',
+    acid: '#00ff66',
+    gold: '#ffea00'
+  };
+  document.documentElement.style.setProperty('--theme-accent', accentMap[themeName] || '#00d4ff');
+
+  startCanvasEngine(themeName);
 }
+
+// Live real-time cross-tab theme synchronization
+window.addEventListener('storage', function(e) {
+  if (e.key === 'zoof_active_theme' && e.newValue) {
+    setTheme(e.newValue, false);
+  }
+});
+
+function startCanvasEngine(themeName) {
+  if (animFrameId) cancelAnimationFrame(animFrameId);
+  var canvas = document.getElementById('fx-canvas');
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+
+  function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  window.removeEventListener('resize', resize);
+  window.addEventListener('resize', resize);
+  resize();
+
+  if (themeName === 'lightning') {
+    runLightningRainEngine(canvas, ctx);
+  } else if (themeName === 'acid') {
+    runAcidRainEngine(canvas, ctx);
+  } else if (themeName === 'gold') {
+    runGoldEmbersEngine(canvas, ctx);
+  } else {
+    runStarfieldEngine(canvas, ctx);
+  }
+}
+
+/* 1. Ultra-Fast Starfield Engine */
+function runStarfieldEngine(canvas, ctx) {
+  var stars = [];
+  for (var i = 0; i < 50; i++) {
+    stars.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      size: Math.random() * 2.2 + 0.6,
+      alpha: Math.random(),
+      speed: Math.random() * 0.025 + 0.005,
+      dx: (Math.random() - 0.5) * 0.35,
+      dy: (Math.random() - 0.5) * 0.35
+    });
+  }
+
+  function render() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    for (var i = 0; i < stars.length; i++) {
+      var s = stars[i];
+      s.alpha += s.speed;
+      if (s.alpha > 1 || s.alpha < 0) s.speed = -s.speed;
+      s.x += s.dx; s.y += s.dy;
+      if (s.x < 0) s.x = canvas.width;
+      if (s.x > canvas.width) s.x = 0;
+      if (s.y < 0) s.y = canvas.height;
+      if (s.y > canvas.height) s.y = 0;
+
+      ctx.fillStyle = 'rgba(255, 255, 255, ' + Math.abs(s.alpha) + ')';
+      ctx.beginPath(); ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2); ctx.fill();
+    }
+    animFrameId = requestAnimationFrame(render);
+  }
+  render();
+}
+
+/* 2. Lightning Storm Rain Engine (Silky 60 FPS) */
+function runLightningRainEngine(canvas, ctx) {
+  var drops = [];
+  var dropCount = 65;
+  var flashEl = document.getElementById('lightning-flash');
+
+  for (var i = 0; i < dropCount; i++) {
+    drops.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      len: Math.random() * 25 + 10,
+      speed: Math.random() * 14 + 10,
+      color: Math.random() > 0.4 ? 'rgba(0, 240, 255, ' : 'rgba(168, 85, 247, '
+    });
+  }
+
+  function triggerLightningStrike() {
+    if (!flashEl) return;
+    flashEl.style.opacity = '0.9';
+    setTimeout(function() { flashEl.style.opacity = '0'; }, 60);
+    setTimeout(function() { flashEl.style.opacity = '0.6'; }, 120);
+    setTimeout(function() { flashEl.style.opacity = '0'; }, 200);
+
+    ctx.strokeStyle = '#ffffff';
+    ctx.lineWidth = 2.5;
+    ctx.beginPath();
+    var sx = Math.random() * canvas.width;
+    var sy = 0;
+    ctx.moveTo(sx, sy);
+    for (var b = 0; b < 6; b++) {
+      sx += (Math.random() - 0.5) * 80;
+      sy += canvas.height / 6;
+      ctx.lineTo(sx, sy);
+    }
+    ctx.stroke();
+  }
+
+  setInterval(function() {
+    if (currentTheme === 'lightning' && Math.random() > 0.4) {
+      triggerLightningStrike();
+    }
+  }, 2800);
+
+  function render() {
+    ctx.fillStyle = 'rgba(7, 7, 12, 0.25)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    for (var i = 0; i < drops.length; i++) {
+      var d = drops[i];
+      d.y += d.speed;
+      if (d.y > canvas.height) {
+        d.y = -d.len;
+        d.x = Math.random() * canvas.width;
+      }
+
+      ctx.strokeStyle = d.color + (Math.random() * 0.5 + 0.5) + ')';
+      ctx.lineWidth = 1.8;
+      ctx.beginPath();
+      ctx.moveTo(d.x, d.y);
+      ctx.lineTo(d.x - 2, d.y + d.len);
+      ctx.stroke();
+    }
+    animFrameId = requestAnimationFrame(render);
+  }
+  render();
+}
+
+/* 3. Acid Rain Matrix Engine (Silky 60 FPS) */
+function runAcidRainEngine(canvas, ctx) {
+  var chars = '0123456789ABCDEF⚡★';
+  var fontSize = 14;
+  var columns = Math.floor(canvas.width / fontSize);
+  var rainDrops = [];
+  for (var x = 0; x < columns; x++) rainDrops[x] = 1;
+
+  function render() {
+    ctx.fillStyle = 'rgba(2, 11, 5, 0.18)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = '#00ff66';
+    ctx.font = fontSize + 'px monospace';
+
+    for (var i = 0; i < rainDrops.length; i++) {
+      var text = chars.charAt(Math.floor(Math.random() * chars.length));
+      ctx.fillText(text, i * fontSize, rainDrops[i] * fontSize);
+      if (rainDrops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+        rainDrops[i] = 0;
+      }
+      rainDrops[i]++;
+    }
+    animFrameId = requestAnimationFrame(render);
+  }
+  render();
+}
+
+/* 4. GoldHEN Embers Engine (Silky 60 FPS) */
+function runGoldEmbersEngine(canvas, ctx) {
+  var embers = [];
+  for (var i = 0; i < 45; i++) {
+    embers.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      size: Math.random() * 3 + 1,
+      speedY: -(Math.random() * 1.5 + 0.5),
+      speedX: (Math.random() - 0.5) * 0.8,
+      alpha: Math.random()
+    });
+  }
+
+  function render() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    for (var i = 0; i < embers.length; i++) {
+      var e = embers[i];
+      e.y += e.speedY; e.x += e.speedX;
+      if (e.y < 0) { e.y = canvas.height; e.x = Math.random() * canvas.width; }
+
+      ctx.fillStyle = 'rgba(255, 234, 0, ' + e.alpha + ')';
+      ctx.beginPath(); ctx.arc(e.x, e.y, e.size, 0, Math.PI * 2); ctx.fill();
+    }
+    animFrameId = requestAnimationFrame(render);
+  }
+  render();
+}
+
+// Initialize selected theme engine on startup
+setTheme(currentTheme);
 </script>
 
 <!-- Top Right Floating Live Visitor & View Counter Widget -->
@@ -580,11 +835,11 @@ function setTheme(themeName) {
     var hexG = Math.round(g * 255).toString(16).padStart(2, '0');
     var hexB = Math.round(b * 255).toString(16).padStart(2, '0');
     var color = '#' + hexR + hexG + hexB;
-    var shadow = 'rgba(' + Math.round(r*255) + ',' + Math.round(g*255) + ',' + Math.round(b*255) + ', 0.6)';
+    var shadow = 'rgba(' + Math.round(r*255) + ',' + Math.round(g*255) + ',' + Math.round(b*255) + ', 0.5)';
 
     document.documentElement.style.setProperty('--rgb-color', color);
     document.documentElement.style.setProperty('--rgb-shadow', shadow);
-  }, 50);
+  }, 120);
 })();
 
 function switchTab(tabId) {

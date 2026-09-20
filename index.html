@@ -326,6 +326,15 @@
       0% { transform: translateY(0px); }
       100% { transform: translateY(-8px); }
     }
+    /* Emoji Styling Fix */
+    .emoji {
+      display: inline-block !important;
+      font-family: 'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', 'Segoe UI Symbol', sans-serif !important;
+      vertical-align: middle !important;
+      -webkit-text-fill-color: initial !important;
+      background: none !important;
+      font-style: normal !important;
+    }
   </style>
 </head>
 <body>
@@ -336,21 +345,21 @@
   <!-- Top Left Theme Switcher Button & Dropdown -->
   <div id="theme-selector-container">
     <button class="theme-btn" onclick="toggleThemeMenu()">
-      <span>🎨 THEMES</span>
+      <span class="emoji">🎨</span> <span>THEMES</span>
       <span style="font-size: 10px;">▼</span>
     </button>
     <div id="theme-menu" class="theme-menu">
       <div class="theme-option" onclick="setTheme('rgb')">
-        <span>🌌</span> <span>Cyber RGB Starfield</span>
+        <span class="emoji">🌌</span> <span>Cyber RGB Starfield</span>
       </div>
       <div class="theme-option" onclick="setTheme('lightning')">
-        <span>⚡</span> <span>Lightning Storm Rain</span>
+        <span class="emoji">⚡</span> <span>Lightning Storm Rain</span>
       </div>
       <div class="theme-option" onclick="setTheme('acid')">
-        <span>☣️</span> <span>Acid Rain Matrix</span>
+        <span class="emoji">☣️</span> <span>Acid Rain Matrix</span>
       </div>
       <div class="theme-option" onclick="setTheme('gold')">
-        <span>👑</span> <span>GoldHEN Obsidian</span>
+        <span class="emoji">👑</span> <span>GoldHEN Obsidian</span>
       </div>
     </div>
   </div>
@@ -358,22 +367,22 @@
   <!-- Top Right Floating Visitor Counter Widget -->
   <div id="top-right-counter">
     <span style="color: #FFEA00; display: inline-flex; align-items: center; gap: 5px;">
-      🔥 <span id="tr-streak">STREAK: ...</span>
+      <span class="emoji">🔥</span> <span id="tr-streak">STREAK: ...</span>
     </span>
     <span style="color: #444;">|</span>
     <span style="color: #00FF66; display: inline-flex; align-items: center; gap: 5px;">
-      👥 <span id="tr-visited">VISITED: ...</span>
+      <span class="emoji">👥</span> <span id="tr-visited">VISITED: ...</span>
     </span>
     <span style="color: #444;">|</span>
     <span style="color: #00D4FF; display: inline-flex; align-items: center; gap: 5px;">
-      🎮 <span id="tr-ps4">PS4: ...</span>
+      <span class="emoji">🎮</span> <span id="tr-ps4">PS4: ...</span>
     </span>
   </div>
 
   <!-- RGB Main Card Container -->
   <div class="card-wrapper">
     <div class="card">
-      <div class="logo">⚡</div>
+      <div class="logo"><span class="emoji">⚡</span></div>
       <h1>
         <span class="star-sparkle">✨</span>
         <span class="star">★</span>
@@ -392,7 +401,7 @@
 
   <script>
   /* ----------------------------------------------------
-     Master Multi-Theme Engine & Canvas Renderers
+     Master Multi-Theme Engine & High-Performance Canvas Renderers
   ---------------------------------------------------- */
   var currentTheme = localStorage.getItem('zoof_active_theme') || 'lightning';
   var animFrameId = null;
@@ -409,17 +418,19 @@
     }
   });
 
-  function setTheme(themeName) {
+  function setTheme(themeName, saveToStorage) {
+    if (saveToStorage !== false) {
+      localStorage.setItem('zoof_active_theme', themeName);
+    }
     currentTheme = themeName;
-    localStorage.setItem('zoof_active_theme', themeName);
-    document.getElementById('theme-menu').style.display = 'none';
+    var menu = document.getElementById('theme-menu');
+    if (menu) menu.style.display = 'none';
 
     document.body.className = '';
     if (themeName === 'lightning') document.body.classList.add('theme-lightning-mode');
     if (themeName === 'acid') document.body.classList.add('theme-acid-mode');
     if (themeName === 'gold') document.body.classList.add('theme-gold-mode');
 
-    // Update accent color variable
     var accentMap = {
       rgb: '#00d4ff',
       lightning: '#00f0ff',
@@ -430,6 +441,13 @@
 
     startCanvasEngine(themeName);
   }
+
+  // Live real-time cross-tab theme synchronization
+  window.addEventListener('storage', function(e) {
+    if (e.key === 'zoof_active_theme' && e.newValue) {
+      setTheme(e.newValue, false);
+    }
+  });
 
   function startCanvasEngine(themeName) {
     if (animFrameId) cancelAnimationFrame(animFrameId);
@@ -456,10 +474,10 @@
     }
   }
 
-  /* 1. Starfield Engine */
+  /* 1. Ultra-Fast Starfield Engine */
   function runStarfieldEngine(canvas, ctx) {
     var stars = [];
-    for (var i = 0; i < 90; i++) {
+    for (var i = 0; i < 50; i++) {
       stars.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
@@ -484,7 +502,6 @@
         if (s.y > canvas.height) s.y = 0;
 
         ctx.fillStyle = 'rgba(255, 255, 255, ' + Math.abs(s.alpha) + ')';
-        ctx.shadowBlur = 8; ctx.shadowColor = '#ffffff';
         ctx.beginPath(); ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2); ctx.fill();
       }
       animFrameId = requestAnimationFrame(render);
@@ -492,10 +509,10 @@
     render();
   }
 
-  /* 2. Lightning Storm Rain Engine (Electric Plasma Rain & Lightning Strikes) */
+  /* 2. Lightning Storm Rain Engine (Silky 60 FPS) */
   function runLightningRainEngine(canvas, ctx) {
     var drops = [];
-    var dropCount = 120;
+    var dropCount = 65;
     var flashEl = document.getElementById('lightning-flash');
 
     for (var i = 0; i < dropCount; i++) {
@@ -515,11 +532,8 @@
       setTimeout(function() { flashEl.style.opacity = '0.6'; }, 120);
       setTimeout(function() { flashEl.style.opacity = '0'; }, 200);
 
-      // Draw explicit bolt strike across backdrop
       ctx.strokeStyle = '#ffffff';
-      ctx.lineWidth = 3;
-      ctx.shadowBlur = 20;
-      ctx.shadowColor = '#00f0ff';
+      ctx.lineWidth = 2.5;
       ctx.beginPath();
       var sx = Math.random() * canvas.width;
       var sy = 0;
@@ -532,8 +546,7 @@
       ctx.stroke();
     }
 
-    // Trigger strike periodically
-    var strikeInterval = setInterval(function() {
+    setInterval(function() {
       if (currentTheme === 'lightning' && Math.random() > 0.4) {
         triggerLightningStrike();
       }
@@ -553,8 +566,6 @@
 
         ctx.strokeStyle = d.color + (Math.random() * 0.5 + 0.5) + ')';
         ctx.lineWidth = 1.8;
-        ctx.shadowBlur = 10;
-        ctx.shadowColor = '#00f0ff';
         ctx.beginPath();
         ctx.moveTo(d.x, d.y);
         ctx.lineTo(d.x - 2, d.y + d.len);
@@ -565,7 +576,7 @@
     render();
   }
 
-  /* 3. Acid Rain Matrix Engine */
+  /* 3. Acid Rain Matrix Engine (Silky 60 FPS) */
   function runAcidRainEngine(canvas, ctx) {
     var chars = '0123456789ABCDEF⚡★';
     var fontSize = 14;
@@ -574,12 +585,10 @@
     for (var x = 0; x < columns; x++) rainDrops[x] = 1;
 
     function render() {
-      ctx.fillStyle = 'rgba(2, 11, 5, 0.15)';
+      ctx.fillStyle = 'rgba(2, 11, 5, 0.18)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
       ctx.fillStyle = '#00ff66';
       ctx.font = fontSize + 'px monospace';
-      ctx.shadowBlur = 8;
-      ctx.shadowColor = '#00ff66';
 
       for (var i = 0; i < rainDrops.length; i++) {
         var text = chars.charAt(Math.floor(Math.random() * chars.length));
@@ -594,10 +603,10 @@
     render();
   }
 
-  /* 4. GoldHEN Embers Engine */
+  /* 4. GoldHEN Embers Engine (Silky 60 FPS) */
   function runGoldEmbersEngine(canvas, ctx) {
     var embers = [];
-    for (var i = 0; i < 70; i++) {
+    for (var i = 0; i < 45; i++) {
       embers.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
@@ -616,7 +625,6 @@
         if (e.y < 0) { e.y = canvas.height; e.x = Math.random() * canvas.width; }
 
         ctx.fillStyle = 'rgba(255, 234, 0, ' + e.alpha + ')';
-        ctx.shadowBlur = 12; ctx.shadowColor = '#ff7700';
         ctx.beginPath(); ctx.arc(e.x, e.y, e.size, 0, Math.PI * 2); ctx.fill();
       }
       animFrameId = requestAnimationFrame(render);
