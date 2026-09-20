@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en" manifest="cache.appcache">
 <head>
 <meta charset="UTF-8">
@@ -641,7 +641,7 @@ function launchJB(){
   if(cfg.retry!==8) p.push('retry='+cfg.retry);
   history.replaceState(null,'',location.pathname+'?'+p.join('&'));
 
-  import("https://whiteshadow8500.github.io/jb.js")
+  import("./jb.js")
     .catch(function(){ outEl.innerHTML+='<span class="bad">[LOAD-ERROR] Failed to load jb.js — check network\n</span>'; document.body.className='fail'; });
 }
 
