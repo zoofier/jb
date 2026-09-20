@@ -1,0 +1,10 @@
+CACHE MANIFEST
+# v1 — zoof13r 13.52
+
+CACHE:
+jb.html
+
+NETWORK:
+*
+
+FALLBACK:

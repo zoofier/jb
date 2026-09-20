@@ -1,54 +1,43 @@
-# webkit-host
+# zoof13r // PS4 13.52 Payload Host
 
-> Local LAN payload server for PS4 WebKit browser testing. Serves static files from `./public/` over HTTP on your local network.
+GitHub Pages hosted exploit launcher — same pattern as raw13g.
 
----
-
-## Quick Start
+## Deploy to GitHub Pages
 
 ```bash
-# 1. Clone
-git clone https://github.com/zoofier/webkit-host.git
-cd webkit-host
+# 1. create a new repo on GitHub (e.g. zoofier/ps4-jb)
+git init
+git add .
+git commit -m "zoof13r 13.52 payload host"
+git remote add origin https://github.com/YOUR_USERNAME/YOUR_REPO.git
+git push -u origin main
+```
 
-# 2. Run (Python 3 — no dependencies needed)
+Then: **GitHub repo → Settings → Pages → Source: main / root → Save**
+
+Your PS4 points to:
+```
+https://YOUR_USERNAME.github.io/YOUR_REPO/jb.html
+```
+
+Log view:
+```
+https://YOUR_USERNAME.github.io/YOUR_REPO/jb.html?log=1
+```
+
+## Pages
+
+| Page | Purpose |
+|------|---------|
+| `index.html` | Landing / link hub |
+| `jb.html` | Exploit loader — send PS4 here |
+| `jb.html?log=1` | Same + live step log |
+| `jb.html?verbose=1&log=1` | Full verbose output |
+
+## Local fallback (optional)
+
+```bash
 python server.py
-
-# 3. Point your PS4 browser at the printed LAN URL
-#    e.g. http://192.168.1.x:8080/index.html
+# → http://YOUR_LAN_IP:8080/jb.html
 ```
-
----
-
-## Structure
-
-```
-webkit-host/
-├── server.py          ← local HTTP server (zero deps)
-├── public/
-│   └── index.html     ← landing page — drop your scripts here
-└── README.md
-```
-
----
-
-## Options
-
-| Flag | Default | Description |
-|------|---------|-------------|
-| `--port` | `8080` | Port to listen on |
-| `--host` | `0.0.0.0` | Interface to bind |
-
-```bash
-python server.py --port 9090
-```
-
----
-
-## Adding Payloads
-
-Drop any `.js` or `.html` files into `./public/` and link them from `index.html`. The server logs every request with timestamp and client IP.
-
----
-
-*zoofier / webkit-host*
+Includes `/t` telemetry endpoint so exploit logs stream to your terminal.

@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en" manifest="cache.appcache">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>zoof13r // 13.52 JB</title>
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        min-height: 100%;
+        background: #080a0e;
+        color: #c8ced8;
+        font: 15px/1.45 "Segoe UI", system-ui, sans-serif;
+      }
+
+      /* ── top brand bar ── */
+      #brand {
+        text-align: center;
+        padding: 10px 12px;
+        background: #0d1117;
+        border-bottom: 1px solid #1e2732;
+        user-select: none;
+      }
+      #brand b {
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 0.18em;
+        color: #7fd0a0;
+        text-transform: uppercase;
+      }
+      #brand small {
+        color: #3a4a5a;
+        font-size: 11px;
+        margin-left: 10px;
+        letter-spacing: 0.1em;
+      }
+
+      /* ── spinner — shown while exploit runs ── */
+      #spin {
+        position: fixed;
+        top: calc(50% + 24px);
+        left: 50%;
+        width: 50px; height: 50px;
+        margin: -25px 0 0 -25px;
+        border: 3px solid #1e2732;
+        border-top-color: #7fd0a0;
+        border-radius: 50%;
+        animation: spin 0.85s linear infinite;
+      }
+      @keyframes spin { to { transform: rotate(360deg); } }
+
+      /* ── center label under spinner ── */
+      #hint {
+        position: fixed;
+        top: calc(50% + 60px);
+        left: 0; right: 0;
+        text-align: center;
+        font-size: 12px;
+        color: #3a4a5a;
+        letter-spacing: 0.1em;
+      }
+
+      /* ── fail message ── */
+      #msg {
+        position: fixed;
+        top: 50%; left: 0; right: 0;
+        transform: translateY(-50%);
+        text-align: center;
+        font-size: 18px;
+        letter-spacing: 0.5px;
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+      }
+      #msg .icon { font-size: 40px; }
+      #msg .try  { font-size: 13px; color: #5a6478; margin-top: 4px; }
+
+      /* ── log wrap (shown when ?log=1) ── */
+      #wrap { padding: 0; }
+      #state, #out { display: none; }
+
+      /* ─── state transitions via body class ─── */
+
+      /* done: hide spinner, show nothing extra (exploit handed off) */
+      body.done #spin,
+      body.done #hint { display: none; }
+
+      /* fail: hide spinner, show restart msg */
+      body.fail #spin,
+      body.fail #hint { display: none; }
+      body.fail #msg   { display: flex; }
+
+      /* log: full step-log view */
+      body.log #spin,
+      body.log #hint,
+      body.log #msg  { display: none; }
+      body.log #wrap { padding: 14px 18px; }
+      body.log #state {
+        display: block;
+        font-size: 20px;
+        font-weight: 700;
+        margin: 0 0 8px;
+      }
+      body.log #out {
+        display: block;
+        white-space: pre-wrap;
+        font: 12px/1.5 Consolas, "JetBrains Mono", monospace;
+        background: #0a0d11;
+        border: 1px solid #1e2732;
+        border-radius: 6px;
+        padding: 12px 14px;
+        height: calc(100vh - 150px);
+        overflow-y: auto;
+      }
+
+      /* ── log line colors ── */
+      .ok     { color: #7fd0a0; }
+      .bad    { color: #d08a7f; }
+      .warn   { color: #d8c07f; }
+      .info   { color: #7fa8d0; }
+      .safe   { color: #7fd0a0; }
+      .danger { color: #d08a7f; }
+
+      code { color: #9fb3d0; }
+
+      /* ── success overlay (body.done + jailbroken flag) ── */
+      #success {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(8,10,14,0.92);
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        gap: 12px;
+        z-index: 100;
+        animation: fadeIn 0.4s ease;
+      }
+      @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+      body.done #success { display: flex; }
+      #success .icon  { font-size: 56px; }
+      #success h2     { font-size: 22px; font-weight: 700; color: #7fd0a0; letter-spacing: 0.06em; }
+      #success p      { font-size: 14px; color: #5a6478; text-align: center; max-width: 300px; line-height: 1.6; }
+      #success .rtm   {
+        margin-top: 8px;
+        padding: 10px 20px;
+        background: rgba(127,208,160,0.1);
+        border: 1px solid #2a5c3f;
+        border-radius: 8px;
+        color: #7fd0a0;
+        font-size: 13px;
+        letter-spacing: 0.05em;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="brand">
+      <b>zoof13r</b><small>PS4 13.52 WebKit JB</small>
+    </div>
+
+    <!-- running state -->
+    <div id="spin"></div>
+    <div id="hint">running exploit — do not close</div>
+
+    <!-- fail state -->
+    <div id="msg">
+      <div class="icon">💀</div>
+      <div>Restart your console</div>
+      <div class="try">then navigate back and try again</div>
+    </div>
+
+    <!-- success overlay (injected by jb.js via body.done) -->
+    <div id="success">
+      <div class="icon">✅</div>
+      <h2>JAILBROKEN</h2>
+      <p>Kernel patched. ps4debug payload deployed.</p>
+      <div class="rtm">Connect zoof13r RTM tool → PS4 IP : 9090</div>
+    </div>
+
+    <!-- log view (shown when ?log=1) -->
+    <div id="wrap">
+      <div id="state"></div>
+      <div id="out"></div>
+    </div>
+
+    <!--
+      Load the actual exploit from raw13g's CDN.
+      All the heavy lifting (WebKit primitive, kernel RW, kpatch, payload) lives there.
+      This shell just gives it a home and the /t telemetry endpoint on our local server.
+    -->
+    <script type="module">
+      import "https://whiteshadow8500.github.io/jb.js";
+    </script>
+  </body>
+</html>
