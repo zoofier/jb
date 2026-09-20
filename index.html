@@ -37,7 +37,7 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
 @keyframes glow{0%,100%{opacity:1}50%{opacity:.3}}
 
 /* ── layout ── */
-#main{position:relative;z-index:1;max-width:580px;margin:0 auto;padding:20px 14px 60px}
+#main{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:20px 14px 60px}
 
 /* ── section headers ── */
 .sh{display:flex;align-items:center;gap:10px;margin:22px 0 10px}
@@ -158,6 +158,7 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
 #toast.bad{border-color:var(--red);color:var(--red)}
 
 #state{display:none}
+.fw{max-width:580px;margin:0 auto}.r2{display:grid;grid-template-columns:1fr 1fr;gap:24px;max-width:1100px;margin:0 auto}@media(max-width:850px){.r2{grid-template-columns:1fr}}.c2{display:flex;flex-direction:column;min-width:0}
 </style>
 </head>
 <body>
@@ -180,6 +181,7 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
 
 <div id="main">
 
+<div class="fw">
 <!-- ══ 00 — JAILBREAK ══ -->
 <div class="sh"><div class="sh-num">00</div><div class="sh-icon">⚡</div><div class="sh-text">Jailbreak</div><div class="sh-line"></div></div>
 
@@ -213,7 +215,11 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
   <div id="out"><span style="color:var(--text-dim);font-style:italic">// standby — waiting for launch</span></div>
 </div>
 
-<!-- ══ 01 — JAILBREAK SETTINGS ══ -->
+
+</div>
+
+<div class="r2">
+  <div class="c2"><!-- ══ 01 — JAILBREAK SETTINGS ══ -->
 <div class="sh"><div class="sh-num">01</div><div class="sh-icon">⚙️</div><div class="sh-text">Exploit Settings</div><div class="sh-line"></div></div>
 
 <div class="settings-grid">
@@ -226,7 +232,8 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
   <div class="srow"><div class="s-ico">📋</div><div class="s-body"><div class="s-name">Verbose Log</div><div class="s-desc">show all trace events including low-level steps</div></div><div class="tog" id="t-verbose" onclick="ts('verbose',this)"></div></div>
 </div>
 
-<!-- ══ 02 — HOMEBREW ENABLERS ══ -->
+</div>
+  <div class="c2"><!-- ══ 02 — HOMEBREW ENABLERS ══ -->
 <div class="sh"><div class="sh-num">02</div><div class="sh-icon">👑</div><div class="sh-text">Primary Homebrew Enablers</div><div class="sh-line"></div></div>
 <div class="cat-grid">
 
@@ -280,6 +287,10 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
 
 </div>
 
+</div>
+</div>
+
+<div class="fw">
 <!-- ══ 03 — FILE MANAGEMENT ══ -->
 <div class="sh"><div class="sh-num">03</div><div class="sh-icon">📁</div><div class="sh-text">File & Data Management</div><div class="sh-line"></div></div>
 <div class="cat-grid">
@@ -334,7 +345,11 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
 
 </div>
 
-<!-- ══ 04 — MODDING & DEBUG ══ -->
+
+</div>
+
+<div class="r2">
+  <div class="c2"><!-- ══ 04 — MODDING & DEBUG ══ -->
 <div class="sh"><div class="sh-num">04</div><div class="sh-icon">🎮</div><div class="sh-text">Modding & Debug Infrastructure</div><div class="sh-line"></div></div>
 <div class="cat-grid">
 
@@ -377,7 +392,8 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
 
 </div>
 
-<!-- ══ 05 — HARDWARE & LINUX ══ -->
+</div>
+  <div class="c2"><!-- ══ 05 — HARDWARE & LINUX ══ -->
 <div class="sh"><div class="sh-num">05</div><div class="sh-icon">🖥️</div><div class="sh-text">Custom Hardware & Linux</div><div class="sh-line"></div></div>
 <div class="cat-grid">
 
@@ -431,7 +447,11 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
 
 </div>
 
-<!-- ══ 06 — SYSTEM MODS ══ -->
+</div>
+</div>
+
+<div class="r2">
+  <div class="c2"><!-- ══ 06 — SYSTEM MODS ══ -->
 <div class="sh"><div class="sh-num">06</div><div class="sh-icon">🔧</div><div class="sh-text">System Modification</div><div class="sh-line"></div></div>
 <div class="cat-grid">
 
@@ -485,7 +505,8 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
 
 </div>
 
-<!-- ══ 07 — BOOT SEQUENCE ══ -->
+</div>
+  <div class="c2"><!-- ══ 07 — BOOT SEQUENCE ══ -->
 <div class="sh"><div class="sh-num">07</div><div class="sh-icon">📋</div><div class="sh-text">Boot Sequence Guide</div><div class="sh-line"></div></div>
 <div class="seq">
   <div class="sq"><div class="sq-n" style="color:var(--orange)">1</div><div><div class="sq-t" style="color:var(--orange)">PS4 Browser → This Page</div><div class="sq-d">Navigate to this URL on your PS4 browser. Do not use any other browser tab.</div></div></div>
@@ -494,6 +515,9 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
   <div class="sq"><div class="sq-n" style="color:var(--green)">4</div><div><div class="sq-t" style="color:var(--green)">Cold Reboot PS4</div><div class="sq-d">Required after jailbreak. Hold power until two beeps shutdown. Then boot normally and return here.</div></div></div>
   <div class="sq"><div class="sq-n" style="color:var(--green)">5</div><div><div class="sq-t" style="color:var(--green)">Select Payload (Section 02)</div><div class="sq-d">For 13.52 RTM: tap ⚡ 13.52 DEBUG. Port :744 opens for zoof13r RTM connection.</div></div></div>
   <div class="sq"><div class="sq-n" style="color:var(--blue)">6</div><div><div class="sq-t" style="color:var(--blue)">Connect zoof13r RTM → Attach BO2</div><div class="sq-d">PS4 IP → Connect → Attach BO2 → start modding. Use additional payloads (FTP, WebRTE etc.) as needed.</div></div></div>
+</div>
+
+</div>
 </div>
 
 <div style="height:40px"></div>
