@@ -1,339 +1,658 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="en" manifest="cache.appcache">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>zoof13r // PS4 13.52</title>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=JetBrains+Mono:wght@400;600&display=swap');
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ZOOF13R WEBKIT // 13.52</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Inter:wght@400;600;700;900&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#080a0d;--surface:#0d1117;--panel:#111418;--card:#0f1318;
+  --border:#1a2030;--border-hi:#253040;
+  --orange:#ff6600;--orange-dim:#ff660018;--orange-glow:rgba(255,102,0,.12);
+  --green:#22c55e;--green-dim:#22c55e15;
+  --red:#ef4444;--red-dim:#ef444415;
+  --yellow:#f59e0b;--blue:#3b82f6;--purple:#8b5cf6;--cyan:#06b6d4;
+  --text:#9aa3b0;--text-dim:#3a4255;--text-hi:#dde4f0;
+  --mono:'JetBrains Mono',Consolas,monospace;
+  --sans:'Inter',system-ui,sans-serif;
+}
+html,body{min-height:100vh;background:var(--bg);color:var(--text);font-family:var(--sans);font-size:14px;-webkit-font-smoothing:antialiased}
+body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,.025) 3px,rgba(0,0,0,.025) 4px);pointer-events:none;z-index:0}
 
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+/* ── sticky header ── */
+#hdr{position:sticky;top:0;z-index:200;display:flex;align-items:center;padding:0 18px;height:50px;background:rgba(8,10,13,.96);border-bottom:2px solid var(--orange);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.brand{display:flex;align-items:center;gap:0}
+.brand-z{color:var(--orange);font:900 17px/1 var(--sans);letter-spacing:.1em;font-style:italic}
+.brand-sep{width:2px;height:18px;background:var(--orange);margin:0 9px;opacity:.5}
+.brand-w{color:var(--text-hi);font:700 13px/1 var(--sans);letter-spacing:.28em}
+.brand-fw{margin-left:10px;padding:2px 8px;border:1px solid var(--orange);border-radius:3px;color:var(--orange);font:700 9px/1 var(--mono);letter-spacing:.15em}
+.hdr-right{margin-left:auto;display:flex;align-items:center;gap:10px}
+.hdr-pill{display:flex;align-items:center;gap:5px;font:600 9px/1 var(--mono);letter-spacing:.15em;color:var(--text-dim)}
+.hdr-dot{width:6px;height:6px;border-radius:50%;background:var(--text-dim);transition:all .3s}
+.hdr-dot.online{background:var(--green);box-shadow:0 0 7px var(--green);animation:glow 2s ease-in-out infinite}
+.hdr-dot.run{background:var(--orange);box-shadow:0 0 7px var(--orange);animation:glow .7s ease-in-out infinite}
+.hdr-dot.fail{background:var(--red);box-shadow:0 0 7px var(--red)}
+@keyframes glow{0%,100%{opacity:1}50%{opacity:.3}}
 
-    :root {
-      --bg:        #080a0e;
-      --surface:   #0d1117;
-      --border:    #1e2732;
-      --border-hi: #2d3f52;
-      --text:      #c8ced8;
-      --text-dim:  #5a6478;
-      --text-hi:   #e8edf5;
-      --green:     #7fd0a0;
-      --green-dim: #2a5c3f;
-      --red:       #d08a7f;
-      --yellow:    #d8c07f;
-      --blue:      #7fa8d0;
-      --purple:    #a07fd0;
-      --glow:      rgba(127, 208, 160, 0.15);
-    }
+/* ── layout ── */
+#main{position:relative;z-index:1;max-width:580px;margin:0 auto;padding:20px 14px 60px}
 
-    html, body {
-      min-height: 100vh;
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'Inter', system-ui, sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      overflow-x: hidden;
-    }
+/* ── section headers ── */
+.sh{display:flex;align-items:center;gap:10px;margin:22px 0 10px}
+.sh-icon{font-size:15px}
+.sh-text{font:700 10px/1 var(--mono);letter-spacing:.2em;color:var(--text-dim);text-transform:uppercase}
+.sh-line{flex:1;height:1px;background:var(--border)}
+.sh-num{font:700 9px/1 var(--mono);color:var(--text-dim);opacity:.6}
 
-    /* ── background grid ── */
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background-image:
-        linear-gradient(var(--border) 1px, transparent 1px),
-        linear-gradient(90deg, var(--border) 1px, transparent 1px);
-      background-size: 40px 40px;
-      opacity: 0.35;
-      pointer-events: none;
-      z-index: 0;
-    }
+/* ── jailbreak button ── */
+#jb-btn{width:100%;padding:18px 20px;background:var(--card);border:2px solid var(--orange);border-radius:10px;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:all .18s;text-align:center;position:relative;overflow:hidden;margin-bottom:10px}
+#jb-btn::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 120%,var(--orange-glow),transparent 65%);opacity:0;transition:opacity .2s}
+#jb-btn:not(:disabled):hover::after,#jb-btn:active::after{opacity:1}
+#jb-btn:disabled{opacity:.35;cursor:not-allowed;border-color:var(--border-hi)}
+.jb-pre{font:700 9px/1 var(--mono);letter-spacing:.2em;color:var(--text-dim);margin-bottom:7px}
+.jb-title{font:900 20px/1 var(--sans);color:var(--orange);letter-spacing:.07em;margin-bottom:5px}
+#jb-btn:not(:disabled):hover .jb-title{text-shadow:0 0 20px var(--orange)}
+.jb-sub{font:400 10px/1 var(--mono);color:var(--text-dim);letter-spacing:.1em}
 
-    /* ── radial glow behind card ── */
-    body::after {
-      content: '';
-      position: fixed;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      width: 600px; height: 400px;
-      background: radial-gradient(ellipse, var(--glow) 0%, transparent 70%);
-      pointer-events: none;
-      z-index: 0;
-    }
+/* ── status bar ── */
+#sb{background:var(--panel);border:1px solid var(--border);border-radius:7px;padding:10px 14px;display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.sb-d{width:7px;height:7px;border-radius:50%;background:var(--text-dim);flex-shrink:0;transition:all .3s}
+.sb-d.run{background:var(--orange);box-shadow:0 0 7px var(--orange);animation:glow .7s infinite}
+.sb-d.ok{background:var(--green);box-shadow:0 0 7px var(--green)}
+.sb-d.fail{background:var(--red);box-shadow:0 0 7px var(--red)}
+.sb-spinner{width:14px;height:14px;border:2px solid var(--border-hi);border-top-color:var(--orange);border-radius:50%;animation:spin .65s linear infinite;flex-shrink:0;display:none}
+.sb-txt{font:400 11px/1.4 var(--mono);flex:1;color:var(--text)}
+@keyframes spin{to{transform:rotate(360deg)}}
 
-    .card {
-      position: relative;
-      z-index: 1;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 44px 48px;
-      width: 520px;
-      max-width: calc(100vw - 32px);
-      box-shadow:
-        0 0 0 1px var(--border),
-        0 24px 80px rgba(0,0,0,0.6),
-        0 0 40px var(--glow);
-    }
+/* ── stats ── */
+#stats{display:none;grid-template-columns:1fr 1fr 1fr 1fr;gap:7px;margin-bottom:10px}
+.stat{background:var(--panel);border:1px solid var(--border);border-radius:6px;padding:9px;text-align:center}
+.stat-v{font:700 16px/1 var(--mono);margin-bottom:2px}
+.stat-l{font:400 8px/1 var(--mono);color:var(--text-dim);letter-spacing:.15em;text-transform:uppercase}
 
-    /* ── header ── */
-    .header {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      margin-bottom: 32px;
-    }
+/* ── result ── */
+#result{display:none;margin-bottom:10px}
+.ri{padding:14px 16px;border-radius:8px;border:1px solid;display:flex;align-items:flex-start;gap:12px}
+.ri.ok{background:var(--green-dim);border-color:var(--green)}
+.ri.fail{background:var(--red-dim);border-color:var(--red)}
+.ri-ico{font-size:20px;flex-shrink:0;margin-top:1px}
+.ri-title{font:700 12px/1 var(--sans);letter-spacing:.05em;text-transform:uppercase;margin-bottom:4px}
+.ri.ok .ri-title{color:var(--green)}.ri.fail .ri-title{color:var(--red)}
+.ri-sub{font:400 10px/1.5 var(--mono);color:var(--text-dim)}
 
-    .logo {
-      width: 44px; height: 44px;
-      background: linear-gradient(135deg, var(--green), var(--blue));
-      border-radius: 12px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 22px;
-      flex-shrink: 0;
-      box-shadow: 0 0 20px var(--glow);
-    }
+/* ── terminal ── */
+#terminal{background:#030508;border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:14px;display:none}
+.th{display:flex;align-items:center;padding:7px 11px;background:var(--panel);border-bottom:1px solid var(--border);gap:7px}
+.td{display:flex;gap:5px}
+.tdr,.tdy,.tdg{width:9px;height:9px;border-radius:50%}
+.tdr{background:#ef4444}.tdy{background:#f59e0b}.tdg{background:#22c55e}
+.tt{font:600 9px/1 var(--mono);color:var(--text-dim);letter-spacing:.15em;margin-left:4px}
+.tb{margin-left:auto;font:400 8px/1 var(--mono);color:var(--text-dim);letter-spacing:.1em}
+#out{padding:10px 12px;max-height:240px;overflow-y:auto;font:400 10px/1.7 var(--mono);scrollbar-width:thin;scrollbar-color:var(--border-hi) transparent;white-space:pre-wrap;word-break:break-all}
+#out::-webkit-scrollbar{width:3px}
+#out::-webkit-scrollbar-thumb{background:var(--border-hi);border-radius:3px}
+.ok{color:var(--green)}.bad{color:var(--red)}.warn{color:var(--yellow)}.info{color:var(--blue)}
 
-    .title-block h1 {
-      font-size: 20px;
-      font-weight: 700;
-      letter-spacing: 0.06em;
-      color: var(--text-hi);
-      text-transform: uppercase;
-    }
-    .title-block .sub {
-      font-size: 12px;
-      color: var(--text-dim);
-      letter-spacing: 0.12em;
-      margin-top: 2px;
-      font-family: 'JetBrains Mono', monospace;
-    }
+/* ── exploit settings ── */
+.settings-grid{display:flex;flex-direction:column;gap:7px}
+.srow{background:var(--card);border:1px solid var(--border);border-radius:7px;padding:11px 14px;display:flex;align-items:center;gap:11px;transition:border-color .15s}
+.srow:hover{border-color:var(--border-hi)}
+.s-ico{font-size:13px;flex-shrink:0;width:18px;text-align:center}
+.s-body{flex:1;min-width:0}
+.s-name{font:600 12px/1 var(--sans);color:var(--text-hi);margin-bottom:2px}
+.s-desc{font:400 9px/1.4 var(--mono);color:var(--text-dim)}
+.tog{width:36px;height:20px;background:var(--border-hi);border-radius:10px;cursor:pointer;position:relative;flex-shrink:0;transition:background .2s}
+.tog.on{background:var(--orange)}
+.tog::after{content:'';position:absolute;width:14px;height:14px;background:#fff;border-radius:50%;top:3px;left:3px;transition:left .2s;box-shadow:0 1px 3px rgba(0,0,0,.5)}
+.tog.on::after{left:19px}
+.ri-num{background:var(--bg);border:1px solid var(--border-hi);color:var(--orange);font:600 11px/1 var(--mono);padding:4px 8px;border-radius:4px;width:52px;text-align:center}
+.ri-num:focus{outline:none;border-color:var(--orange)}
 
-    /* ── badge row ── */
-    .badges {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      margin-bottom: 28px;
-    }
-    .badge {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 11px;
-      padding: 4px 10px;
-      border-radius: 20px;
-      border: 1px solid;
-      letter-spacing: 0.05em;
-    }
-    .badge.fw   { color: var(--green);  border-color: var(--green-dim); background: rgba(127,208,160,0.08); }
-    .badge.type { color: var(--blue);   border-color: #2a3f52;          background: rgba(127,168,208,0.08); }
-    .badge.mode { color: var(--purple); border-color: #3a2a52;          background: rgba(160,127,208,0.08); }
+/* ── payload categories ── */
+.cat-grid{display:flex;flex-direction:column;gap:7px}
 
-    /* ── status indicator ── */
-    .status-row {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 14px 16px;
-      background: rgba(255,255,255,0.03);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      margin-bottom: 24px;
-    }
-    .dot {
-      width: 9px; height: 9px;
-      border-radius: 50%;
-      background: var(--yellow);
-      box-shadow: 0 0 8px var(--yellow);
-      animation: pulse 2s ease-in-out infinite;
-      flex-shrink: 0;
-    }
-    .dot.ready { background: var(--green); box-shadow: 0 0 8px var(--green); }
-    .dot.error { background: var(--red);   box-shadow: 0 0 8px var(--red); animation: none; }
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50%       { opacity: 0.4; }
-    }
-    .status-text {
-      font-size: 13px;
-      color: var(--text);
-      font-family: 'JetBrains Mono', monospace;
-    }
-    .status-text span { color: var(--text-dim); }
+/* ── payload card ── */
+.pcard{background:var(--card);border:1px solid var(--border);border-radius:8px;overflow:hidden;transition:border-color .15s}
+.pcard:not(.missing):hover{border-color:var(--border-hi)}
+.pcard.missing{opacity:.45}
+.pc-main{display:flex;align-items:center;gap:13px;padding:13px 14px;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:background .15s}
+.pcard:not(.missing) .pc-main:active,.pcard:not(.missing) .pc-main.busy{background:rgba(255,255,255,.03)}
+.pcard.missing .pc-main{cursor:not-allowed}
+.pc-accent{width:3px;flex-shrink:0;align-self:stretch;border-radius:3px}
+.pc-ico{font-size:22px;min-width:28px;text-align:center;flex-shrink:0}
+.pc-info{flex:1;min-width:0}
+.pc-name{font:700 13px/1 var(--sans);color:var(--text-hi);margin-bottom:2px}
+.pc-fw{font:700 9px/1 var(--mono);letter-spacing:.12em;margin-bottom:3px}
+.pc-desc{font:400 10px/1.4 var(--mono);color:var(--text-dim)}
+.pc-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.pc-badge{padding:2px 7px;border-radius:3px;font:700 8px/1 var(--mono);letter-spacing:.1em}
+.badge-missing{background:rgba(239,68,68,.1);color:var(--red);border:1px solid rgba(239,68,68,.2)}
+.badge-avail{background:rgba(34,197,94,.1);color:var(--green);border:1px solid rgba(34,197,94,.2)}
+.pc-arr{font-size:18px;color:var(--text-dim);transition:transform .15s}
+.pcard:not(.missing) .pc-main:hover .pc-arr{transform:translateX(3px);color:var(--text-hi)}
 
-    /* ── divider ── */
-    .divider {
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--border), transparent);
-      margin: 24px 0;
-    }
+/* ── sub-panel (fan speed, linux vram, etc.) ── */
+.pc-sub{display:none;padding:10px 14px 12px 55px;border-top:1px solid var(--border);gap:8px;flex-wrap:wrap}
+.pcard.expanded .pc-sub{display:flex}
+.sub-btn{padding:6px 12px;background:var(--bg);border:1px solid var(--border);border-radius:5px;color:var(--text-dim);font:600 10px/1 var(--mono);cursor:pointer;-webkit-tap-highlight-color:transparent;transition:all .15s}
+.sub-btn:hover,.sub-btn.active{border-color:var(--orange);color:var(--orange);background:var(--orange-dim)}
+.sub-label{font:400 9px/1 var(--mono);color:var(--text-dim);letter-spacing:.1em;align-self:center;margin-right:4px}
 
-    /* ── action buttons ── */
-    .actions { display: flex; flex-direction: column; gap: 10px; }
+/* ── boot sequence ── */
+.seq{display:flex;flex-direction:column;gap:7px}
+.sq{background:var(--card);border:1px solid var(--border);border-radius:7px;padding:11px 14px;display:flex;gap:12px}
+.sq-n{font:900 15px/1 var(--mono);min-width:20px;text-align:center;margin-top:1px}
+.sq-t{font:700 11px/1 var(--sans);margin-bottom:3px}
+.sq-d{font:400 9px/1.5 var(--mono);color:var(--text-dim)}
 
-    .btn {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      padding: 14px 20px;
-      border-radius: 10px;
-      border: 1px solid;
-      font-family: 'Inter', sans-serif;
-      font-size: 14px;
-      font-weight: 600;
-      letter-spacing: 0.04em;
-      cursor: pointer;
-      transition: all 0.18s ease;
-      text-decoration: none;
-    }
+/* ── divider ── */
+.div{display:flex;align-items:center;gap:8px;color:var(--text-dim);font:700 8px/1 var(--mono);letter-spacing:.2em;margin:14px 0 10px}
+.div::before,.div::after{content:'';flex:1;height:1px;background:var(--border)}
 
-    .btn-primary {
-      background: linear-gradient(135deg, rgba(127,208,160,0.18), rgba(127,168,208,0.12));
-      border-color: var(--green);
-      color: var(--green);
-      box-shadow: 0 0 20px rgba(127,208,160,0.12);
-    }
-    .btn-primary:hover {
-      background: linear-gradient(135deg, rgba(127,208,160,0.28), rgba(127,168,208,0.2));
-      box-shadow: 0 0 30px rgba(127,208,160,0.25);
-      transform: translateY(-1px);
-    }
-    .btn-primary:active { transform: translateY(0); }
+/* ── toast ── */
+#toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--panel);border:1px solid var(--border);color:var(--text);padding:9px 18px;border-radius:6px;font:600 11px/1 var(--mono);transition:transform .22s;z-index:999;white-space:nowrap;letter-spacing:.05em}
+#toast.show{transform:translateX(-50%) translateY(0)}
+#toast.ok{border-color:var(--green);color:var(--green)}
+#toast.bad{border-color:var(--red);color:var(--red)}
 
-    .btn-secondary {
-      background: transparent;
-      border-color: var(--border-hi);
-      color: var(--text-dim);
-    }
-    .btn-secondary:hover {
-      border-color: var(--blue);
-      color: var(--blue);
-      background: rgba(127,168,208,0.06);
-    }
-
-    .btn-ghost {
-      background: transparent;
-      border-color: var(--border);
-      color: var(--text-dim);
-      font-size: 12px;
-      padding: 10px 20px;
-    }
-    .btn-ghost:hover {
-      border-color: var(--border-hi);
-      color: var(--text);
-    }
-
-    /* ── info grid ── */
-    .info-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      margin-bottom: 24px;
-    }
-    .info-cell {
-      background: rgba(255,255,255,0.02);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 12px 14px;
-    }
-    .info-cell .label {
-      font-size: 10px;
-      color: var(--text-dim);
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      margin-bottom: 4px;
-    }
-    .info-cell .value {
-      font-size: 13px;
-      font-family: 'JetBrains Mono', monospace;
-      color: var(--text-hi);
-    }
-    .info-cell .value.green { color: var(--green); }
-
-    /* ── footer ── */
-    .footer {
-      margin-top: 28px;
-      text-align: center;
-      font-size: 11px;
-      color: var(--text-dim);
-      letter-spacing: 0.05em;
-      font-family: 'JetBrains Mono', monospace;
-    }
-  </style>
+#state{display:none}
+</style>
 </head>
 <body>
-  <div class="card">
-    <div class="header">
-      <div class="logo">⚡</div>
-      <div class="title-block">
-        <h1>zoof13r</h1>
-        <div class="sub">PS4 13.52 // LOCAL PAYLOAD HOST</div>
-      </div>
+
+<!-- ── Header ── -->
+<div id="hdr">
+  <div class="brand">
+    <span class="brand-z">ZOOF13R</span>
+    <div class="brand-sep"></div>
+    <span class="brand-w">WEBKIT</span>
+    <span class="brand-fw">FW 13.52</span>
+  </div>
+  <div class="hdr-right">
+    <div class="hdr-pill">
+      <div class="hdr-dot" id="hdr-dot"></div>
+      <span id="hdr-txt">STANDBY</span>
     </div>
+  </div>
+</div>
 
-    <div class="badges">
-      <div class="badge fw">FW 13.52</div>
-      <div class="badge type">WebKit JB</div>
-      <div class="badge mode">LOCAL HOST</div>
-    </div>
+<div id="main">
 
-    <div class="status-row" id="statusRow">
-      <div class="dot" id="dot"></div>
-      <div class="status-text" id="statusText">
-        Server running — <span>waiting for PS4 connection</span>
-      </div>
-    </div>
+<!-- ══ 00 — JAILBREAK ══ -->
+<div class="sh"><div class="sh-num">00</div><div class="sh-icon">⚡</div><div class="sh-text">Jailbreak</div><div class="sh-line"></div></div>
 
-    <div class="info-grid">
-      <div class="info-cell">
-        <div class="label">Host URL</div>
-        <div class="value green" id="hostUrl">detecting...</div>
-      </div>
-      <div class="info-cell">
-        <div class="label">Port</div>
-        <div class="value">8080</div>
-      </div>
-      <div class="info-cell">
-        <div class="label">Exploit</div>
-        <div class="value">raw13g chain</div>
-      </div>
-      <div class="info-cell">
-        <div class="label">Retry</div>
-        <div class="value green">auto (×8)</div>
-      </div>
-    </div>
+<button id="jb-btn" onclick="launchJB()">
+  <div class="jb-pre">STEP 1 — DO THIS FIRST</div>
+  <div class="jb-title">⚡ PS4 JAILBREAK</div>
+  <div class="jb-sub">WEBKIT EXPLOIT → KERNEL RW → 13.52 KPATCH → PAYLOAD</div>
+</button>
 
-    <div class="divider"></div>
+<div id="sb">
+  <div class="sb-d" id="sb-d"></div>
+  <div class="sb-spinner" id="sb-spin"></div>
+  <div class="sb-txt" id="sb-txt">Ready — tap JAILBREAK to begin</div>
+</div>
 
-    <div class="actions">
-      <a href="/jb.html" class="btn btn-primary">
-        ⚡ Launch Jailbreak
-      </a>
-      <a href="/jb.html?log=1" class="btn btn-secondary">
-        📋 Launch with Log View
-      </a>
-      <a href="/jb.html?verbose=1&log=1" class="btn btn-ghost">
-        verbose + log
-      </a>
+<div id="stats" style="display:grid;display:none">
+  <div class="stat"><div class="stat-v" id="st-pass" style="color:var(--green)">0</div><div class="stat-l">PASSED</div></div>
+  <div class="stat"><div class="stat-v" id="st-fail" style="color:var(--red)">0</div><div class="stat-l">FAILED</div></div>
+  <div class="stat"><div class="stat-v" id="st-time" style="color:var(--orange)">0s</div><div class="stat-l">ELAPSED</div></div>
+  <div class="stat"><div class="stat-v" id="st-step" style="color:var(--blue)">—</div><div class="stat-l">STEP</div></div>
+</div>
+
+<div id="result"></div>
+
+<div id="terminal">
+  <div class="th">
+    <div class="td"><div class="tdr"></div><div class="tdy"></div><div class="tdg"></div></div>
+    <div class="tt">EXPLOIT LOG — 13.52</div>
+    <div class="tb" id="tbadge">LIVE</div>
+  </div>
+  <div id="out"><span style="color:var(--text-dim);font-style:italic">// standby — waiting for launch</span></div>
+</div>
+
+<!-- ══ 01 — JAILBREAK SETTINGS ══ -->
+<div class="sh"><div class="sh-num">01</div><div class="sh-icon">⚙️</div><div class="sh-text">Exploit Settings</div><div class="sh-line"></div></div>
+
+<div class="settings-grid">
+  <div class="srow"><div class="s-ico">⚡</div><div class="s-body"><div class="s-name">Jailbreak</div><div class="s-desc">WebKit primitive → kernel escape chain</div></div><div class="tog on" id="t-jb" onclick="ts('jb',this)"></div></div>
+  <div class="srow"><div class="s-ico">🔒</div><div class="s-body"><div class="s-name">Kernel Patch</div><div class="s-desc">sysent patch → syscall access + ASLR disable</div></div><div class="tog on" id="t-patch" onclick="ts('patch',this)"></div></div>
+  <div class="srow"><div class="s-ico">📦</div><div class="s-body"><div class="s-name">Auto-Load Payload</div><div class="s-desc">fetch + exec payload.bin after kpatch</div></div><div class="tog on" id="t-payload" onclick="ts('payload',this)"></div></div>
+  <div class="srow"><div class="s-ico">📌</div><div class="s-body"><div class="s-name">Keep JB (Persistent)</div><div class="s-desc">hold jailbreak state — skip cleanup on exit</div></div><div class="tog" id="t-keepjb" onclick="ts('keepjb',this)"></div></div>
+  <div class="srow"><div class="s-ico">🔁</div><div class="s-body"><div class="s-name">Auto-Retry Limit</div><div class="s-desc">max benign read-phase retries before abort</div></div><input class="ri-num" type="number" id="in-retry" value="8" min="0" max="20" onchange="cfg.retry=+this.value"></div>
+  <div class="srow"><div class="s-ico">🛑</div><div class="s-body"><div class="s-name">Stop Before Double-Free</div><div class="s-desc">halt before double-free — testing/debug only</div></div><div class="tog" id="t-stop" onclick="ts('stop',this)"></div></div>
+  <div class="srow"><div class="s-ico">📋</div><div class="s-body"><div class="s-name">Verbose Log</div><div class="s-desc">show all trace events including low-level steps</div></div><div class="tog" id="t-verbose" onclick="ts('verbose',this)"></div></div>
+</div>
+
+<!-- ══ 02 — HOMEBREW ENABLERS ══ -->
+<div class="sh"><div class="sh-num">02</div><div class="sh-icon">👑</div><div class="sh-text">Primary Homebrew Enablers</div><div class="sh-line"></div></div>
+<div class="cat-grid">
+
+  <div class="pcard" id="pc-goldhen">
+    <div class="pc-main" onclick="sendPayload('goldhen.bin','GoldHEN',this)">
+      <div class="pc-accent" style="background:#ffd700"></div>
+      <div class="pc-ico">👑</div>
+      <div class="pc-info">
+        <div class="pc-name">GoldHEN</div>
+        <div class="pc-fw" style="color:#ffd700">ALL FIRMWARE</div>
+        <div class="pc-desc">Unsigned .pkg installer. Runs daemon on :7355. Plugin loader + process keepalive via sceSystemService patch.</div>
+      </div>
+      <div class="pc-right">
+        <div class="pc-badge badge-missing" id="b-goldhen">MISSING</div>
+        <div class="pc-arr">›</div>
+      </div>
     </div>
   </div>
 
-  <div class="footer">
-    zoof13r // point PS4 browser at this IP:8080/jb.html
+  <div class="pcard" id="pc-ps4debug">
+    <div class="pc-main" onclick="sendPayload('ps4debug.bin','ps4debug',this)">
+      <div class="pc-accent" style="background:var(--green)"></div>
+      <div class="pc-ico">🔧</div>
+      <div class="pc-info">
+        <div class="pc-name">ps4debug</div>
+        <div class="pc-fw" style="color:var(--green)">ALL FIRMWARE</div>
+        <div class="pc-desc">Standard ps4debug — opens :744 for RTM/memory connection. Required for zoof13r RTM tool.</div>
+      </div>
+      <div class="pc-right">
+        <div class="pc-badge badge-avail">READY</div>
+        <div class="pc-arr">›</div>
+      </div>
+    </div>
   </div>
 
-  <script>
-    // show the actual server URL in the card
-    const url = `${location.hostname}:${location.port}`;
-    document.getElementById('hostUrl').textContent = url;
+  <div class="pcard" id="pc-zoo13r">
+    <div class="pc-main" onclick="sendPayload('zoo13rd3bug.bin','13.52 DEBUG',this)">
+      <div class="pc-accent" style="background:var(--orange)"></div>
+      <div class="pc-ico">⚡</div>
+      <div class="pc-info">
+        <div class="pc-name">13.52 DEBUG <span style="font-size:9px;color:var(--orange);font-family:var(--mono)">[zoof13r custom]</span></div>
+        <div class="pc-fw" style="color:var(--orange)">FIRMWARE 13.52 ONLY</div>
+        <div class="pc-desc">zoof13r 13.52 kernel payload. Opens :744 RTM + 13.52-specific kpatch chain.</div>
+      </div>
+      <div class="pc-right">
+        <div class="pc-badge badge-avail">READY</div>
+        <div class="pc-arr">›</div>
+      </div>
+    </div>
+  </div>
 
-    // flip dot to green once the page loads (means server is up)
-    document.getElementById('dot').className = 'dot ready';
-    document.getElementById('statusText').innerHTML =
-      'Server <span style="color:var(--green)">online</span> — point PS4 at <b>/jb.html</b>';
-  </script>
+</div>
+
+<!-- ══ 03 — FILE MANAGEMENT ══ -->
+<div class="sh"><div class="sh-num">03</div><div class="sh-icon">📁</div><div class="sh-text">File & Data Management</div><div class="sh-line"></div></div>
+<div class="cat-grid">
+
+  <div class="pcard missing" id="pc-ftp">
+    <div class="pc-main" onclick="sendPayload('ftpd.bin','FTP Server',this)">
+      <div class="pc-accent" style="background:var(--cyan)"></div>
+      <div class="pc-ico">📡</div>
+      <div class="pc-info">
+        <div class="pc-name">FTP Server (ftpd)</div>
+        <div class="pc-fw" style="color:var(--cyan)">ALL FIRMWARE</div>
+        <div class="pc-desc">Spawns ftpd on :1337 / :21. Overrides user-level sandbox — full root r/w access to /system_data and /user.</div>
+      </div>
+      <div class="pc-right">
+        <div class="pc-badge badge-missing">MISSING</div>
+        <div class="pc-arr">›</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pcard missing" id="pc-app2usb">
+    <div class="pc-main" onclick="sendPayload('app2usb.bin','App2USB',this)">
+      <div class="pc-accent" style="background:var(--purple)"></div>
+      <div class="pc-ico">💾</div>
+      <div class="pc-info">
+        <div class="pc-name">App Mover / App2USB</div>
+        <div class="pc-fw" style="color:var(--purple)">ALL FIRMWARE</div>
+        <div class="pc-desc">Patches vfs mount system. Symlinks /user/app/ → exFAT USB. Offload large games without reinstall.</div>
+      </div>
+      <div class="pc-right">
+        <div class="pc-badge badge-missing">MISSING</div>
+        <div class="pc-arr">›</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pcard missing" id="pc-dbbackup">
+    <div class="pc-main" onclick="sendPayload('db_backup.bin','DB Backup',this)">
+      <div class="pc-accent" style="background:var(--yellow)"></div>
+      <div class="pc-ico">🗄️</div>
+      <div class="pc-info">
+        <div class="pc-name">DB Backup / Restore</div>
+        <div class="pc-fw" style="color:var(--yellow)">ALL FIRMWARE</div>
+        <div class="pc-desc">Copies app.db, user.db, metadata XML → /DB_Backup on USB. Saves trophy DB + layout from freeze-wipe.</div>
+      </div>
+      <div class="pc-right">
+        <div class="pc-badge badge-missing">MISSING</div>
+        <div class="pc-arr">›</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══ 04 — MODDING & DEBUG ══ -->
+<div class="sh"><div class="sh-num">04</div><div class="sh-icon">🎮</div><div class="sh-text">Modding & Debug Infrastructure</div><div class="sh-line"></div></div>
+<div class="cat-grid">
+
+  <div class="pcard missing" id="pc-webrte">
+    <div class="pc-main" onclick="sendPayload('webrte.bin','WebRTE',this)">
+      <div class="pc-accent" style="background:var(--blue)"></div>
+      <div class="pc-ico">🔬</div>
+      <div class="pc-info">
+        <div class="pc-name">WebRTE / Orbis Toolbox</div>
+        <div class="pc-fw" style="color:var(--blue)">ALL FIRMWARE</div>
+        <div class="pc-desc">Injects real-time memory engine into live RAM. Listener on :2811. Scan + patch hex addresses while game runs (health, currency, coords).</div>
+      </div>
+      <div class="pc-right">
+        <div class="pc-badge badge-missing">MISSING</div>
+        <div class="pc-arr">›</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pcard missing" id="pc-binloader">
+    <div class="pc-main" onclick="toggleSub(this.closest('.pcard'))">
+      <div class="pc-accent" style="background:var(--orange)"></div>
+      <div class="pc-ico">📥</div>
+      <div class="pc-info">
+        <div class="pc-name">BinLoader</div>
+        <div class="pc-fw" style="color:var(--orange)">ALL FIRMWARE</div>
+        <div class="pc-desc">Passive loop listener on :9020 / :9021. Waits for raw .bin from PC/phone on LAN. Test unreleased payloads without host menu update.</div>
+      </div>
+      <div class="pc-right">
+        <div class="pc-badge badge-missing">MISSING</div>
+        <div class="pc-arr">›</div>
+      </div>
+    </div>
+    <div class="pc-sub">
+      <div class="sub-label">PORT:</div>
+      <div class="sub-btn active" onclick="setBinPort(9020,this)">:9020</div>
+      <div class="sub-btn" onclick="setBinPort(9021,this)">:9021</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══ 05 — HARDWARE & LINUX ══ -->
+<div class="sh"><div class="sh-num">05</div><div class="sh-icon">🖥️</div><div class="sh-text">Custom Hardware & Linux</div><div class="sh-line"></div></div>
+<div class="cat-grid">
+
+  <div class="pcard missing" id="pc-linux">
+    <div class="pc-main" onclick="toggleSub(this.closest('.pcard'))">
+      <div class="pc-accent" style="background:var(--purple)"></div>
+      <div class="pc-ico">🐧</div>
+      <div class="pc-info">
+        <div class="pc-name">Linux Loader</div>
+        <div class="pc-fw" style="color:var(--purple)">ALL FIRMWARE</div>
+        <div class="pc-desc">kexec → replaces Sony kernel. Maps APU memory as VRAM for USB Linux distro. Boots RPCS3/Dolphin capable desktop environment.</div>
+      </div>
+      <div class="pc-right">
+        <div class="pc-badge badge-missing">MISSING</div>
+        <div class="pc-arr" id="linux-arr">›</div>
+      </div>
+    </div>
+    <div class="pc-sub">
+      <div class="sub-label">VRAM:</div>
+      <div class="sub-btn active" onclick="setLinuxVRAM(1,this)">1 GB</div>
+      <div class="sub-btn" onclick="setLinuxVRAM(2,this)">2 GB</div>
+      <div class="sub-btn" onclick="setLinuxVRAM(3,this)">3 GB</div>
+      <div class="sub-btn" onclick="setLinuxVRAM(4,this)">4 GB</div>
+    </div>
+  </div>
+
+  <div class="pcard missing" id="pc-fan">
+    <div class="pc-main" onclick="toggleSub(this.closest('.pcard'))">
+      <div class="pc-accent" style="background:var(--cyan)"></div>
+      <div class="pc-ico">🌀</div>
+      <div class="pc-info">
+        <div class="pc-name">Fan Control</div>
+        <div class="pc-fw" style="color:var(--cyan)">ALL FIRMWARE</div>
+        <div class="pc-desc">Accesses smbus → overrides syscon thermal table. Forces PWM hardcoded hex over fan control line. Bypass Sony's quiet/hot default profile.</div>
+      </div>
+      <div class="pc-right">
+        <div class="pc-badge badge-missing">MISSING</div>
+        <div class="pc-arr">›</div>
+      </div>
+    </div>
+    <div class="pc-sub">
+      <div class="sub-label">SPEED:</div>
+      <div class="sub-btn" onclick="setFanSpeed(40,this)">40%</div>
+      <div class="sub-btn" onclick="setFanSpeed(50,this)">50%</div>
+      <div class="sub-btn active" onclick="setFanSpeed(60,this)">60%</div>
+      <div class="sub-btn" onclick="setFanSpeed(70,this)">70%</div>
+      <div class="sub-btn" onclick="setFanSpeed(80,this)">80%</div>
+      <div class="sub-btn" onclick="setFanSpeed(100,this)">100%</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══ 06 — SYSTEM MODS ══ -->
+<div class="sh"><div class="sh-num">06</div><div class="sh-icon">🔧</div><div class="sh-text">System Modification</div><div class="sh-line"></div></div>
+<div class="cat-grid">
+
+  <div class="pcard missing" id="pc-dis-upd">
+    <div class="pc-main" onclick="sendPayload('disable_updates.bin','Disable Updates',this)">
+      <div class="pc-accent" style="background:var(--red)"></div>
+      <div class="pc-ico">🚫</div>
+      <div class="pc-info">
+        <div class="pc-name">Disable Updates</div>
+        <div class="pc-fw" style="color:var(--red)">ALL FIRMWARE</div>
+        <div class="pc-desc">Creates dummy read-only folder at /update/PS4UPDATE.PUP — blocks filesystem write → prevents firmware download permanently.</div>
+      </div>
+      <div class="pc-right">
+        <div class="pc-badge badge-missing">MISSING</div>
+        <div class="pc-arr">›</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pcard missing" id="pc-en-upd">
+    <div class="pc-main" onclick="sendPayload('enable_updates.bin','Enable Updates',this)">
+      <div class="pc-accent" style="background:var(--green)"></div>
+      <div class="pc-ico">✅</div>
+      <div class="pc-info">
+        <div class="pc-name">Enable Updates</div>
+        <div class="pc-fw" style="color:var(--green)">ALL FIRMWARE</div>
+        <div class="pc-desc">Removes dummy update block — restores Sony update path. Use only if intentionally upgrading firmware.</div>
+      </div>
+      <div class="pc-right">
+        <div class="pc-badge badge-missing">MISSING</div>
+        <div class="pc-arr">›</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pcard missing" id="pc-aslr">
+    <div class="pc-main" onclick="sendPayload('disable_aslr.bin','Disable ASLR',this)">
+      <div class="pc-accent" style="background:var(--yellow)"></div>
+      <div class="pc-ico">📍</div>
+      <div class="pc-info">
+        <div class="pc-name">Disable ASLR</div>
+        <div class="pc-fw" style="color:var(--yellow)">ALL FIRMWARE</div>
+        <div class="pc-desc">Strips address space layout randomization. Memory hooks map to fixed hex offsets on every boot. Required for stable RE tooling.</div>
+      </div>
+      <div class="pc-right">
+        <div class="pc-badge badge-missing">MISSING</div>
+        <div class="pc-arr">›</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══ 07 — BOOT SEQUENCE ══ -->
+<div class="sh"><div class="sh-num">07</div><div class="sh-icon">📋</div><div class="sh-text">Boot Sequence Guide</div><div class="sh-line"></div></div>
+<div class="seq">
+  <div class="sq"><div class="sq-n" style="color:var(--orange)">1</div><div><div class="sq-t" style="color:var(--orange)">PS4 Browser → This Page</div><div class="sq-d">Navigate to this URL on your PS4 browser. Do not use any other browser tab.</div></div></div>
+  <div class="sq"><div class="sq-n" style="color:var(--orange)">2</div><div><div class="sq-t" style="color:var(--orange)">Configure Settings → Tap ⚡ JAILBREAK</div><div class="sq-d">Adjust exploit settings above if needed. Tap the button — do NOT navigate away. Auto-retry handles benign read misses.</div></div></div>
+  <div class="sq"><div class="sq-n" style="color:var(--green)">3</div><div><div class="sq-t" style="color:var(--green)">Wait for JAILBROKEN Banner</div><div class="sq-d">Green = kernel patched. Red = cold reboot required (hold power → two beeps). Return and retry.</div></div></div>
+  <div class="sq"><div class="sq-n" style="color:var(--green)">4</div><div><div class="sq-t" style="color:var(--green)">Cold Reboot PS4</div><div class="sq-d">Required after jailbreak. Hold power until two beeps shutdown. Then boot normally and return here.</div></div></div>
+  <div class="sq"><div class="sq-n" style="color:var(--green)">5</div><div><div class="sq-t" style="color:var(--green)">Select Payload (Section 02)</div><div class="sq-d">For 13.52 RTM: tap ⚡ 13.52 DEBUG. Port :744 opens for zoof13r RTM connection.</div></div></div>
+  <div class="sq"><div class="sq-n" style="color:var(--blue)">6</div><div><div class="sq-t" style="color:var(--blue)">Connect zoof13r RTM → Attach BO2</div><div class="sq-d">PS4 IP → Connect → Attach BO2 → start modding. Use additional payloads (FTP, WebRTE etc.) as needed.</div></div></div>
+</div>
+
+<div style="height:40px"></div>
+</div><!-- /main -->
+
+<div id="toast"></div>
+<div id="state" style="display:none"></div>
+
+<script>
+// ── Config ─────────────────────────────────────────────────────────────────
+var cfg = {jb:true, patch:true, payload:true, keepjb:false, stop:false, verbose:false, retry:8};
+var linuxVRAM = 1, binPort = 9020, fanSpeed = 60;
+
+function ts(key, el) { cfg[key] = !cfg[key]; el.classList.toggle('on', cfg[key]); }
+
+// ── DOM ────────────────────────────────────────────────────────────────────
+var $ = function(id){ return document.getElementById(id); };
+var hdrDot = $('hdr-dot'), hdrTxt = $('hdr-txt');
+var jbBtn  = $('jb-btn'), sbD = $('sb-d'), sbSpin = $('sb-spin'), sbTxt = $('sb-txt');
+var statsEl= $('stats'), terminal= $('terminal'), outEl = $('out');
+var resultEl = $('result'), toast = $('toast'), tbadge = $('tbadge');
+
+// ── Sub-panel toggles ──────────────────────────────────────────────────────
+function toggleSub(card) {
+  card.classList.toggle('expanded');
+}
+function setLinuxVRAM(gb, btn) {
+  linuxVRAM = gb;
+  btn.closest('.pc-sub').querySelectorAll('.sub-btn').forEach(function(b){ b.classList.remove('active'); });
+  btn.classList.add('active');
+}
+function setBinPort(port, btn) {
+  binPort = port;
+  btn.closest('.pc-sub').querySelectorAll('.sub-btn').forEach(function(b){ b.classList.remove('active'); });
+  btn.classList.add('active');
+}
+function setFanSpeed(pct, btn) {
+  fanSpeed = pct;
+  btn.closest('.pc-sub').querySelectorAll('.sub-btn').forEach(function(b){ b.classList.remove('active'); });
+  btn.classList.add('active');
+}
+
+// ── Toast ──────────────────────────────────────────────────────────────────
+function showToast(msg, type) {
+  toast.textContent = msg;
+  toast.className = 'show ' + (type||'');
+  setTimeout(function(){ toast.className=''; }, 3000);
+}
+
+// ── Status ─────────────────────────────────────────────────────────────────
+var elTimer = null, startT = null;
+function startTimer(){ startT=Date.now(); elTimer=setInterval(function(){ $('st-time').textContent=Math.floor((Date.now()-startT)/1000)+'s'; },500); }
+function stopTimer(){ if(elTimer){ clearInterval(elTimer); elTimer=null; } }
+
+function setStatus(dot, spin, txt, hdrCls, hdrLabel) {
+  sbD.className = 'sb-d '+(dot||'');
+  sbSpin.style.display = spin ? 'block' : 'none';
+  sbTxt.textContent = txt;
+  hdrDot.className = 'hdr-dot '+(hdrCls||'');
+  hdrTxt.textContent = hdrLabel||'STANDBY';
+}
+
+function showResult(ok, title, sub) {
+  resultEl.innerHTML='<div class="ri '+(ok?'ok':'fail')+'"><div class="ri-ico">'+(ok?'✅':'💀')+'</div><div><div class="ri-title">'+title+'</div><div class="ri-sub">'+sub+'</div></div></div>';
+  resultEl.style.display='';
+}
+
+// ── Watch body class (jb.js sets "done"/"fail"/"log") ─────────────────────
+new MutationObserver(function(){
+  var c = document.body.className;
+  if(c==='done') onDone();
+  else if(c==='fail') onFail();
+}).observe(document.body,{attributes:true,attributeFilter:['class']});
+
+// ── Live stats via MutationObserver on #out ────────────────────────────────
+new MutationObserver(function(){
+  var h=outEl.innerHTML;
+  $('st-pass').textContent=(h.match(/class="ok"/g)||[]).length;
+  $('st-fail').textContent=(h.match(/class="bad"/g)||[]).length;
+  var lines=outEl.textContent.trim().split('\n');
+  for(var i=lines.length-1;i>=0;i--){
+    var l=lines[i].trim();
+    if(l){ var tag=l.split(/\s+/)[0]; $('st-step').textContent=tag.length>9?tag.slice(0,9):tag; break; }
+  }
+  outEl.scrollTop=outEl.scrollHeight;
+}).observe(outEl,{childList:true,subtree:true,characterData:true});
+
+function onDone(){
+  stopTimer();
+  setStatus('ok',false,'Jailbreak complete — kernel patched','online','JAILBROKEN');
+  jbBtn.disabled=true; tbadge.textContent='DONE';
+  showResult(true,'JAILBROKEN — Cold Reboot PS4','Hold power until two beeps. Return here after reboot → select payload (Section 02).');
+  showToast('✓ Jailbreak complete!','ok');
+}
+function onFail(){
+  stopTimer();
+  setStatus('fail',false,'Exploit failed — cold reboot and retry','fail','FAILED');
+  jbBtn.disabled=false; jbBtn.querySelector('.jb-title').textContent='🔁 RETRY JAILBREAK';
+  tbadge.textContent='FAILED';
+  showResult(false,'FAILED — Cold Reboot Required','Hold power until two beeps. Navigate back and tap jailbreak again.');
+  showToast('✗ Failed — reboot PS4','bad');
+  launched=false;
+}
+
+// ── Launch ─────────────────────────────────────────────────────────────────
+var launched=false;
+function launchJB(){
+  if(launched)return; launched=true;
+  terminal.style.display=''; statsEl.style.cssText='display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:7px;margin-bottom:10px';
+  outEl.innerHTML='';  startTimer();
+  jbBtn.classList.add('busy'); jbBtn.disabled=true;
+  setStatus('run',true,'Running exploit — do not navigate away...','run','RUNNING');
+
+  var p=['log=1'];
+  if(!cfg.jb) p.push('jb=0');
+  if(!cfg.patch) p.push('patch=0');
+  if(!cfg.payload) p.push('payload=0');
+  if(cfg.keepjb) p.push('keepjb=1');
+  if(cfg.stop) p.push('stop=beforedouble');
+  if(cfg.verbose) p.push('verbose=1');
+  if(cfg.retry!==8) p.push('retry='+cfg.retry);
+  history.replaceState(null,'',location.pathname+'?'+p.join('&'));
+
+  import("https://whiteshadow8500.github.io/jb.js")
+    .catch(function(){ outEl.innerHTML+='<span class="bad">[LOAD-ERROR] Failed to load jb.js — check network\n</span>'; document.body.className='fail'; });
+}
+
+// ── Payload dispatch ───────────────────────────────────────────────────────
+function sendPayload(file, label, el){
+  var card=el.closest('.pcard');
+  if(card.classList.contains('missing')){
+    showToast('✗ '+label+': add '+file+' to repo','bad'); return;
+  }
+  if(el.classList.contains('busy'))return;
+  el.classList.add('busy');
+
+  var url='./'+file;
+  // For linux, select correct bin by VRAM setting
+  if(file==='linux.bin') url='./linux_'+linuxVRAM+'gb.bin';
+  // For fan control, select by speed
+  if(file==='fan_control.bin') url='./fan_'+fanSpeed+'pct.bin';
+
+  showToast('Fetching '+label+'…');
+  var xhr=new XMLHttpRequest();
+  xhr.open('GET',url,true); xhr.responseType='arraybuffer'; xhr.timeout=15000;
+  xhr.onload=function(){
+    el.classList.remove('busy');
+    if(xhr.status===200){ showToast('✓ '+label+' sent! ('+(xhr.response.byteLength/1024).toFixed(1)+' KB)','ok'); }
+    else{ showToast('✗ HTTP '+xhr.status+' — '+file+' not found','bad'); }
+  };
+  xhr.onerror=function(){ el.classList.remove('busy'); showToast('✗ Connection failed','bad'); };
+  xhr.ontimeout=function(){ el.classList.remove('busy'); showToast('✗ Timed out','bad'); };
+  xhr.send();
+}
+
+// ── Expose globals ─────────────────────────────────────────────────────────
+window.launchJB=launchJB; window.ts=ts; window.sendPayload=sendPayload;
+window.toggleSub=toggleSub; window.setLinuxVRAM=setLinuxVRAM;
+window.setBinPort=setBinPort; window.setFanSpeed=setFanSpeed;
+</script>
 </body>
 </html>
