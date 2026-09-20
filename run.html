@@ -167,6 +167,37 @@
       body.done #msg { color: var(--green) !important; text-shadow: 0 0 12px rgba(0,255,0,0.6) !important; animation: none !important; }
       body.fail #msg { color: var(--red) !important; text-shadow: 0 0 12px rgba(255,51,51,0.6) !important; animation: none !important; }
 
+      /* Reboot prompt */
+      #reboot-prompt {
+        display: none;
+        margin-top: 28px;
+        padding: 22px 36px;
+        background-color: #0A0A0A;
+        border: 2px solid var(--green);
+        border-radius: 8px;
+        box-shadow: 0 0 30px rgba(0, 255, 0, 0.35);
+        text-align: center;
+      }
+      #reboot-prompt .reboot-title {
+        font-size: 26px;
+        font-weight: 900;
+        font-style: italic;
+        letter-spacing: 2px;
+        color: var(--green);
+        text-shadow: 0 0 20px rgba(0, 255, 0, 0.8);
+        animation: pulsGreen 1.4s ease-in-out infinite;
+      }
+      #reboot-prompt .reboot-sub {
+        font-size: 14px;
+        color: #A0A0A0;
+        margin-top: 8px;
+      }
+      body.done #reboot-prompt { display: block; }
+      @keyframes pulsGreen {
+        0%, 100% { text-shadow: 0 0 10px rgba(0,255,0,0.5); }
+        50% { text-shadow: 0 0 35px rgba(0,255,0,1); }
+      }
+
       /* Bottom Green Log Console */
       #log-frame {
         width: 100%;
@@ -202,6 +233,11 @@
       <div id="main-wrap">
         <div id="spin"></div>
         <div id="msg"><span class="star">★</span> RUNNING EXPLOIT ENGINE — DO NOT NAVIGATE AWAY <span class="star">★</span></div>
+        <div id="reboot-prompt">
+          <div class="reboot-title">★ JAILBREAK COMPLETE ★</div>
+          <div class="reboot-sub">Closing browser in <span id="cdown">10</span>s to return to home screen...</div>
+          <button id="cancel-btn" onclick="cancelReboot()" style="margin-top:14px;background:transparent;border:1px solid #555;color:#888;padding:6px 18px;border-radius:4px;cursor:pointer;font-size:12px;">CANCEL</button>
+        </div>
         <div id="wrap">
           <div id="state"></div>
           <div id="out"></div>
@@ -217,15 +253,54 @@
     <script>
     var msgEl = document.getElementById('msg');
     var logBox = document.getElementById('log-box');
+    var _rebootTimer = null;
+    var _cancelled = false;
+
+    function cancelReboot() {
+      _cancelled = true;
+      if (_rebootTimer) clearInterval(_rebootTimer);
+      document.getElementById('cancel-btn').style.display = 'none';
+      document.getElementById('cdown').parentNode.innerHTML = 'Cancelled — restart your console manually when ready.';
+      var ts = new Date().toTimeString().split(' ')[0];
+      logBox.innerHTML += '\n[' + ts + '] AUTO-CLOSE CANCELLED BY USER.';
+      logBox.scrollTop = logBox.scrollHeight;
+    }
+
+    function startRebootCountdown() {
+      var count = 10;
+      var cdownEl = document.getElementById('cdown');
+      _rebootTimer = setInterval(function() {
+        if (_cancelled) { clearInterval(_rebootTimer); return; }
+        count -= 1;
+        if (cdownEl) cdownEl.textContent = count;
+        var ts = new Date().toTimeString().split(' ')[0];
+        logBox.innerHTML += '\n[' + ts + '] ► CLOSING BROWSER IN ' + count + 's...';
+        logBox.scrollTop = logBox.scrollHeight;
+        if (count <= 0) {
+          clearInterval(_rebootTimer);
+          ts = new Date().toTimeString().split(' ')[0];
+          logBox.innerHTML += '\n[' + ts + '] ► RETURNING TO HOME SCREEN...';
+          logBox.scrollTop = logBox.scrollHeight;
+          try { window.close(); } catch(e) {}
+          // Fallback: navigate to blank if window.close() is blocked
+          setTimeout(function() { try { window.location.href = 'about:blank'; } catch(e2) {} }, 500);
+        }
+      }, 1000);
+    }
+
     new MutationObserver(function() {
       var c = document.body.className;
       var ts = new Date().toTimeString().split(' ')[0];
       if (c.indexOf('done') !== -1) {
-        msgEl.innerHTML = '<span class="star">★</span> JAILBROKEN — NOW SELECT PAYLOAD <span class="star">★</span>';
+        msgEl.innerHTML = '<span class="star">★</span> JAILBROKEN SUCCESSFULLY! <span class="star">★</span>';
         logBox.innerHTML += '\n[' + ts + '] ✓ EXPLOIT & KERNEL PATCH SUCCESSFUL!';
+        logBox.innerHTML += '\n[' + ts + '] ► INITIATING BROWSER CLOSE SEQUENCE...';
+        logBox.scrollTop = logBox.scrollHeight;
+        startRebootCountdown();
       } else if (c.indexOf('fail') !== -1) {
         msgEl.innerHTML = '<span class="star">★</span> FAILED — COLD REBOOT PS4 AND RETRY <span class="star">★</span>';
         logBox.innerHTML += '\n[' + ts + '] ✗ EXPLOIT FAILED — COLD REBOOT REQUIRED.';
+        logBox.scrollTop = logBox.scrollHeight;
       }
     }).observe(document.body, { attributes: true, attributeFilter: ['class'] });
     </script>
