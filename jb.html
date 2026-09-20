@@ -1,198 +1,412 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en" manifest="cache.appcache">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>zoof13r // 13.52 JB</title>
-    <style>
-      html,
-      body {
-        margin: 0;
-        padding: 0;
-        min-height: 100%;
-        background: #080a0e;
-        color: #c8ced8;
-        font: 15px/1.45 "Segoe UI", system-ui, sans-serif;
-      }
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ZOOF13R WEBKIT</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{background:#0b0d10;color:#c8ced8;font:15px/1.45 "Segoe UI",system-ui,sans-serif;min-height:100%}
 
-      /* ── top brand bar ── */
-      #brand {
-        text-align: center;
-        padding: 10px 12px;
-        background: #0d1117;
-        border-bottom: 1px solid #1e2732;
-        user-select: none;
-      }
-      #brand b {
-        font-size: 13px;
-        font-weight: 700;
-        letter-spacing: 0.18em;
-        color: #7fd0a0;
-        text-transform: uppercase;
-      }
-      #brand small {
-        color: #3a4a5a;
-        font-size: 11px;
-        margin-left: 10px;
-        letter-spacing: 0.1em;
-      }
+/* ── header ── */
+#hdr{text-align:center;padding:14px 16px;background:#0e1116;border-bottom:2px solid #ff6600;display:flex;align-items:center;justify-content:center;gap:10px}
+.b1{color:#ff6600;font-size:20px;font-weight:900;font-style:italic;letter-spacing:2px}
+.b2{color:#fff;font-size:16px;font-weight:700;letter-spacing:5px}
+.hdr-dot{width:9px;height:9px;background:#555;border-radius:50%;animation:p 1.4s infinite;margin-left:auto}
+.hdr-dot.online{background:#4caf50;box-shadow:0 0 8px #4caf50}
+@keyframes p{0%,100%{opacity:1}50%{opacity:.3}}
 
-      /* ── spinner — shown while exploit runs ── */
-      #spin {
-        position: fixed;
-        top: calc(50% + 24px);
-        left: 50%;
-        width: 50px; height: 50px;
-        margin: -25px 0 0 -25px;
-        border: 3px solid #1e2732;
-        border-top-color: #7fd0a0;
-        border-radius: 50%;
-        animation: spin 0.85s linear infinite;
-      }
-      @keyframes spin { to { transform: rotate(360deg); } }
+/* ── server badge ── */
+.badge{margin:16px auto 4px;max-width:480px;background:#11151c;border:1px solid #1e2732;border-radius:8px;padding:12px 18px;text-align:center}
+.host{color:#ff6600;font-weight:700;font-size:13px;font-family:monospace}
+.sub{color:#2a3a4a;font-size:11px;letter-spacing:1px;margin-top:3px}
 
-      /* ── center label under spinner ── */
-      #hint {
-        position: fixed;
-        top: calc(50% + 60px);
-        left: 0; right: 0;
-        text-align: center;
-        font-size: 12px;
-        color: #3a4a5a;
-        letter-spacing: 0.1em;
-      }
+/* ── section labels ── */
+.sec{color:#ff6600;font-size:10px;font-weight:700;letter-spacing:3px;margin:18px auto 8px;max-width:480px;padding:0 14px;display:block}
 
-      /* ── fail message ── */
-      #msg {
-        position: fixed;
-        top: 50%; left: 0; right: 0;
-        transform: translateY(-50%);
-        text-align: center;
-        font-size: 18px;
-        letter-spacing: 0.5px;
-        display: none;
-        flex-direction: column;
-        align-items: center;
-        gap: 10px;
-      }
-      #msg .icon { font-size: 40px; }
-      #msg .try  { font-size: 13px; color: #5a6478; margin-top: 4px; }
+/* ── jailbreak block ── */
+.jb-wrap{max-width:480px;margin:0 auto;padding:0 14px}
 
-      /* ── log wrap (shown when ?log=1) ── */
-      #wrap { padding: 0; }
-      #state, #out { display: none; }
+#jb-btn{width:100%;padding:18px;background:#0e1116;border:2px solid #ff6600;border-radius:10px;color:#fff;font:700 16px/1 "Segoe UI",sans-serif;letter-spacing:3px;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:background .15s;display:block;text-align:center}
+#jb-btn:active,#jb-btn.busy{background:#1a0a00}
+#jb-btn:disabled{opacity:.5;cursor:not-allowed}
+.jb-step{font-size:10px;color:#3d5066;letter-spacing:2px;margin-bottom:6px}
+.jb-title{font-size:20px;font-weight:900;color:#ff6600;letter-spacing:2px;margin-bottom:3px}
+.jb-sub{font-size:11px;color:#3d5066;letter-spacing:1px}
 
-      /* ─── state transitions via body class ─── */
+/* ── status row ── */
+#status-wrap{max-width:480px;margin:10px auto 0;padding:0 14px;display:none}
+#status-bar{background:#11151c;border:1px solid #1e2732;border-radius:8px;padding:12px 16px;display:flex;align-items:center;gap:10px}
+.s-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;background:#555}
+.s-dot.run{background:#ff6600;box-shadow:0 0 8px #ff6600;animation:p 1s ease-in-out infinite}
+.s-dot.ok{background:#4caf50;box-shadow:0 0 8px #4caf50}
+.s-dot.fail{background:#ef4444;box-shadow:0 0 8px #ef4444}
+#status-txt{font-size:12px;font-family:Consolas,monospace;flex:1}
+#spin-sm{width:16px;height:16px;border:2px solid #2a2a2a;border-top-color:#ff6600;border-radius:50%;animation:sp .8s linear infinite;display:none;flex-shrink:0}
 
-      /* done: hide spinner, show nothing extra (exploit handed off) */
-      body.done #spin,
-      body.done #hint { display: none; }
+/* ── result banner ── */
+#result{max-width:480px;margin:10px auto 0;padding:0 14px;display:none}
+#result-inner{padding:16px;border-radius:8px;border:1px solid;display:flex;align-items:flex-start;gap:12px}
+#result-inner.ok{background:rgba(76,175,80,.08);border-color:#4caf50}
+#result-inner.fail{background:rgba(239,68,68,.08);border-color:#ef4444}
+.r-icon{font-size:22px;flex-shrink:0}
+.r-title{font-weight:700;font-size:14px;letter-spacing:.05em;text-transform:uppercase}
+.r-ok .r-title{color:#4caf50}
+.r-fail .r-title{color:#ef4444}
+.r-sub{font-size:11px;color:#555;margin-top:3px;line-height:1.5}
 
-      /* fail: hide spinner, show restart msg */
-      body.fail #spin,
-      body.fail #hint { display: none; }
-      body.fail #msg   { display: flex; }
+/* ── divider ── */
+.divider{max-width:480px;margin:20px auto 0;padding:0 14px;display:flex;align-items:center;gap:10px;color:#2a3a4a;font-size:10px;letter-spacing:3px}
+.divider::before,.divider::after{content:'';flex:1;border-top:1px solid #1e2732}
 
-      /* log: full step-log view */
-      body.log #spin,
-      body.log #hint,
-      body.log #msg  { display: none; }
-      body.log #wrap { padding: 14px 18px; }
-      body.log #state {
-        display: block;
-        font-size: 20px;
-        font-weight: 700;
-        margin: 0 0 8px;
-      }
-      body.log #out {
-        display: block;
-        white-space: pre-wrap;
-        font: 12px/1.5 Consolas, "JetBrains Mono", monospace;
-        background: #0a0d11;
-        border: 1px solid #1e2732;
-        border-radius: 6px;
-        padding: 12px 14px;
-        height: calc(100vh - 150px);
-        overflow-y: auto;
-      }
+/* ── payload cards ── */
+.cards{max-width:480px;margin:10px auto 0;padding:0 14px 12px;display:flex;flex-direction:column;gap:10px}
+.card{background:#11151c;border:1px solid #1e2732;border-radius:10px;padding:16px;display:flex;align-items:center;gap:14px;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:border-color .15s,background .15s}
+.card:active,.card.busy{background:#161b24;border-color:#ff6600}
+.card.busy{pointer-events:none}
+.ci{font-size:26px;min-width:34px;text-align:center}
+.cinfo{flex:1}
+.cname{font-size:15px;font-weight:700;color:#fff;margin-bottom:1px}
+.cfw{font-size:10px;letter-spacing:1px;font-weight:700;margin-bottom:3px}
+.cdesc{font-size:11px;color:#3d5066}
+.carr{font-size:24px;font-weight:300}
 
-      /* ── log line colors ── */
-      .ok     { color: #7fd0a0; }
-      .bad    { color: #d08a7f; }
-      .warn   { color: #d8c07f; }
-      .info   { color: #7fa8d0; }
-      .safe   { color: #7fd0a0; }
-      .danger { color: #d08a7f; }
+/* ── settings ── */
+.settings-wrap{max-width:480px;margin:0 auto;padding:0 14px 14px}
+.settings-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.setting-item{background:#11151c;border:1px solid #1e2732;border-radius:8px;padding:12px 14px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.setting-label{font-size:11px;color:#888;letter-spacing:.05em}
+.setting-val{font-size:11px;font-family:Consolas,monospace;color:#ff6600}
+.retry-row{grid-column:1/-1;display:flex;align-items:center;gap:10px}
+.retry-row input{background:#0a0a0a;border:1px solid #2a2a2a;color:#ff6600;font-family:Consolas;font-size:12px;padding:4px 8px;border-radius:4px;width:52px;text-align:center}
+.retry-row input:focus{outline:none;border-color:#ff6600}
+.toggle{width:36px;height:20px;background:#1e1e1e;border-radius:10px;border:1px solid #333;cursor:pointer;position:relative;flex-shrink:0;transition:background .2s}
+.toggle.on{background:#ff6600;border-color:#ff6600}
+.toggle::after{content:'';position:absolute;width:14px;height:14px;background:#fff;border-radius:50%;top:2px;left:2px;transition:left .2s}
+.toggle.on::after{left:18px}
 
-      code { color: #9fb3d0; }
+/* ── boot sequence ── */
+.seq-wrap{max-width:480px;margin:0 auto;padding:0 14px}
+.seq-step{background:#11151c;border:1px solid #1e2732;border-radius:8px;padding:12px 14px;display:flex;gap:12px;align-items:flex-start}
+.seq-num{font-weight:900;font-size:18px;min-width:22px;text-align:center}
+.seq-info{}
+.seq-title{font-weight:700;font-size:13px;margin-bottom:2px}
+.seq-desc{font-size:11px;color:#3d5066;line-height:1.5}
+.steps-list{display:flex;flex-direction:column;gap:8px}
 
-      /* ── success overlay (body.done + jailbroken flag) ── */
-      #success {
-        display: none;
-        position: fixed;
-        inset: 0;
-        background: rgba(8,10,14,0.92);
-        align-items: center;
-        justify-content: center;
-        flex-direction: column;
-        gap: 12px;
-        z-index: 100;
-        animation: fadeIn 0.4s ease;
-      }
-      @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
-      body.done #success { display: flex; }
-      #success .icon  { font-size: 56px; }
-      #success h2     { font-size: 22px; font-weight: 700; color: #7fd0a0; letter-spacing: 0.06em; }
-      #success p      { font-size: 14px; color: #5a6478; text-align: center; max-width: 300px; line-height: 1.6; }
-      #success .rtm   {
-        margin-top: 8px;
-        padding: 10px 20px;
-        background: rgba(127,208,160,0.1);
-        border: 1px solid #2a5c3f;
-        border-radius: 8px;
-        color: #7fd0a0;
-        font-size: 13px;
-        letter-spacing: 0.05em;
-      }
-    </style>
-  </head>
-  <body>
-    <div id="brand">
-      <b>zoof13r</b><small>PS4 13.52 WebKit JB</small>
+/* ── log panel ── */
+.log-wrap{max-width:480px;margin:10px auto 0;padding:0 14px 32px}
+#log-toggle{background:transparent;border:1px solid #1e2732;border-radius:4px;color:#3d5066;font-family:Consolas;font-size:11px;padding:6px 12px;cursor:pointer;width:100%;text-align:left;transition:all .15s}
+#log-toggle:hover{border-color:#2a3a4a;color:#8a9aaa}
+#out{display:none;white-space:pre-wrap;font:11px/1.6 Consolas,monospace;background:#080808;border:1px solid #1e2732;border-radius:4px;padding:12px 14px;max-height:300px;overflow-y:auto;margin-top:6px}
+.ok{color:#4caf50}.bad{color:#ef4444}.warn{color:#eab308}
+
+/* ── toast ── */
+#toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(80px);background:#11151c;border:1px solid #1e2732;color:#c8ced8;padding:11px 22px;border-radius:7px;font-size:13px;font-weight:600;transition:transform .25s;z-index:999;white-space:nowrap}
+#toast.show{transform:translateX(-50%) translateY(0)}
+#toast.ok{border-color:#4caf50;color:#4caf50}
+#toast.bad{border-color:#ef4444;color:#ef4444}
+
+/* ── big spinner ── */
+#spin{position:fixed;top:calc(50% + 30px);left:50%;width:40px;height:40px;margin:-20px 0 0 -20px;border:3px solid #1e2732;border-top-color:#ff6600;border-radius:50%;animation:sp .8s linear infinite;display:none}
+#spin.show{display:block}
+@keyframes sp{to{transform:rotate(360deg)}}
+
+/* ── hidden elements jb.js needs ── */
+#state{display:none}
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div id="hdr">
+  <span class="b1">ZOOF13R</span>
+  <span class="b2">WEBKIT</span>
+  <div class="hdr-dot" id="hdr-dot"></div>
+</div>
+
+<!-- Origin badge -->
+<div class="badge">
+  <div class="host" id="host-url">loading...</div>
+  <div class="sub">PAYLOAD HOST • GITHUB PAGES</div>
+</div>
+
+<!-- ── STEP 1: JAILBREAK ── -->
+<div class="sec">★ STEP 1 — JAILBREAK ★</div>
+<div class="jb-wrap">
+  <button id="jb-btn" onclick="launchJB()">
+    <div class="jb-step">DO THIS FIRST</div>
+    <div class="jb-title">⚡ PS4 JAILBREAK</div>
+    <div class="jb-sub">WEBKIT EXPLOIT → KERNEL</div>
+  </button>
+</div>
+
+<!-- Status row -->
+<div id="status-wrap">
+  <div id="status-bar">
+    <div class="s-dot" id="s-dot"></div>
+    <div id="spin-sm"></div>
+    <div id="status-txt">Idle</div>
+  </div>
+</div>
+
+<!-- Result banner -->
+<div id="result">
+  <div id="result-inner">
+    <div class="r-icon" id="r-icon"></div>
+    <div>
+      <div class="r-title" id="r-title"></div>
+      <div class="r-sub" id="r-sub"></div>
     </div>
+  </div>
+</div>
 
-    <!-- running state -->
-    <div id="spin"></div>
-    <div id="hint">running exploit — do not close</div>
+<!-- Log toggle -->
+<div class="log-wrap" id="log-wrap" style="display:none">
+  <button id="log-toggle" onclick="toggleLog()">▼ SHOW EXPLOIT LOG</button>
+  <div id="out"></div>
+</div>
 
-    <!-- fail state -->
-    <div id="msg">
-      <div class="icon">💀</div>
-      <div>Restart your console</div>
-      <div class="try">then navigate back and try again</div>
+<!-- ── STEP 2: PAYLOADS ── -->
+<div class="divider">STEP 2 — INJECT PAYLOAD</div>
+
+<div class="cards">
+
+  <!-- ps4debug -->
+  <div class="card" onclick="sendPayload('./payloads/ps4debug.bin','ps4debug',this)">
+    <span class="ci" style="color:#4caf50">🔧</span>
+    <div class="cinfo">
+      <div class="cname">ps4debug</div>
+      <div class="cfw" style="color:#4caf50">ALL FIRMWARE</div>
+      <div class="cdesc">Standard ps4debug — opens :744 for RTM connection</div>
     </div>
+    <span class="carr" style="color:#4caf50">›</span>
+  </div>
 
-    <!-- success overlay (injected by jb.js via body.done) -->
-    <div id="success">
-      <div class="icon">✅</div>
-      <h2>JAILBROKEN</h2>
-      <p>Kernel patched. ps4debug payload deployed.</p>
-      <div class="rtm">Connect zoof13r RTM tool → PS4 IP : 9090</div>
+  <!-- zoo13rd3bug — 13.52 specific -->
+  <div class="card" onclick="sendPayload('./payloads/zoo13rd3bug.bin','13.52 DEBUG',this)">
+    <span class="ci" style="color:#ff6600">⚡</span>
+    <div class="cinfo">
+      <div class="cname">13.52 DEBUG</div>
+      <div class="cfw" style="color:#ff6600">FIRMWARE 13.52</div>
+      <div class="cdesc">zoof13r custom 13.52 kernel payload</div>
     </div>
+    <span class="carr" style="color:#ff6600">›</span>
+  </div>
 
-    <!-- log view (shown when ?log=1) -->
-    <div id="wrap">
-      <div id="state"></div>
-      <div id="out"></div>
+</div>
+
+<!-- ── SETTINGS ── -->
+<div class="sec">★ EXPLOIT SETTINGS ★</div>
+<div class="settings-wrap">
+  <div class="settings-grid">
+    <div class="setting-item">
+      <span class="setting-label">Jailbreak</span>
+      <div class="toggle on" id="tog-jb" onclick="toggleSetting('jb',this)"></div>
     </div>
+    <div class="setting-item">
+      <span class="setting-label">Kernel Patch</span>
+      <div class="toggle on" id="tog-patch" onclick="toggleSetting('patch',this)"></div>
+    </div>
+    <div class="setting-item">
+      <span class="setting-label">Payload</span>
+      <div class="toggle on" id="tog-payload" onclick="toggleSetting('payload',this)"></div>
+    </div>
+    <div class="setting-item">
+      <span class="setting-label">Keep JB</span>
+      <div class="toggle" id="tog-keepjb" onclick="toggleSetting('keepjb',this)"></div>
+    </div>
+    <div class="setting-item retry-row">
+      <span class="setting-label">Auto-Retry (max)</span>
+      <input type="number" id="inp-retry" value="8" min="0" max="20" onchange="settings.retry=this.value">
+    </div>
+  </div>
+</div>
 
-    <!--
-      Load the actual exploit from raw13g's CDN.
-      All the heavy lifting (WebKit primitive, kernel RW, kpatch, payload) lives there.
-      This shell just gives it a home and the /t telemetry endpoint on our local server.
-    -->
-    <script type="module">
-      import "https://whiteshadow8500.github.io/jb.js";
-    </script>
-  </body>
+<!-- ── BOOT SEQUENCE ── -->
+<div class="sec">★ BOOT SEQUENCE ★</div>
+<div class="seq-wrap">
+  <div class="steps-list">
+    <div class="seq-step">
+      <div class="seq-num" style="color:#ff6600">1</div>
+      <div class="seq-info">
+        <div class="seq-title" style="color:#ff6600">Open PS4 Web Browser</div>
+        <div class="seq-desc">Navigate to this page URL on your PS4 browser.</div>
+      </div>
+    </div>
+    <div class="seq-step">
+      <div class="seq-num" style="color:#ff6600">2</div>
+      <div class="seq-info">
+        <div class="seq-title" style="color:#ff6600">Tap ⚡ PS4 JAILBREAK</div>
+        <div class="seq-desc">Press the button above. The WebKit exploit will run — do not close the browser. Wait for the result banner.</div>
+      </div>
+    </div>
+    <div class="seq-step">
+      <div class="seq-num" style="color:#4caf50">3</div>
+      <div class="seq-info">
+        <div class="seq-title" style="color:#4caf50">Restart PS4 (Cold Boot)</div>
+        <div class="seq-desc">Hold power until you hear two beeps, or Settings → Restart. Required after jailbreak.</div>
+      </div>
+    </div>
+    <div class="seq-step">
+      <div class="seq-num" style="color:#4caf50">4</div>
+      <div class="seq-info">
+        <div class="seq-title" style="color:#4caf50">Inject Payload (Step 2)</div>
+        <div class="seq-desc">After reboot, come back and tap ps4debug or 13.52 DEBUG. Port :744 will open for the RTM tool.</div>
+      </div>
+    </div>
+    <div class="seq-step">
+      <div class="seq-num" style="color:#2196f3">5</div>
+      <div class="seq-info">
+        <div class="seq-title" style="color:#2196f3">Connect zoof13r RTM Tool</div>
+        <div class="seq-desc">Enter your PS4 IP in the RTM tool, click Connect PS4 → Attach BO2. Start modding.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div style="height:40px"></div>
+<div id="toast"></div>
+<div id="spin"></div>
+<div id="state" style="display:none"></div>
+
+<script>
+// ── Settings state ─────────────────────────────────────────────────────────
+var settings = { jb: true, patch: true, payload: true, keepjb: false, retry: 8 };
+
+function toggleSetting(key, el) {
+  settings[key] = !settings[key];
+  el.classList.toggle('on', settings[key]);
+}
+
+// ── URL display ────────────────────────────────────────────────────────────
+document.getElementById('host-url').textContent = location.origin + location.pathname.replace(/jb\.html$/,'');
+
+// ── Toast ──────────────────────────────────────────────────────────────────
+var T = document.getElementById('toast');
+function toast(msg, type) {
+  T.textContent = msg;
+  T.className = 'show ' + (type || '');
+  setTimeout(function(){ T.className = ''; }, 3000);
+}
+
+// ── Status helpers ─────────────────────────────────────────────────────────
+var sdot    = document.getElementById('s-dot');
+var spinSm  = document.getElementById('spin-sm');
+var statusTxt = document.getElementById('status-txt');
+var statusWrap = document.getElementById('status-wrap');
+var resultEl   = document.getElementById('result');
+var resultInner = document.getElementById('result-inner');
+var logWrap = document.getElementById('log-wrap');
+
+function setStatus(dot, text, showSpin) {
+  statusWrap.style.display = '';
+  sdot.className = 's-dot ' + dot;
+  statusTxt.textContent = text;
+  spinSm.style.display = showSpin ? 'block' : 'none';
+}
+
+function showResult(ok, title, sub) {
+  resultEl.style.display = '';
+  resultInner.className = ok ? 'ok' : 'fail';
+  document.getElementById('r-icon').textContent = ok ? '✅' : '💀';
+  document.getElementById('r-title').textContent = title;
+  document.getElementById('r-title').className = 'r-title ' + (ok ? 'r-ok' : 'r-fail');
+  document.getElementById('r-sub').textContent = sub;
+}
+
+// ── Watch body class (set by jb.js) ───────────────────────────────────────
+new MutationObserver(function() {
+  var cls = document.body.className;
+  if (cls === 'done') onDone();
+  if (cls === 'fail') onFail();
+}).observe(document.body, { attributes: true, attributeFilter: ['class'] });
+
+function onDone() {
+  setStatus('ok', 'Exploit complete');
+  document.getElementById('hdr-dot').className = 'hdr-dot online';
+  document.getElementById('jb-btn').disabled = true;
+  showResult(true, 'JAILBROKEN — Restart PS4', 'Hold power until two beeps, then return here and inject a payload.');
+  logWrap.style.display = '';
+}
+function onFail() {
+  setStatus('fail', 'Exploit failed');
+  document.getElementById('jb-btn').disabled = false;
+  document.getElementById('jb-btn').querySelector('.jb-title').textContent = '🔁 RETRY JAILBREAK';
+  showResult(false, 'FAILED — Restart PS4 and retry', 'Hold power until two beeps, navigate back and try again.');
+  logWrap.style.display = '';
+  launched = false;
+}
+
+// ── Log toggle ─────────────────────────────────────────────────────────────
+var logVisible = false;
+function toggleLog() {
+  logVisible = !logVisible;
+  document.getElementById('out').style.display = logVisible ? 'block' : 'none';
+  document.getElementById('log-toggle').textContent = logVisible ? '▲ HIDE EXPLOIT LOG' : '▼ SHOW EXPLOIT LOG';
+}
+
+// ── Launch exploit ─────────────────────────────────────────────────────────
+var launched = false;
+function launchJB() {
+  if (launched) return;
+  launched = true;
+
+  var btn = document.getElementById('jb-btn');
+  btn.classList.add('busy');
+  btn.disabled = true;
+
+  setStatus('run', 'Running exploit — do not navigate away...', true);
+  logWrap.style.display = '';
+
+  // Build URL param string from settings
+  var p = [];
+  if (!settings.jb)      p.push('jb=0');
+  if (!settings.patch)   p.push('patch=0');
+  if (!settings.payload) p.push('payload=0');
+  if (settings.keepjb)   p.push('keepjb=1');
+  if (settings.retry != 8) p.push('retry=' + settings.retry);
+
+  // Inject params into URL so jb.js reads them correctly
+  if (p.length) {
+    var qs = '?' + p.join('&');
+    history.replaceState(null, '', location.pathname + qs);
+  }
+
+  import("https://whiteshadow8500.github.io/jb.js")
+    .catch(function() { document.body.className = 'fail'; });
+}
+
+// ── Payload injection ──────────────────────────────────────────────────────
+var S = document.getElementById('spin');
+function sendPayload(url, label, el) {
+  if (el.classList.contains('busy')) return;
+  el.classList.add('busy');
+  S.classList.add('show');
+  toast('Fetching ' + label + '…');
+
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET', url, true);
+  xhr.responseType = 'arraybuffer';
+  xhr.timeout = 15000;
+  xhr.onload = function() {
+    S.classList.remove('show');
+    el.classList.remove('busy');
+    if (xhr.status === 200) {
+      toast('✓ ' + label + ' sent! (' + xhr.response.byteLength.toLocaleString() + ' bytes)', 'ok');
+    } else {
+      toast('✗ HTTP ' + xhr.status + ' — payload not found', 'bad');
+    }
+  };
+  xhr.onerror = function() { S.classList.remove('show'); el.classList.remove('busy'); toast('✗ Connection failed', 'bad'); };
+  xhr.ontimeout = function() { S.classList.remove('show'); el.classList.remove('busy'); toast('✗ Timed out', 'bad'); };
+  xhr.send();
+}
+
+window.launchJB    = launchJB;
+window.toggleLog   = toggleLog;
+window.toggleSetting = toggleSetting;
+window.sendPayload = sendPayload;
+</script>
+</body>
 </html>
