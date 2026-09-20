@@ -14,8 +14,6 @@
   --sidebar-bg: #0F0F0F;
   --card-bg: #1F1F1F;
   --border-color: #333333;
-  --orange: #FF6600;
-  --orange-hover: #FF8533;
   --cyan-blue: #00D2FF;
   --text-main: #E0E0E0;
   --text-dim: #A0A0A0;
@@ -23,17 +21,43 @@
   --red: #FF3333;
 }
 
-/* ── RGB Theme Animation ── */
-@keyframes rgbGlow {
-  0%   { color: #FF6600; text-shadow: 0 0 12px rgba(255, 102, 0, 0.7); }
-  25%  { color: #00D2FF; text-shadow: 0 0 12px rgba(0, 210, 255, 0.7); }
-  50%  { color: #00FF00; text-shadow: 0 0 12px rgba(0, 255, 0, 0.7); }
-  75%  { color: #FF00FF; text-shadow: 0 0 12px rgba(255, 0, 255, 0.7); }
-  100% { color: #FF6600; text-shadow: 0 0 12px rgba(255, 102, 0, 0.7); }
+/* ── Full Master RGB Engine ── */
+@keyframes rgbText {
+  0%   { color: #FF6600; text-shadow: 0 0 10px rgba(255, 102, 0, 0.6); }
+  25%  { color: #00D2FF; text-shadow: 0 0 10px rgba(0, 210, 255, 0.6); }
+  50%  { color: #00FF00; text-shadow: 0 0 10px rgba(0, 255, 0, 0.6); }
+  75%  { color: #FF00FF; text-shadow: 0 0 10px rgba(255, 0, 255, 0.6); }
+  100% { color: #FF6600; text-shadow: 0 0 10px rgba(255, 102, 0, 0.6); }
+}
+
+@keyframes rgbBorder {
+  0%   { border-color: #FF6600; box-shadow: 0 0 10px rgba(255, 102, 0, 0.3); }
+  25%  { border-color: #00D2FF; box-shadow: 0 0 10px rgba(0, 210, 255, 0.3); }
+  50%  { border-color: #00FF00; box-shadow: 0 0 10px rgba(0, 255, 0, 0.3); }
+  75%  { border-color: #FF00FF; box-shadow: 0 0 10px rgba(255, 0, 255, 0.3); }
+  100% { border-color: #FF6600; box-shadow: 0 0 10px rgba(255, 102, 0, 0.3); }
+}
+
+@keyframes rgbBg {
+  0%   { background-color: #FF6600; box-shadow: 0 0 15px rgba(255, 102, 0, 0.5); }
+  25%  { background-color: #00D2FF; box-shadow: 0 0 15px rgba(0, 210, 255, 0.5); }
+  50%  { background-color: #00FF00; box-shadow: 0 0 15px rgba(0, 255, 0, 0.5); }
+  75%  { background-color: #FF00FF; box-shadow: 0 0 15px rgba(255, 0, 255, 0.5); }
+  100% { background-color: #FF6600; box-shadow: 0 0 15px rgba(255, 102, 0, 0.5); }
 }
 
 .rgb-text {
-  animation: rgbGlow 6s infinite linear;
+  animation: rgbText 6s infinite linear;
+}
+
+.rgb-border {
+  animation: rgbBorder 6s infinite linear;
+}
+
+.rgb-bg {
+  animation: rgbBg 6s infinite linear;
+  color: #000000 !important;
+  font-weight: 800;
 }
 
 /* ── 5x Smaller Centered Stars ── */
@@ -43,7 +67,7 @@
   display: inline-block;
   margin: 0 6px;
   transform: translateY(-2px);
-  animation: rgbGlow 6s infinite linear;
+  animation: rgbText 6s infinite linear;
 }
 
 html, body {
@@ -56,7 +80,8 @@ html, body {
 }
 
 #app-base {
-  border: 1px solid var(--orange);
+  border: 1px solid #FF6600;
+  animation: rgbBorder 6s infinite linear;
   background-color: var(--bg-base);
   min-height: 100vh;
   display: flex;
@@ -66,7 +91,8 @@ html, body {
 /* ── Top Bar ── */
 #top-bar {
   background-color: #111111;
-  border-bottom: 2px solid var(--orange);
+  border-bottom: 2px solid #FF6600;
+  animation: rgbBorder 6s infinite linear;
   height: 85px;
   display: flex;
   align-items: center;
@@ -82,7 +108,7 @@ html, body {
   font-style: italic;
   font-size: 36px;
   letter-spacing: 2px;
-  color: var(--orange);
+  animation: rgbText 6s infinite linear;
 }
 
 .brand-center {
@@ -91,15 +117,14 @@ html, body {
   font-style: italic;
   font-size: 42px;
   letter-spacing: 4px;
-  color: #FFFFFF;
-  animation: rgbGlow 6s infinite linear;
+  animation: rgbText 6s infinite linear;
 }
 
 .status-badge {
   font-weight: 800;
-  color: var(--green);
   font-size: 14px;
   letter-spacing: 1px;
+  animation: rgbText 6s infinite linear;
 }
 
 /* ── Main Layout ── */
@@ -142,8 +167,8 @@ html, body {
 
 .nav-btn.active {
   background-color: #2A2A2A;
-  color: var(--orange);
-  border-left: 4px solid var(--orange);
+  animation: rgbText 6s infinite linear, rgbBorder 6s infinite linear;
+  border-left: 4px solid #FF6600;
 }
 
 /* ── Content Area ── */
@@ -164,6 +189,7 @@ html, body {
   margin-bottom: 20px;
   display: flex;
   align-items: center;
+  animation: rgbText 6s infinite linear;
 }
 
 .orange-subheader {
@@ -172,6 +198,7 @@ html, body {
   margin-bottom: 8px;
   display: flex;
   align-items: center;
+  animation: rgbText 6s infinite linear;
 }
 
 /* ── Cards & Panels ── */
@@ -193,24 +220,27 @@ html, body {
   border-radius: 4px;
   width: 100%;
 }
+.input-field:focus {
+  animation: rgbBorder 6s infinite linear;
+  background-color: #151515;
+  outline: none;
+}
 
 .btn-primary {
-  background-color: var(--orange);
-  color: #000000;
   border: none;
   padding: 14px 28px;
-  font-weight: 700;
+  font-weight: 800;
   font-size: 16px;
   border-radius: 4px;
   cursor: pointer;
-  transition: background-color 0.15s;
+  transition: transform 0.15s;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  animation: rgbBg 6s infinite linear;
 }
 .btn-primary:hover {
-  background-color: var(--orange-hover);
-  box-shadow: 0 0 15px rgba(255, 102, 0, 0.4);
+  transform: scale(1.02);
 }
 
 /* ── Green Console Log Box ── */
@@ -248,7 +278,7 @@ html, body {
   transition: all 0.15s ease;
 }
 .payload-card:hover {
-  border-color: var(--orange);
+  animation: rgbBorder 6s infinite linear;
   transform: translateY(-2px);
 }
 .p-title {
@@ -258,12 +288,13 @@ html, body {
   margin-bottom: 4px;
   display: flex;
   align-items: center;
+  animation: rgbText 6s infinite linear;
 }
 .p-fw {
   font-size: 12px;
   font-weight: 700;
-  color: var(--orange);
   margin-bottom: 8px;
+  animation: rgbText 6s infinite linear;
 }
 .p-desc {
   font-size: 13px;
@@ -275,13 +306,13 @@ html, body {
 </head>
 <body>
 
-<div id="app-base">
+<div id="app-base" class="rgb-border">
 
   <!-- Top Bar -->
-  <div id="top-bar">
+  <div id="top-bar" class="rgb-border">
     <div class="brand-left rgb-text">ZOOF13R</div>
-    <div class="brand-center">13.52</div>
-    <div class="status-badge" id="status-badge">[HOST READY]</div>
+    <div class="brand-center rgb-text">13.52</div>
+    <div class="status-badge rgb-text" id="status-badge">[HOST READY]</div>
   </div>
 
   <div id="body-layout">
@@ -303,7 +334,7 @@ html, body {
         <div class="card-panel" style="text-align: center; padding: 40px 20px;">
           <div class="orange-subheader rgb-text" style="font-size: 18px; margin-bottom: 10px; justify-content: center;"><span class="star">★</span> PS4 FIRMWARE 13.52 KERNEL ESCAPE <span class="star">★</span></div>
           <p style="color: var(--text-dim); margin-bottom: 25px;">Executes WebKit memory primitive → kernel read/write → 13.52 kpatch chain.</p>
-          <button class="btn-primary" onclick="launchJB()" style="font-size: 18px; padding: 16px 36px; margin: 0 auto;"><span class="star">★</span> RUN JAILBREAK NOW <span class="star">★</span></button>
+          <button class="btn-primary rgb-bg" onclick="launchJB()" style="font-size: 18px; padding: 16px 36px; margin: 0 auto;"><span class="star" style="color:#000; text-shadow:none;">★</span> RUN JAILBREAK NOW <span class="star" style="color:#000; text-shadow:none;">★</span></button>
         </div>
       </div>
 
@@ -314,19 +345,19 @@ html, body {
 
           <div class="payload-card" onclick="sendPayload('zoof13r_debug.bin', '13.52 DEBUG')">
             <div class="p-title rgb-text"><span class="star">★</span> 13.52 DEBUG [zoof13r custom] <span class="star">★</span></div>
-            <div class="p-fw">FIRMWARE 13.52 ONLY</div>
+            <div class="p-fw rgb-text">FIRMWARE 13.52 ONLY</div>
             <div class="p-desc">Opens :744 RTM port + 13.52-specific kernel patch chain for zoof13r RTM tool.</div>
           </div>
 
           <div class="payload-card" onclick="sendPayload('ps4debug.bin', 'ps4debug')">
             <div class="p-title rgb-text"><span class="star">★</span> ps4debug <span class="star">★</span></div>
-            <div class="p-fw">ALL FIRMWARE</div>
+            <div class="p-fw rgb-text">ALL FIRMWARE</div>
             <div class="p-desc">Standard ps4debug — opens :744 port for RTM tool connection.</div>
           </div>
 
           <div class="payload-card" onclick="sendPayload('goldhen.bin', 'GoldHEN 2.4b18')">
             <div class="p-title rgb-text"><span class="star">★</span> GoldHEN 2.4b18 <span class="star">★</span></div>
-            <div class="p-fw">FIRMWARE 13.52</div>
+            <div class="p-fw rgb-text">FIRMWARE 13.52</div>
             <div class="p-desc">Unsigned .pkg installer, debug settings, plugin loader, keepalive daemon.</div>
           </div>
 
@@ -337,8 +368,8 @@ html, body {
       <div id="tab-guide" style="display: none;">
         <div class="header-title rgb-text"><span class="star">★</span> BOOT SEQUENCE GUIDE <span class="star">★</span></div>
         <div class="card-panel" style="line-height: 2.2;">
-          <div><b style="color: var(--orange)">1.</b> Launch PS4 Browser → Navigate to this host page.</div>
-          <div><b style="color: var(--orange)">2.</b> Click <b><span class="star">★</span> RUN JAILBREAK NOW <span class="star">★</span></b>.</div>
+          <div><b class="rgb-text">1.</b> Launch PS4 Browser → Navigate to this host page.</div>
+          <div><b class="rgb-text">2.</b> Click <b><span class="star">★</span> RUN JAILBREAK NOW <span class="star">★</span></b>.</div>
           <div><b style="color: var(--green)">3.</b> Wait for <b>JAILBROKEN</b> banner confirmation.</div>
           <div><b style="color: var(--green)">4.</b> Select <b><span class="star">★</span> 13.52 DEBUG <span class="star">★</span></b> or <b><span class="star">★</span> ps4debug <span class="star">★</span></b> to open port :744.</div>
           <div><b style="color: var(--cyan-blue)">5.</b> Open <b>ZOOF13R BO2 RTM TOOL</b> on PC → Connect PS4 IP → Attach BO2!</div>
