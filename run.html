@@ -12,7 +12,6 @@
         --bg-base: #1A1A1A;
         --card-bg: #1F1F1F;
         --border-color: #333333;
-        --orange: #FF6600;
         --cyan-blue: #00D2FF;
         --text-main: #E0E0E0;
         --text-dim: #A0A0A0;
@@ -20,17 +19,29 @@
         --red: #FF3333;
       }
 
-      /* ── RGB Theme Animation ── */
-      @keyframes rgbGlow {
-        0%   { color: #FF6600; text-shadow: 0 0 12px rgba(255, 102, 0, 0.7); }
-        25%  { color: #00D2FF; text-shadow: 0 0 12px rgba(0, 210, 255, 0.7); }
-        50%  { color: #00FF00; text-shadow: 0 0 12px rgba(0, 255, 0, 0.7); }
-        75%  { color: #FF00FF; text-shadow: 0 0 12px rgba(255, 0, 255, 0.7); }
-        100% { color: #FF6600; text-shadow: 0 0 12px rgba(255, 102, 0, 0.7); }
+      /* ── Full Master RGB Engine ── */
+      @keyframes rgbText {
+        0%   { color: #FF6600; text-shadow: 0 0 10px rgba(255, 102, 0, 0.6); }
+        25%  { color: #00D2FF; text-shadow: 0 0 10px rgba(0, 210, 255, 0.6); }
+        50%  { color: #00FF00; text-shadow: 0 0 10px rgba(0, 255, 0, 0.6); }
+        75%  { color: #FF00FF; text-shadow: 0 0 10px rgba(255, 0, 255, 0.6); }
+        100% { color: #FF6600; text-shadow: 0 0 10px rgba(255, 102, 0, 0.6); }
+      }
+
+      @keyframes rgbBorder {
+        0%   { border-color: #FF6600; box-shadow: 0 0 10px rgba(255, 102, 0, 0.3); }
+        25%  { border-color: #00D2FF; box-shadow: 0 0 10px rgba(0, 210, 255, 0.3); }
+        50%  { border-color: #00FF00; box-shadow: 0 0 10px rgba(0, 255, 0, 0.3); }
+        75%  { border-color: #FF00FF; box-shadow: 0 0 10px rgba(255, 0, 255, 0.3); }
+        100% { border-color: #FF6600; box-shadow: 0 0 10px rgba(255, 102, 0, 0.3); }
       }
 
       .rgb-text {
-        animation: rgbGlow 6s infinite linear;
+        animation: rgbText 6s infinite linear;
+      }
+
+      .rgb-border {
+        animation: rgbBorder 6s infinite linear;
       }
 
       .star {
@@ -39,7 +50,7 @@
         display: inline-block;
         margin: 0 6px;
         transform: translateY(-2px);
-        animation: rgbGlow 6s infinite linear;
+        animation: rgbText 6s infinite linear;
       }
 
       html, body {
@@ -55,7 +66,8 @@
       #app-base {
         width: 100%;
         min-height: 100vh;
-        border: 1px solid var(--orange);
+        border: 1px solid #FF6600;
+        animation: rgbBorder 6s infinite linear;
         background-color: var(--bg-base);
         display: flex;
         flex-direction: column;
@@ -64,7 +76,8 @@
       /* Top Bar */
       #top-bar {
         background-color: #111111;
-        border-bottom: 2px solid var(--orange);
+        border-bottom: 2px solid #FF6600;
+        animation: rgbBorder 6s infinite linear;
         height: 85px;
         display: flex;
         align-items: center;
@@ -87,7 +100,6 @@
       }
       .status-badge {
         font-weight: 800;
-        color: var(--orange);
         font-size: 14px;
         display: flex;
         align-items: center;
@@ -108,11 +120,10 @@
         width: 60px;
         height: 60px;
         border: 4px solid var(--border-color);
-        border-top-color: var(--orange);
+        border-top-color: #FF6600;
+        animation: spin 0.75s linear infinite, rgbBorder 6s infinite linear;
         border-radius: 50%;
-        animation: spin 0.75s linear infinite;
         margin-bottom: 25px;
-        box-shadow: 0 0 20px rgba(255, 102, 0, 0.3);
       }
       body.done #spin {
         border-color: var(--green);
@@ -164,11 +175,11 @@
     </style>
   </head>
   <body>
-    <div id="app-base">
-      <div id="top-bar">
+    <div id="app-base" class="rgb-border">
+      <div id="top-bar" class="rgb-border">
         <div class="brand-left rgb-text">ZOOF13R</div>
         <div class="brand-center rgb-text">13.52</div>
-        <div class="status-badge"><span class="star">★</span> EXPLOIT ENGINE <span class="star">★</span></div>
+        <div class="status-badge rgb-text"><span class="star">★</span> EXPLOIT ENGINE <span class="star">★</span></div>
       </div>
 
       <div id="main-wrap">
