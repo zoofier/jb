@@ -1,10 +1,17 @@
 CACHE MANIFEST
-# v1 — zoof13r 13.52
+# rev 20260920-zoof13r-host
 
-CACHE:
+index.html
 jb.html
+run.html
+jb.js
+core.js
+mem.js
+int64.js
+ps4_offsets.js
+rpc_worker.js
+goldhen.bin
+ps4debug.bin
 
 NETWORK:
 *
-
-FALLBACK:
