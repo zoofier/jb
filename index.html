@@ -619,15 +619,14 @@ var launched=false;
 function launchJB(){
   if(launched)return; launched=true;
   jbBtn.disabled=true;
-  var p=[];
+  var p=['payload=0','ps4debug=0']; // jailbreak only — no payload execution
   if(cfg.verbose) p.push('log=1');
   if(!cfg.jb) p.push('jb=0');
   if(!cfg.patch) p.push('patch=0');
-  if(!cfg.payload) p.push('payload=0');
   if(cfg.keepjb) p.push('keepjb=1');
   if(cfg.stop) p.push('stop=beforedouble');
   if(cfg.retry!==8) p.push('retry='+cfg.retry);
-  window.location.href = './run.html' + (p.length ? '?'+p.join('&') : '');
+  window.location.href = './run.html?' + p.join('&');
 }
 
 // ── Payload dispatch ───────────────────────────────────────────────────────
