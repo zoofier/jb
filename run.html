@@ -35,7 +35,7 @@
         font-size: 10px;
         vertical-align: middle;
         display: inline-block;
-        margin: 0 6px;
+        margin: 0 8px;
         transform: translateY(-2px);
         color: var(--rgb-color) !important;
         text-shadow: 0 0 8px var(--rgb-shadow) !important;
@@ -75,7 +75,7 @@
         font-family: 'Arial Black', Impact, sans-serif;
         font-weight: 900;
         font-style: italic;
-        font-size: 36px;
+        font-size: 24px; /* Smaller font for ZOOF13R'S on run.html */
         letter-spacing: 2px;
         color: var(--rgb-color) !important;
         text-shadow: 0 0 15px var(--rgb-shadow) !important;
@@ -84,14 +84,16 @@
         font-family: 'Arial Black', Impact, sans-serif;
         font-weight: 900;
         font-style: italic;
-        font-size: 42px;
-        letter-spacing: 4px;
+        font-size: 28px; /* Smaller font for WEBKIT on run.html */
+        letter-spacing: 3px;
         color: var(--rgb-color) !important;
         text-shadow: 0 0 20px var(--rgb-shadow) !important;
+        display: flex;
+        align-items: center;
       }
       .status-badge {
         font-weight: 800;
-        font-size: 14px;
+        font-size: 13px;
         display: flex;
         align-items: center;
         color: var(--rgb-color) !important;
@@ -175,9 +177,9 @@
   <body>
     <div id="app-base">
       <div id="top-bar">
-        <div class="brand-left"><span class="star">★</span> ZOOF13R'S <span class="star">★</span></div>
+        <div class="brand-left">ZOOF13R'S</div>
         <div class="brand-center"><span class="star">★</span> WEBKIT <span class="star">★</span></div>
-        <div class="status-badge"><span class="star">★</span> EXPLOIT ENGINE <span class="star">★</span></div>
+        <div class="status-badge">EXPLOIT ENGINE</div>
       </div>
 
       <div id="main-wrap">
