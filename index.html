@@ -1,5 +1,6 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -8,21 +9,23 @@
   <meta http-equiv="Expires" content="0" />
   <title>✨ ZOOF13R // PS4 13.52 HOST ✨</title>
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
     :root {
       --bg-dark: #07070c;
       --surface: #0e0e17;
       --text: #ffffff;
-      --theme-accent: #00d4ff;
     }
 
-    html, body {
-      width: 100% !important;
-      height: 100% !important;
+    html,
+    body {
       min-height: 100vh !important;
-      margin: 0 !important;
-      padding: 0 !important;
       background: radial-gradient(circle at center, #141424 0%, #07070c 100%) !important;
       color: #ffffff !important;
       font-family: 'Segoe UI', system-ui, -apple-system, sans-serif !important;
@@ -33,53 +36,20 @@
       user-select: none !important;
       overflow: hidden !important;
       position: relative !important;
-      transition: background 0.5s ease !important;
     }
 
-    /* Fixed Full-Screen Canvas Engine */
-    #fx-canvas {
-      position: fixed !important;
-      top: 0 !important;
-      left: 0 !important;
-      width: 100vw !important;
-      height: 100vh !important;
-      z-index: 1 !important;
-      pointer-events: none !important;
-    }
-
-    /* Lightning Flash Effect Backdrop Overlay */
-    #lightning-flash {
-      position: fixed;
-      top: 0; left: 0; width: 100vw; height: 100vh;
-      background: rgba(255, 255, 255, 0.85);
-      z-index: 2;
-      opacity: 0;
+    /* Floating Canvas Starfield */
+    #starfield {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
       pointer-events: none;
-      transition: opacity 0.05s ease-out;
     }
 
-    /* Top Right Floating Visitor Counter Widget */
-    #top-right-counter {
-      position: fixed;
-      top: 18px;
-      right: 20px;
-      z-index: 99999;
-      background: #0e0e17;
-      border: 2px solid var(--theme-accent, #00d4ff);
-      box-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
-      border-radius: 25px;
-      padding: 8px 18px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-family: Consolas, monospace;
-      font-size: 13px;
-      font-weight: 800;
-      user-select: none;
-      transition: all 0.3s ease;
-    }
-
-    /* RGB Rainbow Glow Card Wrapper (Default Theme) */
+    /* RGB Rainbow Glow Card Wrapper */
     .card-wrapper {
       position: relative;
       z-index: 10;
@@ -89,38 +59,6 @@
       background-size: 400% 400% !important;
       animation: rainbowShift 3.5s linear infinite, glowPulse 2s ease-in-out infinite alternate !important;
       box-shadow: 0 0 40px rgba(255, 0, 128, 0.75), inset 0 0 20px rgba(255, 255, 255, 0.15) !important;
-      transition: all 0.5s ease !important;
-    }
-
-    /* Theme Variations for Card Wrapper */
-    body.theme-lightning-mode {
-      background: radial-gradient(circle at center, #1b0a2a 0%, #06020a 100%) !important;
-    }
-    body.theme-lightning-mode .card-wrapper {
-      background: linear-gradient(135deg, #00f0ff, #a855f7, #3b82f6, #00f0ff) !important;
-      background-size: 300% 300% !important;
-      animation: rainbowShift 2.5s linear infinite, lightningGlow 1.5s ease-in-out infinite alternate !important;
-      box-shadow: 0 0 50px rgba(0, 240, 255, 0.85) !important;
-    }
-
-    body.theme-acid-mode {
-      background: radial-gradient(circle at center, #05200f 0%, #020b05 100%) !important;
-    }
-    body.theme-acid-mode .card-wrapper {
-      background: linear-gradient(135deg, #00ff66, #10b981, #adff2f, #00ff66) !important;
-      background-size: 300% 300% !important;
-      animation: rainbowShift 3s linear infinite, acidGlow 2s ease-in-out infinite alternate !important;
-      box-shadow: 0 0 45px rgba(0, 255, 102, 0.85) !important;
-    }
-
-    body.theme-gold-mode {
-      background: radial-gradient(circle at center, #241a05 0%, #0c0802 100%) !important;
-    }
-    body.theme-gold-mode .card-wrapper {
-      background: linear-gradient(135deg, #ffea00, #ff7700, #ffaa00, #ffea00) !important;
-      background-size: 300% 300% !important;
-      animation: rainbowShift 3s linear infinite, goldGlow 2s ease-in-out infinite alternate !important;
-      box-shadow: 0 0 45px rgba(255, 234, 0, 0.85) !important;
     }
 
     .card {
@@ -165,6 +103,7 @@
       animation: rainbowText 3s linear infinite !important;
     }
 
+    /* Sparkling Title Stars */
     .star {
       font-size: 24px !important;
       display: inline-block !important;
@@ -223,77 +162,81 @@
 
     /* Keyframe Animations */
     @keyframes rainbowShift {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
+      0% {
+        background-position: 0% 50%;
+      }
+
+      50% {
+        background-position: 100% 50%;
+      }
+
+      100% {
+        background-position: 0% 50%;
+      }
     }
+
     @keyframes rainbowText {
-      0% { background-position: 0% 50%; }
-      100% { background-position: 300% 50%; }
+      0% {
+        background-position: 0% 50%;
+      }
+
+      100% {
+        background-position: 300% 50%;
+      }
     }
+
     @keyframes glowPulse {
-      0% { box-shadow: 0 0 30px rgba(255, 0, 85, 0.7); }
-      100% { box-shadow: 0 0 55px rgba(0, 212, 255, 0.95); }
+      0% {
+        box-shadow: 0 0 30px rgba(255, 0, 85, 0.7), inset 0 0 10px rgba(255, 255, 255, 0.1);
+      }
+
+      100% {
+        box-shadow: 0 0 55px rgba(0, 212, 255, 0.95), inset 0 0 25px rgba(255, 255, 255, 0.25);
+      }
     }
-    @keyframes lightningGlow {
-      0% { box-shadow: 0 0 30px rgba(0, 240, 255, 0.6); }
-      100% { box-shadow: 0 0 60px rgba(168, 85, 247, 0.95); }
-    }
-    @keyframes acidGlow {
-      0% { box-shadow: 0 0 30px rgba(0, 255, 102, 0.6); }
-      100% { box-shadow: 0 0 60px rgba(173, 255, 47, 0.95); }
-    }
-    @keyframes goldGlow {
-      0% { box-shadow: 0 0 30px rgba(255, 234, 0, 0.6); }
-      100% { box-shadow: 0 0 60px rgba(255, 119, 0, 0.95); }
-    }
+
     @keyframes starSpin {
-      0% { transform: scale(0.9) rotate(-15deg); }
-      100% { transform: scale(1.35) rotate(15deg); }
+      0% {
+        transform: scale(0.9) rotate(-15deg);
+      }
+
+      100% {
+        transform: scale(1.35) rotate(15deg);
+      }
     }
+
     @keyframes sparklePulse {
-      0% { transform: scale(0.8); opacity: 0.6; }
-      100% { transform: scale(1.4); opacity: 1; }
+      0% {
+        transform: scale(0.8);
+        opacity: 0.6;
+      }
+
+      100% {
+        transform: scale(1.4);
+        opacity: 1;
+      }
     }
+
     @keyframes floatLogo {
-      0% { transform: translateY(0px); }
-      100% { transform: translateY(-8px); }
-    }
-    /* Emoji Styling Fix */
-    .emoji {
-      display: inline-block !important;
-      font-family: 'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', 'Segoe UI Symbol', sans-serif !important;
-      vertical-align: middle !important;
-      -webkit-text-fill-color: initial !important;
-      background: none !important;
-      font-style: normal !important;
+      0% {
+        transform: translateY(0px);
+      }
+
+      100% {
+        transform: translateY(-8px);
+      }
     }
   </style>
 </head>
+
 <body>
-  <!-- Canvas FX Backdrop Engine -->
-  <canvas id="fx-canvas"></canvas>
-  <div id="lightning-flash"></div>
+  <!-- Canvas Starfield -->
+  <canvas id="starfield"></canvas>
 
-  <!-- Top Right Floating Visitor Counter Widget -->
-  <div id="top-right-counter">
-    <span style="color: #FFEA00; display: inline-flex; align-items: center; gap: 5px;">
-      <span class="emoji">🔥</span> <span id="tr-streak">STREAK: ...</span>
-    </span>
-    <span style="color: #444;">|</span>
-    <span style="color: #00FF66; display: inline-flex; align-items: center; gap: 5px;">
-      <span class="emoji">👥</span> <span id="tr-visited">VISITED: ...</span>
-    </span>
-    <span style="color: #444;">|</span>
-    <span style="color: #00D4FF; display: inline-flex; align-items: center; gap: 5px;">
-      <span class="emoji">🎮</span> <span id="tr-ps4">PS4: ...</span>
-    </span>
-  </div>
-
-  <!-- RGB Main Card Container -->
+  <!-- RGB Card Container -->
   <div class="card-wrapper">
     <div class="card">
-      <div class="logo"><span class="emoji">⚡</span></div>
+      <div class="logo">⚡</div>
       <h1>
         <span class="star-sparkle">✨</span>
         <span class="star">★</span>
@@ -311,306 +254,73 @@
   </div>
 
   <script>
-  /* ----------------------------------------------------
-     Master Multi-Theme Engine & High-Performance Canvas Renderers
-  ---------------------------------------------------- */
-  var currentTheme = localStorage.getItem('zoof_active_theme') || 'lightning';
-  var animFrameId = null;
-
-  function toggleThemeMenu() {
-    var menu = document.getElementById('theme-menu');
-    menu.style.display = (menu.style.display === 'flex') ? 'none' : 'flex';
-  }
-
-  document.addEventListener('click', function(e) {
-    var container = document.getElementById('theme-selector-container');
-    if (container && !container.contains(e.target)) {
-      document.getElementById('theme-menu').style.display = 'none';
-    }
-  });
-
-  function setTheme(themeName, saveToStorage) {
-    if (saveToStorage !== false) {
-      localStorage.setItem('zoof_active_theme', themeName);
-    }
-    currentTheme = themeName;
-    var menu = document.getElementById('theme-menu');
-    if (menu) menu.style.display = 'none';
-
-    document.body.className = '';
-    if (themeName === 'lightning') document.body.classList.add('theme-lightning-mode');
-    if (themeName === 'acid') document.body.classList.add('theme-acid-mode');
-    if (themeName === 'gold') document.body.classList.add('theme-gold-mode');
-
-    var accentMap = {
-      rgb: '#00d4ff',
-      lightning: '#00f0ff',
-      acid: '#00ff66',
-      gold: '#ffea00'
-    };
-    document.documentElement.style.setProperty('--theme-accent', accentMap[themeName] || '#00d4ff');
-
-    startCanvasEngine(themeName);
-  }
-
-  // Live real-time cross-tab theme synchronization
-  window.addEventListener('storage', function(e) {
-    if (e.key === 'zoof_active_theme' && e.newValue) {
-      setTheme(e.newValue, false);
-    }
-  });
-
-  function startCanvasEngine(themeName) {
-    if (animFrameId) cancelAnimationFrame(animFrameId);
-    var canvas = document.getElementById('fx-canvas');
-    if (!canvas) return;
-    var ctx = canvas.getContext('2d');
-
-    function resize() {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    }
-    window.removeEventListener('resize', resize);
-    window.addEventListener('resize', resize);
-    resize();
-
-    runStarfieldEngine(canvas, ctx);
-  }
-
-  /* 1. Interactive 90-Star HTML5 Canvas Starfield Engine */
-  function runStarfieldEngine(canvas, ctx) {
-    var stars = [];
-    for (var i = 0; i < 90; i++) {
-      stars.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        size: Math.random() * 2.2 + 0.6,
-        alpha: Math.random(),
-        speed: Math.random() * 0.025 + 0.005,
-        dx: (Math.random() - 0.5) * 0.35,
-        dy: (Math.random() - 0.5) * 0.35
-      });
-    }
-
-    function render() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      for (var i = 0; i < stars.length; i++) {
-        var s = stars[i];
-        s.alpha += s.speed;
-        if (s.alpha > 1 || s.alpha < 0) s.speed = -s.speed;
-        s.x += s.dx; s.y += s.dy;
-        if (s.x < 0) s.x = canvas.width;
-        if (s.x > canvas.width) s.x = 0;
-        if (s.y < 0) s.y = canvas.height;
-        if (s.y > canvas.height) s.y = 0;
-
-        ctx.fillStyle = 'rgba(255, 255, 255, ' + Math.abs(s.alpha) + ')';
-        ctx.beginPath(); ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2); ctx.fill();
-      }
-      animFrameId = requestAnimationFrame(render);
-    }
-    render();
-  }
-
-  /* 2. Lightning Storm Rain Engine (Silky 60 FPS) */
-  function runLightningRainEngine(canvas, ctx) {
-    var drops = [];
-    var dropCount = 65;
-    var flashEl = document.getElementById('lightning-flash');
-
-    for (var i = 0; i < dropCount; i++) {
-      drops.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        len: Math.random() * 25 + 10,
-        speed: Math.random() * 14 + 10,
-        color: Math.random() > 0.4 ? 'rgba(0, 240, 255, ' : 'rgba(168, 85, 247, '
-      });
-    }
-
-    function triggerLightningStrike() {
-      if (!flashEl) return;
-      flashEl.style.opacity = '0.9';
-      setTimeout(function() { flashEl.style.opacity = '0'; }, 60);
-      setTimeout(function() { flashEl.style.opacity = '0.6'; }, 120);
-      setTimeout(function() { flashEl.style.opacity = '0'; }, 200);
-
-      ctx.strokeStyle = '#ffffff';
-      ctx.lineWidth = 2.5;
-      ctx.beginPath();
-      var sx = Math.random() * canvas.width;
-      var sy = 0;
-      ctx.moveTo(sx, sy);
-      for (var b = 0; b < 6; b++) {
-        sx += (Math.random() - 0.5) * 80;
-        sy += canvas.height / 6;
-        ctx.lineTo(sx, sy);
-      }
-      ctx.stroke();
-    }
-
-    setInterval(function() {
-      if (currentTheme === 'lightning' && Math.random() > 0.4) {
-        triggerLightningStrike();
-      }
-    }, 2800);
-
-    function render() {
-      ctx.fillStyle = 'rgba(7, 7, 12, 0.25)';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      for (var i = 0; i < drops.length; i++) {
-        var d = drops[i];
-        d.y += d.speed;
-        if (d.y > canvas.height) {
-          d.y = -d.len;
-          d.x = Math.random() * canvas.width;
-        }
-
-        ctx.strokeStyle = d.color + (Math.random() * 0.5 + 0.5) + ')';
-        ctx.lineWidth = 1.8;
-        ctx.beginPath();
-        ctx.moveTo(d.x, d.y);
-        ctx.lineTo(d.x - 2, d.y + d.len);
-        ctx.stroke();
-      }
-      animFrameId = requestAnimationFrame(render);
-    }
-    render();
-  }
-
-  /* 3. Acid Rain Matrix Engine (Silky 60 FPS) */
-  function runAcidRainEngine(canvas, ctx) {
-    var chars = '0123456789ABCDEF⚡★';
-    var fontSize = 14;
-    var columns = Math.floor(canvas.width / fontSize);
-    var rainDrops = [];
-    for (var x = 0; x < columns; x++) rainDrops[x] = 1;
-
-    function render() {
-      ctx.fillStyle = 'rgba(2, 11, 5, 0.18)';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = '#00ff66';
-      ctx.font = fontSize + 'px monospace';
-
-      for (var i = 0; i < rainDrops.length; i++) {
-        var text = chars.charAt(Math.floor(Math.random() * chars.length));
-        ctx.fillText(text, i * fontSize, rainDrops[i] * fontSize);
-        if (rainDrops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-          rainDrops[i] = 0;
-        }
-        rainDrops[i]++;
-      }
-      animFrameId = requestAnimationFrame(render);
-    }
-    render();
-  }
-
-  /* 4. GoldHEN Embers Engine (Silky 60 FPS) */
-  function runGoldEmbersEngine(canvas, ctx) {
-    var embers = [];
-    for (var i = 0; i < 45; i++) {
-      embers.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        size: Math.random() * 3 + 1,
-        speedY: -(Math.random() * 1.5 + 0.5),
-        speedX: (Math.random() - 0.5) * 0.8,
-        alpha: Math.random()
-      });
-    }
-
-    function render() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      for (var i = 0; i < embers.length; i++) {
-        var e = embers[i];
-        e.y += e.speedY; e.x += e.speedX;
-        if (e.y < 0) { e.y = canvas.height; e.x = Math.random() * canvas.width; }
-
-        ctx.fillStyle = 'rgba(255, 234, 0, ' + e.alpha + ')';
-        ctx.beginPath(); ctx.arc(e.x, e.y, e.size, 0, Math.PI * 2); ctx.fill();
-      }
-      animFrameId = requestAnimationFrame(render);
-    }
-    render();
-  }
-
-  // Initialize selected theme on boot
-  setTheme(currentTheme);
-
-  /* Real-Time Live View & Visitor Counter */
-  (function startLiveCounter() {
-    var streakKey = 'zoof_live_streak';
-    var visitedKey = 'zoof_live_visited';
-    var ps4Key = 'zoof_live_ps4';
-    var apiEndpoint = 'https://api.counterapi.dev/v1/zoof13r_ps4_1352_host/visit';
-
-    function updateDisplay(streak, visited, ps4) {
-      var sEl = document.getElementById('tr-streak');
-      var vEl = document.getElementById('tr-visited');
-      var pEl = document.getElementById('tr-ps4');
-      if (sEl) sEl.textContent = 'STREAK: ' + streak;
-      if (vEl) vEl.textContent = 'VISITED: ' + visited;
-      if (pEl) pEl.textContent = 'PS4: ' + ps4;
-    }
-
-    function runCounterEngine() {
-      // 1. Try local server /stats.json
-      fetch('/stats.json')
-        .then(function(r) { return r.json(); })
-        .then(function(data) {
-          if (data && (data.total_hits || data.hits)) {
-            var total = data.total_hits || data.hits;
-            var unique = data.unique_visitors || Math.ceil(total * 0.45);
-            var ps4Count = 0;
-            if (data.visitors) {
-              for (var ip in data.visitors) {
-                if (data.visitors[ip].device === 'PS4') ps4Count++;
-              }
-            }
-            updateDisplay(total, unique, Math.max(1, ps4Count));
-            return;
-          }
-          throw new Error('No local stats');
-        })
-        .catch(function() {
-          // 2. Try global live public API counter for zoof13r host
-          fetch(apiEndpoint)
-            .then(function(r) { return r.json(); })
-            .then(function(res) {
-              var hits = res.count || res.value || 148;
-              var unique = Math.ceil(hits * 0.42);
-              var ps4 = Math.ceil(unique * 0.65);
-              localStorage.setItem(streakKey, hits);
-              localStorage.setItem(visitedKey, unique);
-              localStorage.setItem(ps4Key, ps4);
-              updateDisplay(hits, unique, ps4);
-            })
-            .catch(function() {
-              // 3. Dynamic local session counter (increments live on visits/refreshes)
-              var storedStreak = parseInt(localStorage.getItem(streakKey) || '148', 10);
-              var storedVisited = parseInt(localStorage.getItem(visitedKey) || '62', 10);
-
-              if (!sessionStorage.getItem('zoof_page_viewed')) {
-                sessionStorage.setItem('zoof_page_viewed', '1');
-                storedStreak += 1;
-                if (!localStorage.getItem('zoof_unique_user')) {
-                  localStorage.setItem('zoof_unique_user', Date.now().toString());
-                  storedVisited += 1;
-                }
-                localStorage.setItem(streakKey, storedStreak);
-                localStorage.setItem(visitedKey, storedVisited);
-              }
-
-              var storedPs4 = Math.max(14, Math.ceil(storedVisited * 0.62));
-              updateDisplay(storedStreak, storedVisited, storedPs4);
-            });
+    /* Auto Purge Deprecated AppCache & Service Worker Storage */
+    try {
+      if (window.applicationCache) {
+        window.applicationCache.addEventListener('updateready', function () {
+          try { window.applicationCache.swapCache(); } catch (e) { }
         });
-    }
+      }
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.getRegistrations().then(function (regs) {
+          for (var r of regs) r.unregister();
+        });
+      }
+    } catch (e) { }
 
-    runCounterEngine();
-    setInterval(runCounterEngine, 10000);
-  })();
+    /* Canvas Starfield Engine */
+    (function initStarfield() {
+      var canvas = document.getElementById('starfield');
+      if (!canvas) return;
+      var ctx = canvas.getContext('2d');
+      var stars = [];
+      var count = 90;
+
+      function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+      window.addEventListener('resize', resize);
+      resize();
+
+      for (var i = 0; i < count; i++) {
+        stars.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          size: Math.random() * 2.2 + 0.6,
+          alpha: Math.random(),
+          speed: Math.random() * 0.025 + 0.005,
+          dx: (Math.random() - 0.5) * 0.35,
+          dy: (Math.random() - 0.5) * 0.35
+        });
+      }
+
+      function render() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        for (var i = 0; i < stars.length; i++) {
+          var s = stars[i];
+          s.alpha += s.speed;
+          if (s.alpha > 1 || s.alpha < 0) s.speed = -s.speed;
+
+          s.x += s.dx;
+          s.y += s.dy;
+          if (s.x < 0) s.x = canvas.width;
+          if (s.x > canvas.width) s.x = 0;
+          if (s.y < 0) s.y = canvas.height;
+          if (s.y > canvas.height) s.y = 0;
+
+          ctx.fillStyle = 'rgba(255, 255, 255, ' + Math.abs(s.alpha) + ')';
+          ctx.shadowBlur = 10;
+          ctx.shadowColor = '#ffffff';
+          ctx.beginPath();
+          ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        requestAnimationFrame(render);
+      }
+      render();
+    })();
   </script>
 </body>
+
 </html>
