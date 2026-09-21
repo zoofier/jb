@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+  <title>&#10024; ZOOF13R // DEBUG SERVICES &#10024;</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    :root {
+      --bg-dark: #07070c;
+      --surface: #0e0e17;
+      --text: #ffffff;
+      --theme-accent: #00d4ff;
+    }
+
+    html, body {
+      width: 100% !important;
+      height: 100% !important;
+      min-height: 100vh !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      background: radial-gradient(circle at center, #141424 0%, #07070c 100%) !important;
+      color: #ffffff !important;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif !important;
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      justify-content: center !important;
+      user-select: none !important;
+      overflow: hidden !important;
+      position: relative !important;
+      transition: background 0.5s ease !important;
+    }
+
+    /* Fixed Full-Screen Canvas Engine */
+    #fx-canvas {
+      position: fixed !important;
+      top: 0 !important;
+      left: 0 !important;
+      width: 100vw !important;
+      height: 100vh !important;
+      z-index: 1 !important;
+      pointer-events: none !important;
+    }
+
+    /* Lightning Flash Effect Backdrop Overlay */
+    #lightning-flash {
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      background: rgba(255, 255, 255, 0.85);
+      z-index: 2;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.05s ease-out;
+    }
+
+    /* Top Left Header Theme Switcher Widget */
+    #theme-selector-container {
+      position: fixed;
+      top: 18px;
+      left: 20px;
+      z-index: 99999;
+      font-family: Consolas, monospace;
+      user-select: none;
+    }
+
+    .theme-btn {
+      background: #0e0e17;
+      border: 2px solid var(--theme-accent, #00d4ff);
+      box-shadow: 0 0 15px rgba(0, 212, 255, 0.4);
+      color: #ffffff;
+      padding: 8px 16px;
+      border-radius: 25px;
+      font-size: 13px;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.3s ease;
+    }
+
+    .theme-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 25px rgba(0, 212, 255, 0.8);
+    }
+
+    .theme-menu {
+      position: absolute;
+      top: 42px;
+      left: 0;
+      background: #0e0e17;
+      border: 2px solid var(--theme-accent, #00d4ff);
+      box-shadow: 0 0 25px rgba(0, 0, 0, 0.8);
+      border-radius: 14px;
+      padding: 8px;
+      display: none;
+      flex-direction: column;
+      gap: 6px;
+      min-width: 220px;
+    }
+
+    .theme-option {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid transparent;
+      color: #ffffff;
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: all 0.2s ease;
+    }
+
+    .theme-option:hover {
+      background: rgba(0, 212, 255, 0.15);
+      border-color: var(--theme-accent, #00d4ff);
+      color: var(--theme-accent, #00d4ff);
+    }
+
+
+
+    /* RGB Rainbow Glow Card Wrapper (Default Theme) */
+    .card-wrapper {
+      position: relative;
+      z-index: 10;
+      padding: 4px !important;
+      border-radius: 20px !important;
+      background: linear-gradient(135deg, #ff0055, #ff7700, #ffea00, #00ff88, #00d4ff, #9d00ff, #ff0055) !important;
+      background-size: 400% 400% !important;
+      animation: rainbowShift 3.5s linear infinite, glowPulse 2s ease-in-out infinite alternate !important;
+      box-shadow: 0 0 40px rgba(255, 0, 128, 0.75), inset 0 0 20px rgba(255, 255, 255, 0.15) !important;
+      transition: all 0.5s ease !important;
+    }
+
+    /* Theme Variations for Card Wrapper */
+    body.theme-lightning-mode {
+      background: radial-gradient(circle at center, #1b0a2a 0%, #06020a 100%) !important;
+    }
+    body.theme-lightning-mode .card-wrapper {
+      background: linear-gradient(135deg, #00f0ff, #a855f7, #3b82f6, #00f0ff) !important;
+      background-size: 300% 300% !important;
+      animation: rainbowShift 2.5s linear infinite, lightningGlow 1.5s ease-in-out infinite alternate !important;
+      box-shadow: 0 0 50px rgba(0, 240, 255, 0.85) !important;
+    }
+
+    body.theme-acid-mode {
+      background: radial-gradient(circle at center, #05200f 0%, #020b05 100%) !important;
+    }
+    body.theme-acid-mode .card-wrapper {
+      background: linear-gradient(135deg, #00ff66, #10b981, #adff2f, #00ff66) !important;
+      background-size: 300% 300% !important;
+      animation: rainbowShift 3s linear infinite, acidGlow 2s ease-in-out infinite alternate !important;
+      box-shadow: 0 0 45px rgba(0, 255, 102, 0.85) !important;
+    }
+
+    body.theme-gold-mode {
+      background: radial-gradient(circle at center, #241a05 0%, #0c0802 100%) !important;
+    }
+    body.theme-gold-mode .card-wrapper {
+      background: linear-gradient(135deg, #ffea00, #ff7700, #ffaa00, #ffea00) !important;
+      background-size: 300% 300% !important;
+      animation: rainbowShift 3s linear infinite, goldGlow 2s ease-in-out infinite alternate !important;
+      box-shadow: 0 0 45px rgba(255, 234, 0, 0.85) !important;
+    }
+
+    .card {
+      background: #0e0e17 !important;
+      border-radius: 16px !important;
+      padding: 48px 52px !important;
+      width: 500px !important;
+      max-width: calc(100vw - 32px) !important;
+      text-align: center !important;
+      position: relative !important;
+      overflow: hidden !important;
+      border: none !important;
+    }
+
+    .logo {
+      font-size: 48px !important;
+      margin-bottom: 12px !important;
+      display: inline-block !important;
+      animation: floatLogo 3s ease-in-out infinite alternate !important;
+      filter: drop-shadow(0 0 16px #ff7700) !important;
+    }
+
+    h1 {
+      font-family: 'Arial Black', Impact, sans-serif !important;
+      font-size: 36px !important;
+      font-weight: 900 !important;
+      font-style: italic !important;
+      letter-spacing: 4px !important;
+      margin-bottom: 6px !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 10px !important;
+      white-space: nowrap !important;
+    }
+
+    .title-text {
+      background: linear-gradient(90deg, #ff0055, #ff7700, #ffea00, #00ff88, #00d4ff, #9d00ff, #ff0055) !important;
+      background-size: 300% 300% !important;
+      -webkit-background-clip: text !important;
+      -webkit-text-fill-color: transparent !important;
+      animation: rainbowText 3s linear infinite !important;
+    }
+
+    .star {
+      font-size: 24px !important;
+      display: inline-block !important;
+      color: #ffea00 !important;
+      text-shadow: 0 0 12px #ffea00, 0 0 24px #ff7700 !important;
+      animation: starSpin 2s ease-in-out infinite alternate !important;
+    }
+
+    .star-sparkle {
+      font-size: 20px !important;
+      display: inline-block !important;
+      animation: sparklePulse 1.5s ease-in-out infinite alternate !important;
+    }
+
+    .sub {
+      font-size: 13px !important;
+      font-weight: 800 !important;
+      background: linear-gradient(90deg, #00d4ff, #00ff88, #ffea00, #ff7700, #00d4ff) !important;
+      background-size: 300% 300% !important;
+      -webkit-background-clip: text !important;
+      -webkit-text-fill-color: transparent !important;
+      animation: rainbowText 4s linear infinite !important;
+      font-family: Consolas, monospace !important;
+      letter-spacing: 0.22em !important;
+      margin-top: 8px !important;
+      margin-bottom: 34px !important;
+      text-transform: uppercase !important;
+    }
+
+    .btn {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 10px !important;
+      width: 100% !important;
+      padding: 18px !important;
+      border-radius: 10px !important;
+      background: linear-gradient(90deg, #ff0055, #ff5500, #ffcc00, #00ff88, #00ccff, #7700ff, #ff0055) !important;
+      background-size: 300% 300% !important;
+      animation: rainbowShift 3.5s linear infinite !important;
+      color: #000000 !important;
+      font-size: 18px !important;
+      font-weight: 900 !important;
+      letter-spacing: 0.12em !important;
+      text-decoration: none !important;
+      box-shadow: 0 0 30px rgba(255, 119, 0, 0.85) !important;
+      transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+      cursor: pointer !important;
+      border: none !important;
+    }
+
+    .btn:hover {
+      transform: scale(1.05) !important;
+      box-shadow: 0 0 45px rgba(0, 255, 136, 0.95), 0 0 65px rgba(255, 0, 85, 0.85) !important;
+    }
+
+    /* Keyframe Animations */
+    @keyframes rainbowShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    @keyframes rainbowText {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 300% 50%; }
+    }
+    @keyframes glowPulse {
+      0% { box-shadow: 0 0 30px rgba(255, 0, 85, 0.7); }
+      100% { box-shadow: 0 0 55px rgba(0, 212, 255, 0.95); }
+    }
+    @keyframes lightningGlow {
+      0% { box-shadow: 0 0 30px rgba(0, 240, 255, 0.6); }
+      100% { box-shadow: 0 0 60px rgba(168, 85, 247, 0.95); }
+    }
+    @keyframes acidGlow {
+      0% { box-shadow: 0 0 30px rgba(0, 255, 102, 0.6); }
+      100% { box-shadow: 0 0 60px rgba(173, 255, 47, 0.95); }
+    }
+    @keyframes goldGlow {
+      0% { box-shadow: 0 0 30px rgba(255, 234, 0, 0.6); }
+      100% { box-shadow: 0 0 60px rgba(255, 119, 0, 0.95); }
+    }
+    @keyframes starSpin {
+      0% { transform: scale(0.9) rotate(-15deg); }
+      100% { transform: scale(1.35) rotate(15deg); }
+    }
+    @keyframes sparklePulse {
+      0% { transform: scale(0.8); opacity: 0.6; }
+      100% { transform: scale(1.4); opacity: 1; }
+    }
+    @keyframes floatLogo {
+      0% { transform: translateY(0px); }
+      100% { transform: translateY(-8px); }
+    }
+    /* Emoji Styling Fix */
+    .emoji {
+      display: inline-block !important;
+      font-family: 'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', 'Segoe UI Symbol', sans-serif !important;
+      vertical-align: middle !important;
+      -webkit-text-fill-color: initial !important;
+      background: none !important;
+      font-style: normal !important;
+    }
+  </style>
+</head>
+<body>
+  <!-- Canvas FX Backdrop Engine -->
+  <canvas id="fx-canvas"></canvas>
+  <div id="lightning-flash"></div>
+
+  <!-- RGB Main Card Container -->
+  <div class="card-wrapper">
+    <div class="card">
+      <div class="logo"><span class="emoji">⚡</span></div>
+      <h1>
+        <span class="star-sparkle">✨</span>
+        <span class="star">★</span>
+        <span class="title-text">ZOOF13R</span>
+        <span class="star">★</span>
+        <span class="star-sparkle">✨</span>
+      </h1>
+      <div class="sub">DEBUG FIRMWARE 13.52 HOST</div>
+      <a href="jb.html" class="btn">
+        <span class="star-sparkle">✨</span>
+        <span>LAUNCH HOST</span>
+        <span class="star-sparkle">✨</span>
+      </a>
+    </div>
+  </div>
+
+  <script>
+  /* ----------------------------------------------------
+     Master Multi-Theme Engine & Canvas Renderers
+  ---------------------------------------------------- */
+  var currentTheme = localStorage.getItem('zoof_active_theme') || 'lightning';
+  var animFrameId = null;
+
+  function toggleThemeMenu() {
+    var menu = document.getElementById('theme-menu');
+    menu.style.display = (menu.style.display === 'flex') ? 'none' : 'flex';
+  }
+
+  document.addEventListener('click', function(e) {
+    var container = document.getElementById('theme-selector-container');
+    if (container && !container.contains(e.target)) {
+      document.getElementById('theme-menu').style.display = 'none';
+    }
+  });
+
+  function setTheme(themeName, saveToStorage) {
+    if (saveToStorage !== false) {
+      localStorage.setItem('zoof_active_theme', themeName);
+    }
+    currentTheme = themeName;
+    var menu = document.getElementById('theme-menu');
+    if (menu) menu.style.display = 'none';
+
+    document.body.className = '';
+    if (themeName === 'lightning') document.body.classList.add('theme-lightning-mode');
+    if (themeName === 'acid') document.body.classList.add('theme-acid-mode');
+    if (themeName === 'gold') document.body.classList.add('theme-gold-mode');
+
+    var accentMap = {
+      rgb: '#00d4ff',
+      lightning: '#00f0ff',
+      acid: '#00ff66',
+      gold: '#ffea00'
+    };
+    document.documentElement.style.setProperty('--theme-accent', accentMap[themeName] || '#00d4ff');
+
+    startCanvasEngine(themeName);
+  }
+
+  // Live real-time cross-tab theme synchronization
+  window.addEventListener('storage', function(e) {
+    if (e.key === 'zoof_active_theme' && e.newValue) {
+      setTheme(e.newValue, false);
+    }
+  });
+
+  function startCanvasEngine(themeName) {
+    if (animFrameId) cancelAnimationFrame(animFrameId);
+    var canvas = document.getElementById('fx-canvas');
+    if (!canvas) return;
+    var ctx = canvas.getContext('2d');
+
+    function resize() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.removeEventListener('resize', resize);
+    window.addEventListener('resize', resize);
+    resize();
+
+    runStarfieldEngine(canvas, ctx);
+  }
+
+  /* 1. Interactive 90-Star HTML5 Canvas Starfield Engine */
+  function runStarfieldEngine(canvas, ctx) {
+    var stars = [];
+    for (var i = 0; i < 90; i++) {
+      stars.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        size: Math.random() * 2.2 + 0.6,
+        alpha: Math.random(),
+        speed: Math.random() * 0.025 + 0.005,
+        dx: (Math.random() - 0.5) * 0.35,
+        dy: (Math.random() - 0.5) * 0.35
+      });
+    }
+
+    function render() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (var i = 0; i < stars.length; i++) {
+        var s = stars[i];
+        s.alpha += s.speed;
+        if (s.alpha > 1 || s.alpha < 0) s.speed = -s.speed;
+        s.x += s.dx; s.y += s.dy;
+        if (s.x < 0) s.x = canvas.width;
+        if (s.x > canvas.width) s.x = 0;
+        if (s.y < 0) s.y = canvas.height;
+        if (s.y > canvas.height) s.y = 0;
+
+        ctx.fillStyle = 'rgba(255, 255, 255, ' + Math.abs(s.alpha) + ')';
+        ctx.beginPath(); ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2); ctx.fill();
+      }
+      animFrameId = requestAnimationFrame(render);
+    }
+    render();
+  }
+
+  /* 2. Lightning Storm Rain Engine (Silky 60 FPS) */
+  function runLightningRainEngine(canvas, ctx) {
+    var drops = [];
+    var dropCount = 65;
+    var flashEl = document.getElementById('lightning-flash');
+
+    for (var i = 0; i < dropCount; i++) {
+      drops.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        len: Math.random() * 25 + 10,
+        speed: Math.random() * 14 + 10,
+        color: Math.random() > 0.4 ? 'rgba(0, 240, 255, ' : 'rgba(168, 85, 247, '
+      });
+    }
+
+    function triggerLightningStrike() {
+      if (!flashEl) return;
+      flashEl.style.opacity = '0.9';
+      setTimeout(function() { flashEl.style.opacity = '0'; }, 60);
+      setTimeout(function() { flashEl.style.opacity = '0.6'; }, 120);
+      setTimeout(function() { flashEl.style.opacity = '0'; }, 200);
+
+      ctx.strokeStyle = '#ffffff';
+      ctx.lineWidth = 2.5;
+      ctx.beginPath();
+      var sx = Math.random() * canvas.width;
+      var sy = 0;
+      ctx.moveTo(sx, sy);
+      for (var b = 0; b < 6; b++) {
+        sx += (Math.random() - 0.5) * 80;
+        sy += canvas.height / 6;
+        ctx.lineTo(sx, sy);
+      }
+      ctx.stroke();
+    }
+
+    setInterval(function() {
+      if (currentTheme === 'lightning' && Math.random() > 0.4) {
+        triggerLightningStrike();
+      }
+    }, 2800);
+
+    function render() {
+      ctx.fillStyle = 'rgba(7, 7, 12, 0.25)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      for (var i = 0; i < drops.length; i++) {
+        var d = drops[i];
+        d.y += d.speed;
+        if (d.y > canvas.height) {
+          d.y = -d.len;
+          d.x = Math.random() * canvas.width;
+        }
+
+        ctx.strokeStyle = d.color + (Math.random() * 0.5 + 0.5) + ')';
+        ctx.lineWidth = 1.8;
+        ctx.beginPath();
+        ctx.moveTo(d.x, d.y);
+        ctx.lineTo(d.x - 2, d.y + d.len);
+        ctx.stroke();
+      }
+      animFrameId = requestAnimationFrame(render);
+    }
+    render();
+  }
+
+  /* 3. Acid Rain Matrix Engine (Silky 60 FPS) */
+  function runAcidRainEngine(canvas, ctx) {
+    var chars = '0123456789ABCDEF⚡★';
+    var fontSize = 14;
+    var columns = Math.floor(canvas.width / fontSize);
+    var rainDrops = [];
+    for (var x = 0; x < columns; x++) rainDrops[x] = 1;
+
+    function render() {
+      ctx.fillStyle = 'rgba(2, 11, 5, 0.18)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = '#00ff66';
+      ctx.font = fontSize + 'px monospace';
+
+      for (var i = 0; i < rainDrops.length; i++) {
+        var text = chars.charAt(Math.floor(Math.random() * chars.length));
+        ctx.fillText(text, i * fontSize, rainDrops[i] * fontSize);
+        if (rainDrops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+          rainDrops[i] = 0;
+        }
+        rainDrops[i]++;
+      }
+      animFrameId = requestAnimationFrame(render);
+    }
+    render();
+  }
+
+  /* 4. GoldHEN Embers Engine (Silky 60 FPS) */
+  function runGoldEmbersEngine(canvas, ctx) {
+    var embers = [];
+    for (var i = 0; i < 45; i++) {
+      embers.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        size: Math.random() * 3 + 1,
+        speedY: -(Math.random() * 1.5 + 0.5),
+        speedX: (Math.random() - 0.5) * 0.8,
+        alpha: Math.random()
+      });
+    }
+
+    function render() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (var i = 0; i < embers.length; i++) {
+        var e = embers[i];
+        e.y += e.speedY; e.x += e.speedX;
+        if (e.y < 0) { e.y = canvas.height; e.x = Math.random() * canvas.width; }
+
+        ctx.fillStyle = 'rgba(255, 234, 0, ' + e.alpha + ')';
+        ctx.beginPath(); ctx.arc(e.x, e.y, e.size, 0, Math.PI * 2); ctx.fill();
+      }
+      animFrameId = requestAnimationFrame(render);
+    }
+    render();
+  }
+
+  setTheme(currentTheme);
+  </script>
+</body>
+</html>
