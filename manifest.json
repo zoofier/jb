@@ -1,0 +1,8 @@
+{
+  "name": "ZOOF13R PS4 14.00 Online Host",
+  "firmware": "14.00",
+  "mode": "verification-and-staging",
+  "kernel_target": "Scene-Collective ps4-hen 14.00",
+  "exploit_module": "not-included",
+  "reason": "No publicly reproducible 14.00 WebKit-to-kernel chain was verified."
+}
