@@ -1,0 +1,5 @@
+{
+  "supported_detection": ["5.00","5.05","6.72","7.02","7.55","9.00","9.60","10.00","10.01","11.00","11.02","12.00","12.50","12.52","13.00","13.02","13.04","13.50","13.52","14.00"],
+  "public_13x_route": "https://webkitty.arabpixel.net/",
+  "note": "Firmware is identified from the PS4 browser user-agent; exact firmware APIs are not exposed to ordinary page JavaScript."
+}
