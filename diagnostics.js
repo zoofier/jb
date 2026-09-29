@@ -1,22 +1,39 @@
-(() => {
-'use strict';
-const out = document.getElementById('log');
-const fw = document.getElementById('fw');
-const log = s => out.textContent += s + "\n";
-const ua = navigator.userAgent || '';
-const m = ua.match(/PlayStation 4[ /]([0-9.]+)/i);
+export function detectEnvironment() {
+  const ua = navigator.userAgent || "";
+  const text = `${ua} ${navigator.platform || ""}`;
 
-fw.textContent = m ? m[1] : 'UNKNOWN';
-fw.className = m && m[1].startsWith('14.00') ? 'ok' : 'warn';
+  const firmwareMatch =
+    text.match(/(?:FW|Firmware|PlayStation 4)[\/\s:_-]*(\d+\.\d+)/i);
 
-log('ZOOF13R 14.00 verification layer');
-log('User agent: ' + ua);
-log('URL: ' + location.href);
-log('WebKit object: ' + (window.webkit ? 'present' : 'unknown'));
-log('Exploit execution: disabled in this staging build');
-log('HEN execution: disabled until a verified chain is supplied');
+  const firmware = firmwareMatch ? firmwareMatch[1] : null;
 
-document.getElementById('diag').onclick = () => {
-  log('Diagnostics completed.');
-};
-})();
+  return {
+    userAgent: ua,
+    platform: navigator.platform || "unknown",
+    firmware,
+    isPS4: /PlayStation 4|PS4/i.test(text),
+    webkit: /AppleWebKit/i.test(ua),
+    secureContext: window.isSecureContext === true,
+    indexedDB: "indexedDB" in window,
+    localStorage: "localStorage" in window
+  };
+}
+
+export function targetCheck(env) {
+  return {
+    exact: env.firmware === "14.00",
+    firmware: env.firmware || "unknown"
+  };
+}
+
+export async function storageCheck() {
+  try {
+    const key = "__zoof13r_test__";
+    localStorage.setItem(key, "1");
+    const ok = localStorage.getItem(key) === "1";
+    localStorage.removeItem(key);
+    return ok;
+  } catch {
+    return false;
+  }
+}

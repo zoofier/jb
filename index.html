@@ -2,30 +2,60 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ZOOF13R // PS4 14.00</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#07080c">
+<title>ZOOF13R 14.00</title>
 <style>
-html,body{margin:0;background:#050505;color:#eee;font-family:Arial,sans-serif}
-body{display:flex;justify-content:center;align-items:center;min-height:100vh}
-.card{width:min(760px,92vw);border:1px solid #333;border-radius:14px;padding:28px;background:#0b0b0b}
-h1{margin:0 0 8px}.sub{color:#888;margin-bottom:22px}
-.row{display:flex;justify-content:space-between;border-top:1px solid #222;padding:12px 0}
-.ok{color:#8cff8c}.warn{color:#ffd36b}
-pre{white-space:pre-wrap;background:#030303;border:1px solid #222;padding:14px;border-radius:10px;min-height:150px}
-button{padding:11px 16px;border:0;border-radius:8px;font-weight:700}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#07080c;color:#f5f7fb;font-family:Arial,Helvetica,sans-serif}
+body{display:flex;justify-content:center;padding:22px}
+.shell{width:min(920px,100%);background:linear-gradient(180deg,#11131a,#0a0b10);border:1px solid #282c37;border-radius:22px;box-shadow:0 24px 80px #0009;overflow:hidden}
+.top{padding:26px 28px;border-bottom:1px solid #292d38;display:flex;justify-content:space-between;align-items:center}
+.brand{font-size:24px;font-weight:800;letter-spacing:2px}.badge{font-size:12px;padding:7px 10px;border:1px solid #3c414e;border-radius:999px}
+.main{padding:26px 28px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:22px}
+.card{background:#0d0f15;border:1px solid #242833;border-radius:14px;padding:14px}.label{font-size:11px;color:#858c9b;text-transform:uppercase;letter-spacing:1px}.value{margin-top:6px;font-size:16px;font-weight:700;word-break:break-word}
+button{width:100%;border:0;border-radius:14px;padding:17px;font-size:18px;font-weight:800;cursor:pointer;background:#fff;color:#07080c;margin-top:4px}
+button:disabled{opacity:.35;cursor:not-allowed}.demo{background:#181b24;color:#d9deea;margin-top:10px;font-size:13px;padding:12px}
+.stages{margin-top:22px;display:grid;gap:8px}.stage{display:flex;align-items:center;gap:12px;background:#0d0f15;border:1px solid #242833;border-radius:12px;padding:12px}.dot{width:12px;height:12px;border-radius:50%;background:#363b47}.stage-state{margin-left:auto;font-size:12px;color:#858c9b}.passed .dot{background:#62d58b}.running .dot{background:#f2c96d}.failed .dot,.blocked .dot{background:#ef6f78}.demo .dot{background:#9aa4ff}
+.log{margin-top:18px;background:#05060a;border:1px solid #20242d;border-radius:12px;padding:13px;height:130px;overflow:auto;white-space:pre-wrap;font:12px/1.5 monospace;color:#aeb6c7}
+.result{margin-top:18px;padding:22px;border-radius:15px;border:1px solid #303642}.result-title{font-size:22px;font-weight:900}.result-body{margin-top:7px;color:#b7bfce;line-height:1.5}.success{border-color:#4da66c}.warning{border-color:#9e8b51}.error{border-color:#a5535a}
+.small{margin-top:15px;color:#71798a;font-size:11px;line-height:1.5}
+@media(max-width:650px){body{padding:8px}.top,.main{padding:18px}.grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
-<div class="card">
-<h1>ZOOF13R // PS4 14.00</h1>
-<div class="sub">Online verification / staging layer</div>
-<div class="row"><span>Firmware</span><b id="fw" class="warn">DETECTING</b></div>
-<div class="row"><span>WebKit exploit</span><b class="warn">NOT INSTALLED</b></div>
-<div class="row"><span>14.00 HEN target</span><b class="ok">STAGED</b></div>
-<div class="row"><span>Kernel exploit</span><b class="warn">NOT INSTALLED</b></div>
-<pre id="log"></pre>
-<button id="diag">Run diagnostics</button>
-<script src="diagnostics.js"></script>
+<div class="shell">
+  <header class="top"><div class="brand">ZOOF13R</div><div class="badge">PS4 • 14.00</div></header>
+  <main class="main">
+    <div class="grid">
+      <div class="card"><div class="label">Firmware</div><div class="value" id="firmware">Checking…</div></div>
+      <div class="card"><div class="label">Target</div><div class="value" id="target">Checking…</div></div>
+      <div class="card"><div class="label">WebKit</div><div class="value" id="webkit">Checking…</div></div>
+      <div class="card"><div class="label">Storage</div><div class="value" id="storage">Checking…</div></div>
+      <div class="card" style="grid-column:1/-1"><div class="label">User Agent</div><div class="value" id="ua">Checking…</div></div>
+    </div>
+
+    <button id="jailbreak">JAILBREAK</button>
+    <button id="demo" class="demo">Run UI Demo (does not jailbreak)</button>
+
+    <div class="stages">
+      <div class="stage" data-stage="environment"><span class="dot"></span><span>Preparing environment</span><span class="stage-state"></span></div>
+      <div class="stage" data-stage="browser"><span class="dot"></span><span>Checking browser runtime</span><span class="stage-state"></span></div>
+      <div class="stage" data-stage="module"><span class="dot"></span><span>Checking exploit module</span><span class="stage-state"></span></div>
+      <div class="stage" data-stage="userland"><span class="dot"></span><span>Userland stage</span><span class="stage-state"></span></div>
+      <div class="stage" data-stage="kernel"><span class="dot"></span><span>Kernel stage</span><span class="stage-state"></span></div>
+      <div class="stage" data-stage="hen"><span class="dot"></span><span>HEN / GoldHEN handoff</span><span class="stage-state"></span></div>
+      <div class="stage" data-stage="verify"><span class="dot"></span><span>Verify result</span><span class="stage-state"></span></div>
+    </div>
+
+    <pre class="log" id="log"></pre>
+    <div class="result" id="result" hidden><div class="result-title"></div><div class="result-body"></div></div>
+
+    <div class="small">
+      This host is a staging shell. A real GOLDHEN LOADED result requires a verified compatible exploit adapter.
+      The demo button intentionally cannot report a successful jailbreak.
+    </div>
+  </main>
 </div>
+<script type="module" src="./app.js"></script>
 </body>
 </html>

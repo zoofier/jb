@@ -1,0 +1,12 @@
+{
+  "target": {
+    "family": "PS4",
+    "firmware": "14.00",
+    "firmwareCode": 1400
+  },
+  "policy": {
+    "requireExactFirmware": true,
+    "allowDemoMode": true,
+    "successRequiresVerifiedAdapter": true
+  }
+}

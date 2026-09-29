@@ -1,8 +1,11 @@
 {
-  "name": "ZOOF13R PS4 14.00 Online Host",
-  "firmware": "14.00",
-  "mode": "verification-and-staging",
-  "exploit_module": null,
-  "kernel_module": null,
-  "false_success_protection": true
+  "name": "ZOOF13R 14.00 Host",
+  "version": "2.0.0",
+  "target": "14.00",
+  "mode": "staging",
+  "exploitAdapter": "../modules/exploit-adapter.js",
+  "hen": {
+    "preferred": "GoldHEN",
+    "status": "adapter-required"
+  }
 }
