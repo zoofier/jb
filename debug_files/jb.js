@@ -47,20 +47,6 @@ function mark(tag, detail) {
   const raw = detail;
   detail = terse(detail);
   lines.push(tag + (detail == null || detail === "" ? "" : "  " + detail));
-
-  // Global Multi-Stage Progress Event Dispatcher
-  if (typeof window.reportExploitProgress === "function") {
-    let stage = 1, name = "INITIALIZING WEBKIT MEMORY", pct = 10;
-    if (tag.indexOf("FW") === 0) { stage = 1; name = "DETECTING FIRMWARE & OFFSETS"; pct = 15; }
-    else if (tag.indexOf("PRIMITIVE") !== -1 || tag === "PAIR-STATUS") { stage = 2; name = "ESTABLISHING MEMORY PRIMITIVE"; pct = 35; }
-    else if (tag === "BASES" || tag.indexOf("GADGET") !== -1 || tag === "STUBS") { stage = 3; name = "RESOLVING ROP & LIBKERNEL BASES"; pct = 55; }
-    else if (tag.indexOf("PIN") === 0 || tag.indexOf("WORKER") !== -1) { stage = 4; name = "PINNING KERNEL THREADS & CPU AFFINITY"; pct = 72; }
-    else if (tag.indexOf("PR-") === 0) { stage = 5; name = "KERNEL ESCAPE & PREAD/PWRITE PRIMITIVE"; pct = 88; }
-    else if (tag.indexOf("PASS") !== -1 || tag.indexOf("PROOF-OK") !== -1 || tag.indexOf("DONE") !== -1) { stage = 6; name = "VERIFYING KERNEL ESCAPE & PAYLOAD"; pct = 98; }
-
-    window.reportExploitProgress(stage, name, pct, tag + " " + (detail || ""));
-  }
-
   if (SHOW_LOG && outEl) {
     const esc = (t) => String(t).replace(/&/g, "&amp;").replace(/</g, "&lt;");
     outEl.innerHTML = lines
@@ -128,7 +114,6 @@ const SYS = {
   sysctl: 202,
   kill: 37,
   getppid: 39,
-  reboot: 55,
 };
 const JSVALUE_UNDEFINED = new int64(0x0a, 0xfffffff7);
 const keepAlive = [];
@@ -3442,45 +3427,6 @@ let allDone = false,
         failCount +
         (allDone ? "" : "  INCOMPLETE"),
     );
-    try {
-      const isCompleteSuccess = allDone && kpatched;
-      window.__zoof_status = {
-        completed: allDone,
-        success: isCompleteSuccess,
-        kpatched: kpatched,
-        payloadRunning: payloadRunning,
-        passCount: passCount,
-        failCount: failCount
-      };
-
-      if (kpatched) {
-        window.__zoof_reboot = function() {
-          try {
-            mark("REBOOT-TRIGGERED", "sc(37, 0) executing sys_reboot...");
-            if (typeof sc === "function") {
-              sc(37, 0);
-              return true;
-            }
-          } catch(e) {
-            mark("REBOOT-ERROR", (e && e.message) || String(e));
-          }
-          return false;
-        };
-        window.__zoof_kpatched = true;
-      } else {
-        window.__zoof_kpatched = false;
-        window.__zoof_reboot = null;
-      }
-
-      if (isCompleteSuccess || payloadRunning) {
-        mark("REBOOT-READY", "Operation completed successfully. Reboot & browser auto-close hooks armed.");
-        if (typeof window.onZoofComplete === "function") {
-          window.onZoofComplete(window.__zoof_status);
-        }
-      }
-    } catch(_rh) {
-      mark("REBOOT-HOOK-ERROR", (_rh && _rh.message) || String(_rh));
-    }
     try {
       finishUI(payloadRunning);
     } catch (eUI) {}

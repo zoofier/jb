@@ -1,0 +1,46 @@
+{
+  "total_hits": 48,
+  "unique_visitors": 14,
+  "visitors": {
+    "192.168.1.170": {
+      "first_seen": "2026-09-20 12:00:00",
+      "last_seen": "2026-09-20 14:30:00",
+      "hits": 24,
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
+      "device": "PC / Browser",
+      "last_path": "/jb.html"
+    },
+    "192.168.1.105": {
+      "first_seen": "2026-09-20 12:15:00",
+      "last_seen": "2026-09-20 14:20:00",
+      "hits": 18,
+      "user_agent": "Mozilla/5.0 (PlayStation 4 13.52)",
+      "device": "PS4",
+      "last_path": "/run.html"
+    },
+    "192.168.1.112": {
+      "first_seen": "2026-09-20 13:10:00",
+      "last_seen": "2026-09-20 14:05:00",
+      "hits": 6,
+      "user_agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 16_5 like Mac OS X)",
+      "device": "Mobile / Tablet",
+      "last_path": "/"
+    }
+  },
+  "history": [
+    {
+      "timestamp": "2026-09-20 14:30:00",
+      "ip": "192.168.1.170",
+      "device": "PC / Browser",
+      "path": "/jb.html",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
+    },
+    {
+      "timestamp": "2026-09-20 14:20:00",
+      "ip": "192.168.1.105",
+      "device": "PS4",
+      "path": "/run.html",
+      "user_agent": "Mozilla/5.0 (PlayStation 4 13.52)"
+    }
+  ]
+}

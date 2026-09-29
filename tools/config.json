@@ -1,0 +1,11 @@
+{
+  "ps4_ip":          "192.168.1.100",
+  "ps4debug_port":   2801,
+  "bin_loader_port": 9090,
+  "http_port":       8888,
+  "payload_dir":     "../payloads",
+  "xor_key":         66,
+  "send_timeout":    10.0,
+  "retry_max":       3,
+  "retry_backoff":   1.5
+}
