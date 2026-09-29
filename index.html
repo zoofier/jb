@@ -7,26 +7,25 @@
 <style>
 html,body{margin:0;background:#050505;color:#eee;font-family:Arial,sans-serif}
 body{display:flex;justify-content:center;align-items:center;min-height:100vh}
-.card{width:min(760px,92vw);border:1px solid #333;border-radius:14px;padding:28px;background:#0b0b0b;box-shadow:0 0 40px #000}
-h1{margin:0 0 8px;font-size:28px;letter-spacing:2px}
-.sub{color:#888;margin-bottom:22px}
+.card{width:min(760px,92vw);border:1px solid #333;border-radius:14px;padding:28px;background:#0b0b0b}
+h1{margin:0 0 8px}.sub{color:#888;margin-bottom:22px}
 .row{display:flex;justify-content:space-between;border-top:1px solid #222;padding:12px 0}
-.ok{color:#8cff8c}.warn{color:#ffd36b}.bad{color:#ff7777}
+.ok{color:#8cff8c}.warn{color:#ffd36b}
 pre{white-space:pre-wrap;background:#030303;border:1px solid #222;padding:14px;border-radius:10px;min-height:150px}
-button{background:#eee;color:#111;border:0;border-radius:8px;padding:11px 16px;font-weight:700}
+button{padding:11px 16px;border:0;border-radius:8px;font-weight:700}
 </style>
 </head>
 <body>
 <div class="card">
 <h1>ZOOF13R // PS4 14.00</h1>
-<div class="sub">Online host / verification layer</div>
+<div class="sub">Online verification / staging layer</div>
 <div class="row"><span>Firmware</span><b id="fw" class="warn">DETECTING</b></div>
-<div class="row"><span>WebKit exploit</span><b class="warn">NOT PUBLICLY INSTALLED</b></div>
-<div class="row"><span>14.00 HEN target</span><b class="ok">READY TARGET</b></div>
-<div class="row"><span>Kernel exploit</span><b class="warn">PRIVATE / UNAVAILABLE</b></div>
+<div class="row"><span>WebKit exploit</span><b class="warn">NOT INSTALLED</b></div>
+<div class="row"><span>14.00 HEN target</span><b class="ok">STAGED</b></div>
+<div class="row"><span>Kernel exploit</span><b class="warn">NOT INSTALLED</b></div>
 <pre id="log"></pre>
-<button id="diag">Run browser diagnostics</button>
-<script src="./diagnostics.js"></script>
+<button id="diag">Run diagnostics</button>
+<script src="diagnostics.js"></script>
 </div>
 </body>
 </html>
