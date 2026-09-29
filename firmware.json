@@ -1,12 +1,6 @@
 {
-  "target": {
-    "family": "PS4",
-    "firmware": "14.00",
-    "firmwareCode": 1400
-  },
-  "policy": {
-    "requireExactFirmware": true,
-    "allowDemoMode": true,
-    "successRequiresVerifiedAdapter": true
-  }
+  "target": "14.00",
+  "mode": "legacy-browser-host",
+  "modules": [],
+  "success_requires_verified_result": true
 }
