@@ -1,0 +1,52 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#07090d"><title>ZOOF13R // PS4 Firmware Host</title>
+<style>
+html,body{margin:0;padding:0;background:#07090d;color:#eee;font-family:Arial,sans-serif}body{padding:18px}.box{max-width:760px;margin:auto;background:#10131a;border:1px solid #303642;border-radius:16px;padding:22px}h1{font-size:24px;margin:0 0 5px}.muted{color:#8992a3;font-size:12px;margin-bottom:20px}.info{border-top:1px solid #282d37;padding:10px 0}.label{color:#8d96a7;font-size:11px}.value{font-size:15px;font-weight:bold;margin-top:3px;word-break:break-word}button,a.btn{display:block;width:100%;box-sizing:border-box;padding:15px;margin-top:10px;border:0;border-radius:10px;font-weight:bold;font-size:16px;background:#eee;color:#08090d;text-align:center;text-decoration:none}button.secondary,a.secondary{background:#242934;color:#eee;font-size:13px}button:disabled{opacity:.45}.stage{padding:8px 0;border-bottom:1px solid #222733}.state{float:right}#log{background:#050609;border:1px solid #242934;border-radius:10px;min-height:130px;padding:12px;margin-top:16px;white-space:pre-wrap;font:12px monospace;overflow:auto}.result{display:none;margin-top:16px;padding:18px;border:1px solid #3b4350;border-radius:10px}.good{border-color:#4d9d69!important}.bad{border-color:#a34e57!important}.small{font-size:11px;color:#8992a3;line-height:1.45;margin-top:12px}
+</style></head><body><div class="box">
+<h1>ZOOF13R // PS4 HOST</h1><div class="muted">Legacy PS4-browser-compatible firmware router</div>
+<div class="info"><div class="label">Detected firmware</div><div class="value" id="fw">Checking...</div></div>
+<div class="info"><div class="label">Firmware confidence</div><div class="value" id="confidence">Checking...</div></div>
+<div class="info"><div class="label">Browser / UA</div><div class="value" id="browser">Checking...</div></div>
+<div class="info"><div class="label">Selected path</div><div class="value" id="target">Checking...</div></div>
+<button id="start" onclick="startTest()">JAILBREAK / CONTINUE</button>
+<a id="public13" class="btn secondary" style="display:none" href="https://webkitty.arabpixel.net/">OPEN PUBLIC 13.x CHAIN</a>
+<button class="secondary" onclick="demo()">TEST UI ONLY</button>
+<div id="stages"><div class="stage">Environment <span class="state" id="s1">—</span></div><div class="stage">Browser <span class="state" id="s2">—</span></div><div class="stage">Firmware route <span class="state" id="s3">—</span></div><div class="stage">Exploit module <span class="state" id="s4">—</span></div><div class="stage">Kernel / HEN <span class="state" id="s5">—</span></div></div>
+<pre id="log"></pre><div id="result" class="result"><b id="rt"></b><div id="rb"></div></div>
+<div class="small">The browser does not expose a separate JavaScript API for the installed PS4 system version. This host therefore parses the PS4 browser user-agent, shows the raw UA, and refuses to silently treat an unknown version as 14.00.</div>
+<script>
+(function(){
+window.zlog=function(x){var e=document.getElementById('log');e.innerHTML+=x+'\n';e.scrollTop=e.scrollHeight};
+window.wait=function(ms){return new Promise(function(r){setTimeout(r,ms)})};
+window.stage=function(n,t){document.getElementById('s'+n).innerHTML=t};
+window.show=function(title,body,good){var r=document.getElementById('result');r.style.display='block';r.className='result '+(good?'good':'bad');document.getElementById('rt').innerHTML=title;document.getElementById('rb').innerHTML=body};
+function parseFirmware(ua){
+ var m=ua.match(/PlayStation\s*4\s*[\/]\s*(\d+\.\d+(?:\.\d+)?)/i);
+ if(!m)m=ua.match(/PS4\s*(?:Update|System Software)?\s*[\(\/]\s*(\d+\.\d+(?:\.\d+)?)/i);
+ if(!m)m=ua.match(/(?:PlayStation\s*4|PS4)[^0-9]{0,30}(\d+\.\d+(?:\.\d+)?)/i);
+ if(!m)return null;
+ var raw=m[1],p=raw.split('.'),major=parseInt(p[0],10),minor=parseInt(p[1],10);
+ return {raw:raw,major:major,minor:minor,short:major+'.'+('0'+minor).slice(-2),key:major+'.'+minor};
+}
+function route(f){if(!f)return 'UNKNOWN';if(f.major===13&&f.minor<=52)return '13.x PUBLIC CHAIN';if(f.major===14&&f.minor===0)return '14.00 DIAGNOSTIC';return 'UNSUPPORTED / NO SILENT FALLBACK'}
+window.detect=function(){
+ var ua=navigator.userAgent||'';var f=parseFirmware(ua);var fw=f?f.short:'UNKNOWN';var r=route(f);
+ document.getElementById('fw').innerHTML=fw;
+ document.getElementById('confidence').innerHTML=f?'UA firmware token detected: '+f.raw:'No firmware token found in UA';
+ document.getElementById('browser').innerHTML=/AppleWebKit/i.test(ua)?'WebKit detected':'WebKit not identified';
+ document.getElementById('target').innerHTML=r;
+ document.getElementById('public13').style.display=(f&&f.major===13&&f.minor<=52)?'block':'none';
+ zlog('User agent: '+ua);zlog('Parsed firmware: '+fw);zlog('Selected route: '+r);
+ if(!f){document.getElementById('start').disabled=true;zlog('Safety gate: firmware could not be identified; nothing will be launched.');}
+};
+window.demo=async function(){document.getElementById('start').disabled=true;document.getElementById('log').innerHTML='';for(var i=1;i<=5;i++){stage(i,'...');await wait(300);stage(i,i<4?'PASS':'DEMO')}show('DEMO COMPLETE','UI and firmware routing were exercised only. No exploit was executed.',false);document.getElementById('start').disabled=false};
+window.startTest=async function(){
+ document.getElementById('start').disabled=true;document.getElementById('log').innerHTML='';var f=parseFirmware(navigator.userAgent||'');
+ stage(1,'...');zlog('Starting firmware-aware verification...');await wait(250);stage(1,'PASS');stage(2,'...');await wait(250);stage(2,/AppleWebKit/i.test(navigator.userAgent||'')?'PASS':'WARN');
+ stage(3,'...');await wait(250);stage(3,f?f.short:'UNKNOWN');
+ if(f&&f.major===13&&f.minor<=52){stage(4,'ROUTE');stage(5,'ROUTE');show('13.x ROUTE READY','This console was identified as '+f.short+'. Use OPEN PUBLIC 13.x CHAIN to continue to the published 13.02–13.52 path. This host does not rewrite or spoof the exploit result.',true);document.getElementById('public13').style.display='block';document.getElementById('start').disabled=false;return}
+ if(f&&f.major===14&&f.minor===0){stage(4,'BLOCKED');stage(5,'BLOCKED');zlog('No verified public 14.00 browser exploit module is installed in this package.');show('14.00 NOT JAILBROKEN','Firmware detection is working, but this package will not falsely claim a 14.00 jailbreak or GoldHEN load without a verified exploit module.',false);document.getElementById('start').disabled=false;return}
+ stage(4,'BLOCKED');stage(5,'BLOCKED');show('UNSUPPORTED FIRMWARE','Detected '+(f?f.short:'UNKNOWN')+'. No exploit path was selected.',false);document.getElementById('start').disabled=false;
+};
+detect();
+})();</script></div></body></html>
